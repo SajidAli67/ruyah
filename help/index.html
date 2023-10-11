@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Documentation</title>
+    <link rel='shortcut icon' href='../theme/images/favicon.ico' />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="../theme/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../theme/css/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../theme/css/ionicons-2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../theme/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="../theme/dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Lightbox -->
+    <link rel="stylesheet" href="../theme/plugins/lightbox/ekko-lightbox.css">
+  </head>
+  <body class="skin-purple-light fixed" data-spy="scroll" data-target="#scrollspy">
+    <div class="wrapper">
+
+      <header class="main-header">
+        <!-- Logo -->
+        <!-- Logo -->
+        <a href="index.html" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini"><b>D</b>DT</span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg"><b>Ruyah Vip</b></span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+          <!-- Navbar Right Menu -->
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              <li><a href="javascript:void();">Help Documentation</a></li>
+              
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <div class="sidebar" id="scrollspy">
+
+          <!-- sidebar menu: : style can be found in sidebar.less -->
+          
+        </div>
+        <!-- /.sidebar -->
+      </aside>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+          <h1>
+            &ldquo;RuyahVip - By ManiWebify
+            
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Documentation</li>
+          </ol>
+        </div>
+
+        <!-- Main content -->
+        <div class="content body">
+          
+
+<!-- ============================================================= -->
+<!-- ============================================================= -->
+<section id="support">
+  <h2 class="page-header"><a href="#support">Support</a></h2>
+  <p class="lead">
+    If any issues or product customization you can email us on <a href="emailto: support@maniwebify.com ">support@maniwebify.com</a>.
+  </p>
+
+  <p class="lead">
+    <br/>
+    Thanks for showing interest in Ruyah Vip.<br/>
+    maniWebify
+
+
+  </p>
+</section>
+
+
+
+<!-- ============================================================= -->
+
+        </div><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+
+      <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+          <b>Version</b> 3.1
+        </div>
+        <strong>Year: 2023 @ManiWebify
+      </footer>
+
+    
+      <!-- <div class="control-sidebar-bg"></div> -->
+
+    </div><!-- ./wrapper -->
+
+    <!-- jQuery 2.2.3 -->
+    <script src="../theme/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="../theme/bootstrap/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="../theme/plugins/fastclick/fastclick.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../theme/dist/js/app.min.js"></script>
+    <!-- SlimScroll 1.3.0 -->
+    <script src="../theme/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+    <script src="docs.js"></script>
+    <!-- Lightbox -->
+    <script src="../theme/plugins/lightbox/ekko-lightbox.js"></script>
+    <script type="text/javascript">
+      $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+                event.preventDefault();
+                $(this).ekkoLightbox();
+
+               
+
+            });
+
+      jQuery(document).ready(function($) {
+          var link=$(location).attr('href');
+          var jump_to = link.split("#");
+
+          link = jump_to[1].trim();
+          if(link!='' && link!='undefined'){
+            console.log("jump_to[1]="+jump_to[1]);
+            document.location = "#" + jump_to[1];
+          }
+      }); 
+    </script>
+  </body>
+</html>

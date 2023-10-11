@@ -1,0 +1,1 @@
+INSERT IGNORE INTO db_variants VALUES ('259','2',NULL,'Mobile',NULL,'1'),('260','2',NULL,'jhk','jkjk','1'),('261','2',NULL,'test',NULL,'1');

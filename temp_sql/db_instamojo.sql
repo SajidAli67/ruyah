@@ -1,0 +1,1 @@
+INSERT INTO db_instamojo VALUES ('1','1','1','','','2023-08-07','saas@maniwebify.com','1');

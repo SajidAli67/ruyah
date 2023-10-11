@@ -1,0 +1,1 @@
+INSERT IGNORE INTO db_smsapi VALUES ('26','2','url','weblink','http://example.com/sendmessage',NULL),('27','2','mobile','mobiles',NULL,NULL),('28','2','message','message',NULL,NULL);

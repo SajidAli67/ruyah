@@ -1,0 +1,1 @@
+INSERT IGNORE INTO db_category VALUES ('91','2','1','Store#0001','الجميع الاصناف',NULL,NULL,'1');

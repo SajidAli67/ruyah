@@ -1,0 +1,1 @@
+INSERT IGNORE INTO db_warehouse VALUES ('2','2','System','System Warehouse',NULL,NULL,'1',NULL);
