@@ -543,7 +543,7 @@ class Reports_model extends CI_Model
 		$tot_purchase_price = 0;
 		$tot_total_cost = 0;
 		$tot_payment = 0;
-
+		
 		$str1 = "SELECT
             a.id as id,
             a.`purchase_date` AS tr_date,
@@ -593,8 +593,26 @@ class Reports_model extends CI_Model
 			$str1 .= " AND (c.return_date >= '" . $from_date . "' AND c.return_date <= '" . $to_date . "')";
 		}
 
-		$str1 .= " ORDER BY `tr_date`, `created_time`";
 
+		$str1 .= " UNION ";
+
+		$str1 .= "SELECT
+            d.id as id,
+            d.`transfer_date` AS tr_date,
+            'transfer_suppler' as tr_type,
+            '90990'	 as tr_code,
+            d.`created_time` AS created_time
+         FROM
+            `ac_moneytransfersuppler` d
+         WHERE
+            d.credit_account_id = " . $supplier_id;
+
+		if (!empty($from_date) && !empty($to_date)) {
+			$str1 .= " AND (d.transfer_date >= '" . $from_date . "' AND d.transfer_date <= '" . $to_date . "')";
+		}
+
+		$str1 .= " ORDER BY `tr_date`, `created_time`";
+		
 		$q1 = $this->db->query($str1);
 
 		// echo "<pre>";print_r($q1->result());exit();
@@ -639,7 +657,10 @@ class Reports_model extends CI_Model
 					$details = get_purchase_details($res2->id);
 				} elseif ($res2->tr_type ==	'payments') {
 					$details = get_purchase_payment_details($res2->id);
-				} else {
+				}elseif ($res2->tr_type ==	'transfer_suppler') {
+					$details = get_moneytransfersuppler_details($res2->id);
+				}
+				 else {
 					$details = get_purchasereturn_details3($res2->id);
 				}
 
@@ -699,8 +720,15 @@ class Reports_model extends CI_Model
 				// print_r($details);
 				if ($res2->tr_type != 'invoice') {
 					if ($res2->tr_type != 'return') {
-						$str2 = "<br><b>Bill Ref.No :<b>" . get_purchase_details($details->purchase_id)->reference_no;
+						if($res2->tr_type == 'transfer_suppler'){
+							$str2 ="";
+						}
+						else{
+							$str2 = "<br><b>Bill Ref.No :<b>" . get_purchase_details($details->purchase_id)->reference_no;
+
+						}
 					}
+					
 					if (empty(isset($details->reference_no))) {
 
 						$str3 =	get_purchase_details(get_purchase_payment_details($res2->id)->purchase_id)->purchase_code;
@@ -715,7 +743,11 @@ class Reports_model extends CI_Model
 					echo "Invoice: " . $res2->tr_code;
 				} elseif ($res2->tr_type == 'payments') {
 					echo 'Receive' . $str2 . " " . $str3;
-				} else {
+				}
+				elseif ($res2->tr_type == 'transfer_suppler') {
+					echo 'Transfer: '.$res2->tr_code;
+				}
+				else {
 					echo "Return: " . $res2->tr_code;
 				}
 				// Stop5
@@ -759,7 +791,10 @@ class Reports_model extends CI_Model
 					}
 				} elseif ($res2->tr_type == 'return') {
 					echo "<b>Return Invoice</b><i>" . "" . "</i><br>";
-				} else {
+				}elseif ($res2->tr_type == 'transfer_suppler') {
+					echo "<b>Transfer</b><i>" . "" . "</i><br>";
+				}
+				 else {
 
 					echo "<b>purchase Invoice</b><i>" . "" . "</i><br>";
 				}
@@ -793,7 +828,7 @@ class Reports_model extends CI_Model
 
 					echo 0.00;//store_number_format($details->grand_total);
 				}
-
+				
 				elseif ($res2->tr_type == 'return' && $details->paid_amount !=0) {
 
 					echo store_number_format($details->grand_total);
@@ -819,6 +854,10 @@ class Reports_model extends CI_Model
 
 					echo 0.00;//store_number_format($details->grand_total);
 				}
+				elseif ($res2->tr_type == 'transfer_suppler') {
+
+					echo store_number_format($details->amount);
+				}
 
 
 				echo "</td>";
@@ -842,7 +881,11 @@ class Reports_model extends CI_Model
 					$tot_bal = $details->grand_total + $tot_bal;
 				} elseif ($res2->tr_type == 'payments') {
 					$tot_bal = $tot_bal - $details->payment;
-				} elseif($res2->tr_type == 'return' && $details->paid_amount ==0) {
+				}
+				elseif ($res2->tr_type == 'transfer_suppler') {
+					$tot_bal = $tot_bal + $details->amount;
+				}
+				elseif($res2->tr_type == 'return' && $details->paid_amount ==0) {
 					$tot_bal = $tot_bal - $details->grand_total;
 				}
 				$tot_bal_updated_with_opening_balance = $tot_bal + $result_opening_balance;

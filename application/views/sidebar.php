@@ -884,7 +884,7 @@
 
     <!-- <li class="header">ACCOUNTING</li> -->
 
-    <li class="accounts_list-active-li accounts-active-li journal-active-li journal_list-active-li money_transfer-active-li money_transfer_list-active-li money_deposit-active-li expense-list-active-li expense-active-li expense-category-active-li expense-category-list-active-li money_deposit_list-active-li cash_transactions-active-li treeview " >
+    <li class="accounts_list-active-li accounts-active-li journal-active-li journal_list-active-li money_transfer-active-li money_transfer_list-active-li money_deposit-active-li expense-list-active-li expense-active-li expense-category-active-li expense-category-list-active-li money_deposit_list-active-li cash_transactions-active-li treeview  " >
 
           <a href="#">
 
@@ -922,7 +922,8 @@
 
             <?php if($CI->permissions('money_transfer_view')) { ?>
 
-            <li class="money_transfer_list-active-li"><a href="<?php echo $base_url; ?>money_transfer"><i class="fa fa-list "></i> <span><?= $this->lang->line('money_transfer_list'); ?></span></a></li>
+              <li class="money_transfer_list-active-li"><a href="<?php echo $base_url; ?>money_transfer"><i class="fa fa-list "></i> <span><?= $this->lang->line('money_transfer_list'); ?></span></a></li>
+              <li class="money_transfer_list-active-li"><a href="<?php echo $base_url; ?>Transfer_to_supplier"><i class="fa fa-list "></i> <span><?= 'Transfer to Supplier' ?></span></a></li>
 
             <?php } ?>
 

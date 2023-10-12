@@ -91,7 +91,7 @@ class Account_transactions extends MY_Controller {
 			6=>'',
 			7=>'',
 		));
-
+		
 		foreach ($list as $accounts) {
 		  
 			$no++;
@@ -137,6 +137,7 @@ class Account_transactions extends MY_Controller {
 						}
 					}
 					else{
+						
 						$from_ = get_account_name($accounts->debit_account_id);
 					}
 

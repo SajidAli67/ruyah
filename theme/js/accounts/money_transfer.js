@@ -224,3 +224,147 @@ function multi_delete(){
 	}
 	//e.preventDefault
 }
+
+
+$('#save_suppler,#update_suppler').on("click",function (e) {
+	var base_url=$("#base_url").val();
+    /*Initially flag set true*/
+    var flag=true;
+
+    function check_field(id)
+    {
+
+      if(!$("#"+id).val() ) //Also check Others????
+        {
+
+            $('#'+id+'_msg').fadeIn(200).show().html('Required Field').addClass('required');
+            //$('#'+id).css({'background-color' : '#E8E2E9'});
+            flag=false;
+        }
+        else
+        {
+             $('#'+id+'_msg').fadeOut(200).hide();
+             //$('#'+id).css({'background-color' : '#FFFFFF'});    //White color
+        }
+    }
+
+
+    //Validate Input box or selection box should not be blank or empty
+	check_field("transfer_date");
+	check_field("transfer_code");
+	check_field("debit_account_id");
+	check_field("credit_account_id");
+	check_field("amount");
+    
+
+
+	if(flag==false)
+    {
+		toastr["warning"]("You have Missed Something to Fillup!")
+		return;
+    }
+    if(get_float_type_data(amount)<=0){
+    	toastr["warning"]("Amount must be greater then zero!!");
+    	return;
+    }
+
+    // if($("#debit_account_id").val()==$("#credit_account_id").val()){
+    // 	toastr["warning"]("Both Accounts shoul't not be same!!");
+    // 	return;
+    // }
+
+    var this_id=this.id;
+
+    if(this_id=="save_suppler")  //Save start
+    {
+
+					//if(confirm("Do You Wants to Save Record ?")){
+						e.preventDefault();
+						data = new FormData($('#money_transfer_suppler-form')[0]);//form name
+						/*Check XSS Code*/
+						if(!xss_validation(data)){ return false; }
+						
+						$(".box").append('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+						$("#"+this_id).attr('disabled',true);  //Enable Save or Update button
+						$.ajax({
+						type: 'POST',
+						url: base_url+'Transfer_to_supplier/new_money_transfer',
+						data: data,
+						cache: false,
+						contentType: false,
+						processData: false,
+						success: function(result){
+             // alert(result);//return;
+             			result=result.trim();
+							if(result=="success")
+							{
+								window.location=base_url+"Transfer_to_supplier";
+								return;
+							}
+							else if(result=="failed")
+							{
+							   toastr["error"]("Sorry! Failed to save Record.Try again!");
+							}
+							else
+							{
+								toastr["error"](result);
+							}
+							$("#"+this_id).attr('disabled',false);  //Enable Save or Update button
+							$(".overlay").remove();
+					   }
+					   });
+				//}
+
+				//e.preventDefault
+
+
+    }//Save end
+	
+	else if(this_id=="update_suppler")  //Update start
+    {
+							
+					//if(confirm("Do You Wants to Save Record ?")){
+						e.preventDefault();
+						data = new FormData($('#money_transfer_suppler-form')[0]);//form name
+						/*Check XSS Code*/
+						if(!xss_validation(data)){ return false; }
+						
+						$(".box").append('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+						$("#"+this_id).attr('disabled',true);  //Enable Save or Update button
+						$.ajax({
+						type: 'POST',
+						url: base_url+'Transfer_to_supplier/update_money_transfer',
+						data: data,
+						cache: false,
+						contentType: false,
+						processData: false,
+						success: function(result){
+              //alert(result);return;
+              			result=result.trim();
+							if(result=="success")
+							{
+								//toastr["success"]("Record Updated Successfully!");
+								window.location=base_url+"Transfer_to_supplier";
+							}
+							else if(result=="failed")
+							{
+							   toastr["error"]("Sorry! Failed to save Record.Try again!");
+							}
+							else
+							{
+								 toastr["error"](result);
+							}
+							$("#"+this_id).attr('disabled',false);  //Enable Save or Update button
+							$(".overlay").remove();
+							return;
+					   }
+					   });
+				//}
+
+				//e.preventDefault
+
+
+    }//Save end
+	
+
+});
