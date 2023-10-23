@@ -160,6 +160,21 @@ function insert_account_transaction($data=array()){
 								"credit_amt"		 	=> $credit_amt,
 							);
 	}
+	
+	else if($transaction_type=='TRANSFER_SUPPLER'){
+		if($process=='UPDATE'){
+			//delete previouse data of the transactions
+			$CI->db->where("ref_moneydeposits_id",$reference_table_id)->delete("ac_transactions");
+		}
+		$transaction = array( 
+								"transaction_type" 		=> $transaction_type,
+								
+								"debit_account_id" 		=> $debit_account_id,
+								"credit_account_id" 	=> $credit_account_id,
+								"debit_amt"		 		=> $debit_amt,
+								"credit_amt"		 	=> $credit_amt,
+							);
+	}
 	else if($transaction_type=='TRANSFER'){
 		if($process=='UPDATE'){
 			//delete previouse data of the transactions
@@ -191,17 +206,17 @@ function insert_account_transaction($data=array()){
 
 	if($CI->db->insert("ac_transactions",$transaction)){
 	
-		if(!empty($debit_account_id)){
-			if(!update_account_balance($debit_account_id,$credit_amt)){
+	/*	if(!empty($debit_account_id)){
+			if(!update_account_balance($debit_account_id,$credit_amt,false)){
 				return false;
 			}
 		}
 
-		// if(!empty($credit_account_id)){
-		// 	if(!update_account_balance($credit_account_id,$debit_amt)){
-		// 		return false;
-		// 	}
-		// }
+		if(!empty($credit_account_id)){
+			if(!update_account_balance($credit_account_id,$debit_amt,true)){
+				return false;
+			}
+		}*/
 
 
 		return true;
@@ -221,13 +236,41 @@ function get_account_balance($account_id){
 
 	return $balance;
 }
-function update_account_balance($account_id, $amount= 0){
+function update_account_balance($account_id, $amount= 0, $debit= false){
 	$CI =& get_instance();
-	$balance = get_account_balance($account_id) + $amount;
+	if($debit){
+
+		$balance = get_account_balance($account_id) + $amount;
+	}
+	else{
+		$balance = get_account_balance($account_id) - $amount;
+	}
+	
 	
 	$q1=$CI->db->set('balance',$balance)->where("id",$account_id)->update("ac_accounts");
 	if(!$q1){
 		return false;
 	}
 	return true;
+}
+
+
+function update_customer_balance($customer_id, $amount, $status = false){
+	$CI =& get_instance();
+	$balance =$CI->db->select('sales_due')->where('id',$customer_id)->get('db_customers')->row()->sales_due;
+	if($status){
+
+		$balance += $amount;
+	}
+	else{
+
+		$balance -= $amount;
+	}
+
+	$q1 = $CI->db->set('sales_due',$balance)->where("id",$customer_id)->update("db_customers");
+	if(!$q1){
+		return false;
+	}
+	return true;
+
 }

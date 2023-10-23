@@ -41,10 +41,10 @@ $('#save,#update').on("click",function (e) {
     	return;
     }
 
-    // if($("#debit_account_id").val()==$("#credit_account_id").val()){
-    // 	toastr["warning"]("Both Accounts shoul't not be same!!");
-    // 	return;
-    // }
+    if($("#debit_account_id").val()==$("#credit_account_id").val()){
+    	toastr["warning"]("Both Accounts shoul't not be same!!");
+    	return;
+    }
 
     var this_id=this.id;
 

@@ -883,7 +883,7 @@ class Reports_model extends CI_Model
 					$tot_bal = $tot_bal - $details->payment;
 				}
 				elseif ($res2->tr_type == 'transfer_suppler') {
-					$tot_bal = $tot_bal + $details->amount;
+					$tot_bal = $tot_bal - $details->amount;
 				}
 				elseif($res2->tr_type == 'return' && $details->paid_amount ==0) {
 					$tot_bal = $tot_bal - $details->grand_total;
@@ -909,10 +909,10 @@ class Reports_model extends CI_Model
 					$tot_total_cost += $details->grand_total;
 				}
 
-				if ($res2->tr_type == 'payments' or $res2->tr_type == 'return') {
+				if ($res2->tr_type == 'payments' or $res2->tr_type == 'return' or $res2->tr_type == 'transfer_suppler') {
 					// print_r("Return else condition");exit();
 					// $tot_payment +=$details->payment;
-					$tot_payment = $tot_payment + $details->payment + $details->paid_amount;
+					$tot_payment = $tot_payment + $details->payment + $details->paid_amount + $details->amount;
 				}
 				// Stop9
 
@@ -928,9 +928,9 @@ class Reports_model extends CI_Model
 
 		//Total
 
-		echo "<tr>";
-
-		echo "<td class='text-right' colspan='4'>";
+		echo "<tr class='text-center' style='font-size:16px; background-color: #dee2e6'>";
+        echo "<td></td>";
+		echo "<td  colspan='3'>";
 
 		echo "Total";
 
@@ -943,14 +943,14 @@ class Reports_model extends CI_Model
 		// echo "</td>";
 		// Footer
 
-		echo "<td class='text-right'>";
+		echo "<td>";
 
 		echo store_number_format($tot_total_cost);
 
 
 		echo "</td>";
 
-		echo "<td class='text-right'>";
+		echo "<td >";
 
 		echo store_number_format($tot_payment);
 
@@ -7110,7 +7110,7 @@ class Reports_model extends CI_Model
 
 		//$str1.=" ORDER BY `tr_date`,`id`,`created_time` ";
 
-		$str1 .= " ORDER BY `tr_date`,`created_time` ";
+		$str1 .= " ORDER BY `created_time` ";
 		// print_r($str1);exit();
 		
 		//echo $str1;exit;
@@ -7411,10 +7411,10 @@ class Reports_model extends CI_Model
 					$tot_total_cost += $details->grand_total;
 				}
 
-				if ($res2->tr_type == 'payments' or $res2->tr_type == 'return') {
+				if ($res2->tr_type == 'payments' or $res2->tr_type == 'return' or $res2->tr_type == 'deposit') {
 					// print_r("Return else condition");exit();
 					// $tot_payment +=$details->payment;
-					$tot_payment = $tot_payment + $details->payment + $details->paid_amount;
+					$tot_payment = $tot_payment + $details->payment + $details->paid_amount +  $details->amount;
 				}
 				// Stop9
 
@@ -7430,13 +7430,14 @@ class Reports_model extends CI_Model
 
 		//Total
 
-		echo "<tr>";
+		echo "<tr class='text-center' style='font-size:16px; background-color: #dee2e6'>";
+		echo "<td></td>";
 
-		echo "<td class='text-right' colspan='4'>";
+		echo "<td class='text-center' colspan='3'>";
 
 		echo "Total";
 
-		echo "</td>";
+		echo "</td>";;
 
 		// Foter              	// echo "<td>";
 

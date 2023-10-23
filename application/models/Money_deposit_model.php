@@ -160,8 +160,8 @@ class Money_deposit_model extends CI_Model {
 		$insert_bit = insert_account_transaction(array(
 													'transaction_type'  	=> 'DEPOSIT',
 													'reference_table_id'  	=> $this->db->insert_id(),
-													'debit_account_id'  	=> null,//$debit_account_id,
-													'credit_account_id'  	=> $credit_account_id,
+													'debit_account_id'  	=> $credit_account_id,
+													'credit_account_id'  	=> $debit_account_id,
 													'debit_amt'  			=> $amount,
 													'credit_amt'  			=> $amount,
 													'process'  				=> 'SAVE',
@@ -177,7 +177,10 @@ class Money_deposit_model extends CI_Model {
 		}
 		//end
 
-
+        // update account balance 
+	
+		update_account_balance($debit_account_id,$amount,true);
+		update_customer_balance($credit_account_id, $amount, false);
 		$this->session->set_flashdata('success', 'Success!! Record Added Successfully!');
 		return "success";
 		
@@ -256,9 +259,9 @@ class Money_deposit_model extends CI_Model {
 	public function delete_money_deposit_from_table($ids){
 		$this->db->trans_begin();
 		//ACCOUNT RESET
-		$reset_accounts = $this->db->select("debit_account_id,credit_account_id")->where("ref_moneydeposits_id in ($ids)")->group_by("debit_account_id,credit_account_id")->get("ac_transactions");
+		$reset_accounts = $this->db->select("debit_account_id,credit_account_id, debit_amt, credit_amt")->where("ref_moneydeposits_id in ($ids)")->group_by("debit_account_id,credit_account_id")->get("ac_transactions");
 		//ACCOUNT RESET END
-
+		
 		$this->db->where("id in ($ids)");
 		//if not admin
 		if(!is_admin()){
@@ -273,13 +276,14 @@ class Money_deposit_model extends CI_Model {
         //ACCOUNT RESET
         if($reset_accounts->num_rows()>0){
         	foreach ($reset_accounts->result() as $res1) {
-        		if(!update_account_balance($res1->debit_account_id)){
-					return 'failed';
-				}
+				update_account_balance(($res1->debit_account_id),$res1->debit_amt,false);
+        		// if(!update_account_balance($res1->debit_account_id)){
+				// 	return 'failed';
+				// }
 
-				if(!update_account_balance($res1->credit_account_id)){
-					return 'failed';
-				}
+				// if(!update_account_balance($res1->credit_account_id)){
+				// 	return 'failed';
+				// }
 
         	}
         }

@@ -1,1 +1,1 @@
-INSERT IGNORE INTO db_expense_category VALUES ('58','2','EC0001','المصروفات','اليومية مصاريف','user@maniwebify.com','1');
+INSERT IGNORE INTO db_expense_category VALUES ('61','2','EC0001','all servise',NULL,'admin','1');

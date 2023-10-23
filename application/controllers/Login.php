@@ -6,8 +6,8 @@ class Login extends MY_Controller {
         parent::__construct();
         $this->php_verification();
         $this->load_info();
-        // if(get_domain()!=get_dbdomain()){echo appinfo_domain_msg();exit();}
-        // is_sql_full_group_by_enabled();
+        if(get_domain()!=get_dbdomain()){echo appinfo_domain_msg();exit();}
+        is_sql_full_group_by_enabled();
     }
 
     public function php_verification(){

@@ -1,1 +1,1 @@
-INSERT IGNORE INTO db_warehouseitems VALUES ('4600','2','2','10','20.00');
+INSERT IGNORE INTO db_warehouseitems VALUES ('4816','2','2','1','6.00'),('4819','2','2','2','18.00');

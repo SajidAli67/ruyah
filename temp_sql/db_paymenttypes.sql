@@ -1,1 +1,1 @@
-INSERT IGNORE INTO db_paymenttypes VALUES ('38','2','مدي / تحويلة بنك','1'),('39','2','نقدي','1');
+INSERT IGNORE INTO db_paymenttypes VALUES ('40','2','cash paymint','1'),('41','2','bank / mada','1');

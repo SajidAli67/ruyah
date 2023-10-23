@@ -143,7 +143,7 @@ class Expense_model extends CI_Model {
 			}
 		}
 		//end
-
+        update_account_balance($account_id,$expense_amt,false);
 		if ($q1){
 			    $this->session->set_flashdata('success', 'Success!! Record Added Successfully!');
 		        return "success";

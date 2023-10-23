@@ -86,7 +86,7 @@
                                           <select class="form-control select2" id="credit_account_id" name="credit_account_id"  style="width: 100%;">
                                           <?php
                                              echo '<option value="">Select</option>'; 
-                                             echo get_suppliers_select_list(null,get_current_store_id());
+                                             echo get_accounts_select_list($debit_account_id);
                                              ?>
                                           </select>
                                           <span id="credit_account_id_msg" style="display:none" class="text-danger"></span>

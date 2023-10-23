@@ -1416,8 +1416,6 @@ $lang['new_money_transfer'					]	=		'New Money Transfer';
 
 $lang['money_transfer_list'					]	=		'Money Transfer List';
 
-$lang['transfer_suppler'					]	=		'Transfer to suppler';
-
 $lang['add_money_transfer_head'				]	=		'Add Money Transfer Head';
 
 $lang['money_transfer_name'					]	=		'Money Transfer Name';
@@ -1977,7 +1975,7 @@ $lang["item_sales_report"			]	=		"Sales Item Report";
 
 $lang["return_items_report"			]	=		"Return Items Report";
 
-$lang["sales_and_payments_report"	]	=		"Sales & Payment Report";
+$lang["sales_and_payments_report"	]	=		"Customer Account Statment";
 
 $lang["referenced_bill_no"			]	=		"Referenced Bill No.";
 

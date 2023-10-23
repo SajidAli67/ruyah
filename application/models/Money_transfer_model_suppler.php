@@ -14,7 +14,7 @@ class Money_transfer_model_suppler extends CI_Model {
 							'a.credit_account_id',
 							'a.amount',
 							'a.created_by',
-							'a.ref_moneytransfer_id',
+						
 							'a.ref_moneydeposits_id',
 							); //set column field database for datatable orderable
 	var $column_search = array( 
@@ -26,7 +26,7 @@ class Money_transfer_model_suppler extends CI_Model {
 							'a.credit_account_id',
 							'a.amount',
 							'a.created_by',
-							'a.ref_moneytransfer_id',
+							
 							'a.ref_moneydeposits_id',
 							);//set column field database for datatable searchable 
 
@@ -159,12 +159,12 @@ class Money_transfer_model_suppler extends CI_Model {
 		//Set the payment to specified account
 		//ACCOUNT INSERT
 		$insert_bit = insert_account_transaction(array(
-													'transaction_type'  	=> 'TRANSFER',
+													'transaction_type'  	=> 'TRANSFER_SUPPLER',
 													'reference_table_id'  	=> $this->db->insert_id(),
 													'debit_account_id'  	=> $debit_account_id,
 													'credit_account_id'  	=> $credit_account_id,
 													'debit_amt'  			=> $amount,
-													'credit_amt'  			=> $amount,
+													'credit_amt'  			=> 0,
 													'process'  				=> 'SAVE',
 													'note'  				=> $note,
 													'transaction_date'  	=> $CUR_DATE,
@@ -178,7 +178,9 @@ class Money_transfer_model_suppler extends CI_Model {
 		}
 		//end
 
-
+            // update account balance 
+	
+		update_account_balance($credit_account_id,$amount,false);
 		$this->session->set_flashdata('success', 'Success!! Record Added Successfully!');
 		return "success";
 		
@@ -229,7 +231,7 @@ class Money_transfer_model_suppler extends CI_Model {
 		//Set the payment to specified account
 		//ACCOUNT INSERT
 		$insert_bit = insert_account_transaction(array(
-													'transaction_type'  	=> 'TRANSFER',
+													'transaction_type'  	=> 'TRANSFER_SUPPLER',
 													'reference_table_id'  	=> $q_id,
 													'debit_account_id'  	=> $debit_account_id,
 													'credit_account_id'  	=> $credit_account_id,

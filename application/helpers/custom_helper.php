@@ -955,10 +955,7 @@
     if($value=='custadvance')
 
       $CI->db->select("cust_advance_init");
-      
-    if($value=='suppler_transfer')
 
-      $CI->db->select("ac_moneytransfersuppler_init");
 
 
     $query = $CI->db->where('id',$store_id)->get('db_store')->row();
@@ -1068,6 +1065,14 @@
       $maxid=get_count_id('ac_moneytransfer');
 
       return $query->money_transfer_init.str_pad($maxid, 4, '0', STR_PAD_LEFT);
+
+    }
+    
+    if($value=='suppler_transfer'){
+
+      $maxid=get_count_id('ac_moneytransfersuppler');
+
+      return str_pad($maxid, 4, '0', STR_PAD_LEFT);
 
     }
 
@@ -2106,7 +2111,7 @@
     return $CI->db->select('*')->from('db_salesreturn')->where('id',$id)->get()->row();
 
   }
-
+  
   function get_moneydeposits_details($id){
 
     // print_r("Testing Custom Helpers");exit();
@@ -2115,7 +2120,7 @@
     return $CI->db->select('*')->from('ac_moneydeposits')->where('id',$id)->get()->row();
 
   }
-
+  
   function get_moneytransfersuppler_details($id){
 
     // print_r("Testing Custom Helpers");exit();
@@ -2124,6 +2129,7 @@
     return $CI->db->select('*')->from('ac_moneytransfersuppler')->where('id',$id)->get()->row();
 
   }
+  
   function get_salesreturn_details2($id){
 
     // print_r("Testing Custom Helpers");exit();

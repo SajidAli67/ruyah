@@ -202,7 +202,7 @@
           <div style=" padding: 10px">
             <span style="width: 2%;"> Paid to  </span> 
               <span style="border-bottom: 1px solid #000; text-align:center"> 
-              <strong> <?=get_supplier_details($transfer->credit_account_id)->supplier_name;  ?> </strong> </span>  
+              <strong> <?= get_supplier_details($transfer->credit_account_id)->supplier_name;  ?> </strong> </span>  
               <span style="float:right; "> نصرف الي  </span>  
           </div>
         </div>

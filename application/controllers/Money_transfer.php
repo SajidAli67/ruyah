@@ -79,8 +79,8 @@ class Money_transfer extends MY_Controller {
 
 			$row[] = get_account_name($money_transfer->debit_account_id);
 			
-			$supplier_detaild =  get_supplier_details($money_transfer->credit_account_id);
-			$row[] = $supplier_detaild->supplier_name.'-'.$supplier_detaild->supplier_code;
+			
+			$row[] =get_account_name($money_transfer->credit_account_id);
 
 			$row[] = store_number_format($money_transfer->amount);
 
@@ -141,7 +141,7 @@ class Money_transfer extends MY_Controller {
 	
 	public function print_money_transfer($id){
 		$data=$this->data;
-		$data['transfer']= $this->db->where('id',$id)->get('ac_moneytransfer')->row();
+		$data['transfer']= $this->db->where('id',$id)->get('ac_moneytransfersuppler')->row();
 		
 		$data['page_title']=$this->lang->line('money_transfer');
 

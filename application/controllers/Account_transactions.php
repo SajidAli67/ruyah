@@ -91,14 +91,18 @@ class Account_transactions extends MY_Controller {
 			6=>'',
 			7=>'',
 		));
-		
+
 		foreach ($list as $accounts) {
 		  
 			$no++;
 			$row = array();
 			$row[] = show_date($accounts->transaction_date);
 
-				$account_cr_dr = ($_POST['account_id']==$accounts->debit_account_id && empty($accounts->credit_account_id )) ? 'Debit_entry' : 'Credit_entry';
+				$account_cr_dr = ($_POST['account_id']==$accounts->debit_account_id && empty($accounts->credit_account_id)) ? 'Debit_entry' : 'Credit_entry';
+				
+				if($accounts->transaction_type=='TRANSFER_SUPPLER' || $accounts->transaction_type=='TRANSFER'){
+					$account_cr_dr = 'Debit_entry';
+				}
 
 				$description = ($account_cr_dr=='Debit_entry') ? ucwords(strtolower($accounts->transaction_type)) : ucwords(strtolower($accounts->transaction_type));
 				$description = "<b>".$description."</b>";
@@ -137,8 +141,7 @@ class Account_transactions extends MY_Controller {
 						}
 					}
 					else{
-						
-						$from_ = get_account_name($accounts->debit_account_id);
+						$from_ = get_account_name($accounts->credit_account_id);
 					}
 
 					if(!empty($accounts->supplier_id)){
@@ -179,7 +182,7 @@ class Account_transactions extends MY_Controller {
 							
 					}
 					else{
-						$to_ =  get_customer_details($accounts->credit_account_id)->customer_name; //get_account_name($accounts->credit_account_id);
+						$to_ = get_account_name($accounts->credit_account_id); //!empty(get_customer_details($accounts->credit_account_id)->customer_name) ? get_customer_details($accounts->credit_account_id)->customer_name : '-'; 
 					}
 					$description_ext = 
 							($account_cr_dr=='Debit_entry') ? 

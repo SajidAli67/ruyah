@@ -127,7 +127,14 @@ class Money_transfer_model extends CI_Model {
 	public function verify_and_save(){
 		//Filtering XSS and html escape from user inputs 
 		extract($this->security->xss_clean(html_escape(array_merge($this->data,$_POST))));
-		$store_id=(store_module() && is_admin()) ? $store_id : get_current_store_id();	
+		$store_id=(store_module() && is_admin()) ? $store_id : get_current_store_id();
+		
+		$check_balance  = $this->db->select('balance')->where('id',$debit_account_id)->get('ac_accounts')->row()->balance;
+			
+		if($amount > $check_balance){
+			return 'This Account balance is less then ' . $amount; 
+		}
+		
 
 		$this->db->query("ALTER TABLE ac_moneytransfer AUTO_INCREMENT = 1");
 
@@ -151,6 +158,8 @@ class Money_transfer_model extends CI_Model {
 	    				'status' 					=> 1,
 	    			);
 		$q1 = $this->db->insert('ac_moneytransfer', $info);
+		
+		
 		if(!$q1){
 			return "failed";
 		}
@@ -177,6 +186,10 @@ class Money_transfer_model extends CI_Model {
 			return "failed";
 		}
 		//end
+		
+		// update account balance 
+		update_account_balance($debit_account_id,$amount,false);
+		update_account_balance($credit_account_id,$amount,true);
 
 
 		$this->session->set_flashdata('success', 'Success!! Record Added Successfully!');
@@ -275,13 +288,14 @@ class Money_transfer_model extends CI_Model {
         //ACCOUNT RESET
         if($reset_accounts->num_rows()>0){
         	foreach ($reset_accounts->result() as $res1) {
-        		if(!update_account_balance($res1->debit_account_id)){
+				update_account_balance($res1->credit_account_id,$res1->credit_amt,false);
+        		if(!update_account_balance($res1->debit_account_id, $res1->debit_amt, true) ){
 					return 'failed';
 				}
 
-				if(!update_account_balance($res1->credit_account_id)){
-					return 'failed';
-				}
+				// if(!update_account_balance($res1->credit_account_id)){
+				// 	return 'failed';
+				// }
 
         	}
         }
