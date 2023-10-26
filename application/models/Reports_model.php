@@ -7002,7 +7002,8 @@ class Reports_model extends CI_Model
 
 	              					a.sales_code as tr_code,
 
-	              					a.`created_time_auto` AS created_time
+	              					a.`created_time_auto` AS created_time,
+									a.`created_time` AS time_at
 
               					FROM 
 
@@ -7012,7 +7013,7 @@ class Reports_model extends CI_Model
 
 						a.customer_id =" . $customer_id;
 		// Stop1
-
+		
 		if (!empty($from_date) && !empty($to_date)) {
 
 			$str1 .= "  and
@@ -7032,7 +7033,8 @@ class Reports_model extends CI_Model
 
 									b.payment_code as tr_code,
 
-									b.`created_time_auto` AS created_time
+									b.`created_time_auto` AS created_time,
+									b.`created_time` AS time_at
 
 								FROM 
 
@@ -7043,7 +7045,7 @@ class Reports_model extends CI_Model
 						b.customer_id =" . $customer_id;
 
 		// Stop2
-
+	
 
 		if (!empty($from_date) && !empty($to_date)) {
 
@@ -7066,7 +7068,9 @@ class Reports_model extends CI_Model
 
 									c.return_code  as tr_code,
 
-									c.`created_time_auto` AS created_time
+									c.`created_time_auto` AS created_time,
+
+									c.`created_time` AS time_at
 
 								FROM 
 
@@ -7076,7 +7080,7 @@ class Reports_model extends CI_Model
 
 						c.customer_id =" . $customer_id;
 		// Stop3
-
+		
 		if (!empty($from_date) && !empty($to_date)) {
 
 			$str1 .= "  and
@@ -7097,7 +7101,9 @@ class Reports_model extends CI_Model
 
 									d.deposit_code as tr_code,
 
-									d.`created_date` AS created_time
+									d.`created_date` AS created_time,
+
+									'3-nov-2023' AS time_at
 
 								FROM 
 
@@ -7107,10 +7113,10 @@ class Reports_model extends CI_Model
 
 						d.credit_account_id =" . $customer_id;
 
-
+					
 		//$str1.=" ORDER BY `tr_date`,`id`,`created_time` ";
 
-		$str1 .= " ORDER BY `created_time` ";
+		$str1 .= " ORDER BY `created_time`,time_at ASC ";
 		// print_r($str1);exit();
 		
 		//echo $str1;exit;
@@ -7118,7 +7124,7 @@ class Reports_model extends CI_Model
 		$q1 = $this->db->query($str1);
 		// echo "<pre>";print_r($q1->result());exit();
 
-
+		
 		$tot_qty = 0;
 
 		$tot_total_cost = 0;
@@ -7219,7 +7225,7 @@ class Reports_model extends CI_Model
 
 				echo "<td colspan='1'>";
 
-				echo show_date($res2->tr_date);
+				echo show_date($res2->tr_date).'</br><small>'. $res2->time_at .'</small>';
 				// echo "<pre>";print_r($res2);
 
 				echo "</td>";

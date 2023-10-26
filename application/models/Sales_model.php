@@ -581,7 +581,7 @@ class Sales_model extends CI_Model {
 		}*/
 
 		/*$this->db->set("due_date",null)->where("due_date",'1970-01-01')->or_where("due_date","0000-00-00")->update("db_sales");*/
-
+		update_account_balance($account_id,$amount,true);
 		$this->db->trans_commit();
 		$this->session->set_flashdata('success', 'Success!! Record Saved Successfully! '.$sms_info);
 		return "success<<<###>>>$sales_id";

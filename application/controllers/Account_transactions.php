@@ -17,6 +17,14 @@ class Account_transactions extends MY_Controller {
 						->where("a.id=b.sales_id")
 						->where("b.id=",$salespayment_id)->get()->row();
 	}
+
+	public function get_suppler_transfer_code($id){
+		// print_r($salespayment_id);
+		if(empty($salespayment_id)) { return ''; }
+		return $this->db->select("transfer_code,id")
+						->from("ac_moneytransfersuppler")
+						->where("id=",$id)->get()->row();
+	}
 	
 	public function get_sales_return_code($returnpayment_id){
 		if(empty($returnpayment_id)) { return ''; }
@@ -52,7 +60,7 @@ class Account_transactions extends MY_Controller {
 	{
 		
 		$list = $this->accounts->get_datatables();
-	
+		
 		$data = array();
 		$no = $_POST['start'];
 		//Find previouse balance -> which follows transactions
@@ -103,6 +111,10 @@ class Account_transactions extends MY_Controller {
 				if($accounts->transaction_type=='TRANSFER_SUPPLER' || $accounts->transaction_type=='TRANSFER'){
 					$account_cr_dr = 'Debit_entry';
 				}
+				
+				if($accounts->credit_account_id ==$account_id && $accounts->transaction_type=='TRANSFER'){
+					$account_cr_dr = 'Credit_entry';
+				}
 
 				$description = ($account_cr_dr=='Debit_entry') ? ucwords(strtolower($accounts->transaction_type)) : ucwords(strtolower($accounts->transaction_type));
 				$description = "<b>".$description."</b>";
@@ -140,8 +152,11 @@ class Account_transactions extends MY_Controller {
 							$from_ = "<a data-toggle='tooltip' title='View Sales Return Payments' href='".base_url('sales_return/invoice/').$return_id."'>".$return_code."</a>";
 						}
 					}
+					else if($accounts->credit_account_id ==$account_id && $accounts->transaction_type=='TRANSFER'){
+    					$from_ = get_account_name($accounts->debit_account_id);
+    				}
 					else{
-						$from_ = get_account_name($accounts->credit_account_id);
+						$from_ = "suppler_account";//get_account_name($accounts->credit_account_id);
 					}
 
 					if(!empty($accounts->supplier_id)){
@@ -182,8 +197,9 @@ class Account_transactions extends MY_Controller {
 							
 					}
 					else{
-						$to_ = get_account_name($accounts->credit_account_id); //!empty(get_customer_details($accounts->credit_account_id)->customer_name) ? get_customer_details($accounts->credit_account_id)->customer_name : '-'; 
+						$to_ = "suppler_account";// get_account_name($accounts->credit_account_id); //!empty(get_customer_details($accounts->credit_account_id)->customer_name) ? get_customer_details($accounts->credit_account_id)->customer_name : '-'; 
 					}
+					
 					$description_ext = 
 							($account_cr_dr=='Debit_entry') ? 
 							'[To: '.$to_."]" 

@@ -368,3 +368,51 @@ $('#save_suppler,#update_suppler').on("click",function (e) {
 	
 
 });
+
+function multi_delete_suppler(){
+	var base_url=$("#base_url").val();
+    var this_id=this.id;
+    
+		if(confirm("Are you sure ?")){
+			$(".box").append('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+			$("#"+this_id).attr('disabled',true);  //Enable Save or Update button
+			
+			data = new FormData($('#table_form')[0]);//form name
+			$.ajax({
+			type: 'POST',
+			url: base_url+'Transfer_to_supplier/multi_delete_money_transfer',
+			data: data,
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function(result){
+				result=result.trim();
+  //alert(result);return;
+				if(result=="success")
+				{
+					toastr["success"]("Record Deleted Successfully!");
+					success.currentTime = 0; 
+				  	success.play();
+					$('#example2').DataTable().ajax.reload();
+					$(".delete_btn").hide();
+					$(".group_check").prop("checked",false).iCheck('update');
+				}
+				else if(result=="failed")
+				{
+				   toastr["error"]("Sorry! Failed to save Record.Try again!");
+				   failed.currentTime = 0; 
+				   failed.play();
+				}
+				else
+				{
+					toastr["error"](result);
+					failed.currentTime = 0; 
+				  	failed.play();
+				}
+				$("#"+this_id).attr('disabled',false);  //Enable Save or Update button
+				$(".overlay").remove();
+		   }
+		   });
+	}
+	//e.preventDefault
+}
