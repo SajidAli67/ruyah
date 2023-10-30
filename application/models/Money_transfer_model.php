@@ -144,7 +144,7 @@ class Money_transfer_model extends CI_Model {
 	    				'transfer_code' 			=> $transfer_code,
 	    				'transfer_date' 			=> system_fromatted_date($transfer_date),
 	    				'debit_account_id' 			=> $debit_account_id,
-	    				'credit_account_id' 			=> $credit_account_id,
+	    				'credit_account_id' 		=> $credit_account_id,
 	    				'amount' 					=> $amount,
 	    				'payment_type'				=> $payment_type,
 	    				'note' 						=> $note,
@@ -180,7 +180,7 @@ class Money_transfer_model extends CI_Model {
 													'payment_code'  		=> '',
 													'customer_id'  			=> '',
 													'supplier_id'  			=> '',
-													'payment_type' 			=> null,
+													'payment_type'			=> $payment_type,
 											));
 		if(!$insert_bit){
 			return "failed";
