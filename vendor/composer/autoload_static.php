@@ -23,6 +23,7 @@ class ComposerStaticInitcdcd42b039ac0fa6dafd359776bb2c3c
         'S' => 
         array (
             'Svg\\' => 4,
+            'Salla\\ZATCA\\' => 12,
             'Sabberworm\\CSS\\' => 15,
         ),
         'P' => 
@@ -66,6 +67,10 @@ class ComposerStaticInitcdcd42b039ac0fa6dafd359776bb2c3c
         'Svg\\' => 
         array (
             0 => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg',
+        ),
+        'Salla\\ZATCA\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/salla/zatca/src',
         ),
         'Sabberworm\\CSS\\' => 
         array (

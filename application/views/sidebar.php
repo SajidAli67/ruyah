@@ -1284,9 +1284,9 @@
 
     <!--<li class="header">REPORTS</li>-->
 
-    <?php if($CI->permissions('supplier_items_report') || $CI->permissions('sales_report') || $CI->permissions('item_sales_report') || $CI->permissions('purchase_report') || $CI->permissions('purchase_return_report') || $CI->permissions('expense_report') || $CI->permissions('profit_report') || $CI->permissions('stock_report') || $CI->permissions('purchase_payments_report') || $CI->permissions('sales_payments_report') || $CI->permissions('expired_items_report') || $CI->permissions('seller_points_report') || $CI->permissions('customer_orders_report') || $CI->permissions('stock_transfer_report') || $CI->permissions('sales_summary_report') || $CI->permissions('sales_return_payments') ) { ?>
+    <?php if($CI->permissions('supplier_items_report') || $CI->permissions('sales_report') || $CI->permissions('item_sales_report') || $CI->permissions('purchase_report') || $CI->permissions('purchase_return_report') || $CI->permissions('expense_report') || $CI->permissions('profit_report') || $CI->permissions('stock_report') || $CI->permissions('purchase_payments_report') || $CI->permissions('sales_payments_report') || $CI->permissions('expired_items_report') || $CI->permissions('seller_points_report') || $CI->permissions('customer_orders_report') || $CI->permissions('stock_transfer_report') || $CI->permissions('sales_summary_report') || $CI->permissions('sales_return_payments') ||  $CI->permissions('payments_payment') ) { ?>
 
-    <li class="report-sales-active-li report-sales-return-active-li report-purchase-active-li report-purchase-return-active-li report-expense-active-li report-stock-active-li report-purchase-payments-active-li report-sales-item-active-li report-sales-payments-active-li report-expired-items-active-li report-supplier_items-active-li report-seller-points-active-li report-sales-tax-active-li report-purchase-tax-active-li  report-delivery-sheet-active-li report-load-sheet-active-li report-return-item-active-li report-sales-active-li report-stock-transfer-active-li reports-menu report-sales-summary-active-li report-sales-return-payments-active-li treeview">
+    <li class="report-sales-active-li report-sales-return-active-li report-purchase-active-li report-purchase-return-active-li report-expense-active-li report-stock-active-li report-purchase-payments-active-li report-sales-item-active-li report-sales-payments-active-li report-expired-items-active-li report-supplier_items-active-li report-seller-points-active-li report-sales-tax-active-li report-purchase-tax-active-li  report-delivery-sheet-active-li report-load-sheet-active-li report-return-item-active-li report-sales-active-li report-stock-transfer-active-li reports-menu report-sales-summary-active-li report-sales-return-payments-active-li report-payments_type-active-li treeview">
 
           <a href="#">
 
@@ -1497,6 +1497,12 @@
             <?php if($CI->permissions('sales_payments_report')) { ?>
 
             <li class="report-sales-payments-active-li"><a href="<?php echo $base_url; ?>reports/sales_payments" ><i class="fa fa-files-o "></i> <span><?= $this->lang->line('sales_payments_report'); ?></span></a></li>  
+
+            <?php } ?>
+
+            <?php if($CI->permissions('sales_payments_report')) { ?>
+
+            <li class="report-payments_type-active-li"><a href="<?php echo $base_url; ?>reports/payment_type_report" ><i class="fa fa-files-o "></i> <span><?= 'Payment Type ' ?></span></a></li>  
 
             <?php } ?>
 

@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'a8ae40a1b6978fdfd95fca3914d5f06892d49058',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'a8ae40a1b6978fdfd95fca3914d5f06892d49058',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -136,6 +136,15 @@
             'reference' => 'e41d2140031d533348b2192a83f02d8dd8a71d30',
             'type' => 'library',
             'install_path' => __DIR__ . '/../sabberworm/php-css-parser',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'salla/zatca' => array(
+            'pretty_version' => '2.0.2',
+            'version' => '2.0.2.0',
+            'reference' => 'e8f53cef34b3cb95d7e07cd0785b0e9cccdbee34',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../salla/zatca',
             'aliases' => array(),
             'dev_requirement' => false,
         ),

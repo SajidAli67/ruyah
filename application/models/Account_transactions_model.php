@@ -62,9 +62,8 @@ class Account_transactions_model extends CI_Model {
 		//}
 		if(isset($_POST['account_id'])){
 			$account_id = $_POST['account_id'];
-			$this->db->where("(a.account_id=$account_id)");
-			
-			//$this->db->where("(a.debit_account_id=$account_id) or a.credit_account_id=$account_id ");
+			//$this->db->where("(a.account_id=$account_id)");
+			$this->db->where("(a.debit_account_id=$account_id) or a.credit_account_id=$account_id ");
 			//$this->db->or_where("a.debit_account_id",$_POST['account_id']);
 		}
 
