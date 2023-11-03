@@ -106,5 +106,13 @@ class Transfer_to_supplier extends MY_Controller {
 		//output to json format
 		echo json_encode($output);
 	}
+
+
+	public function multi_delete_money_transfer(){
+		$this->permission_check_with_msg('money_transfer_delete');
+		$ids = implode (",",$_POST['checkbox']);
+		
+		echo $this->money_transfer->delete_money_transfer_from_table($ids);
+	}
     
 }

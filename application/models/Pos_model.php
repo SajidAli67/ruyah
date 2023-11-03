@@ -526,7 +526,7 @@ class Pos_model extends CI_Model {
 				}
 				//end
 
-
+				
 				$tot_received_amt += $amount;
 				
 			}//if()
@@ -599,7 +599,7 @@ class Pos_model extends CI_Model {
 			return 'failed';
 		}
 
-		
+		update_account_balance($account_id,$amount,true);
 		//COMMIT RECORD
 		$this->db->trans_commit();
 		

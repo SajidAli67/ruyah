@@ -129,15 +129,21 @@ class Money_transfer_model_suppler extends CI_Model {
 		extract($this->security->xss_clean(html_escape(array_merge($this->data,$_POST))));
 		$store_id=(store_module() && is_admin()) ? $store_id : get_current_store_id();	
 
+		$check_balance  = $this->db->select('balance')->where('id',$debit_account_id)->get('ac_accounts')->row()->balance;
+			
+		if($amount >= $check_balance){
+			return 'This Account balance is less then ' . $amount; 
+		}
+		
 		$this->db->query("ALTER TABLE ac_moneytransfersuppler AUTO_INCREMENT = 1");
 
 		$info = array(  
-						'count_id' 					=> get_count_id('ac_moneytransfer'), 
+						'count_id' 					=> get_count_id('ac_moneytransfersuppler'), 
 	    				'store_id' 					=> $store_id,
 	    				'transfer_code' 			=> $transfer_code,
 	    				'transfer_date' 			=> system_fromatted_date($transfer_date),
 	    				'debit_account_id' 			=> $debit_account_id,
-	    				'credit_account_id' 			=> $credit_account_id,
+	    				'credit_account_id' 		=> $credit_account_id, 
 	    				'amount' 					=> $amount,
 	    				'payment_type'				=> $payment_type,
 	    				'note' 						=> $note,
@@ -171,7 +177,7 @@ class Money_transfer_model_suppler extends CI_Model {
 													'payment_code'  		=> '',
 													'customer_id'  			=> '',
 													'supplier_id'  			=> '',
-													'payment_type' 			=> null,
+													'payment_type'			=> $payment_type,
 											));
 		if(!$insert_bit){
 			return "failed";
@@ -180,7 +186,7 @@ class Money_transfer_model_suppler extends CI_Model {
 
             // update account balance 
 	
-		update_account_balance($credit_account_id,$amount,false);
+		update_account_balance($debit_account_id,$amount,false);
 		$this->session->set_flashdata('success', 'Success!! Record Added Successfully!');
 		return "success";
 		
@@ -260,30 +266,27 @@ class Money_transfer_model_suppler extends CI_Model {
 		$this->db->trans_begin();
 		
 		//ACCOUNT RESET
-		$reset_accounts = $this->db->select("debit_account_id,credit_account_id")->where("ref_moneytransfer_id in ($ids)")->group_by("debit_account_id,credit_account_id")->get("ac_transactions");
+		$reset_accounts = $this->db->select("debit_account_id,credit_account_id, debit_amt, credit_amt")->where("ref_moneytransfer_id in ($ids)")
+		
+		->group_by("debit_account_id,credit_account_id")->get("ac_transactions");
 		//ACCOUNT RESET END
-
+		
 		$this->db->where("id in ($ids)");
+		
 		//if not admin
 		if(!is_admin()){
 			$this->db->where("store_id",get_current_store_id());
 		}
-
-		$query1=$this->db->delete("ac_moneytransfer");
+		
+		$query1=$this->db->delete("ac_moneytransfersuppler");
         if (!$query1){
             return "failed";
         }
-
+		
         //ACCOUNT RESET
         if($reset_accounts->num_rows()>0){
         	foreach ($reset_accounts->result() as $res1) {
-        		if(!update_account_balance($res1->debit_account_id)){
-					return 'failed';
-				}
-
-				if(!update_account_balance($res1->credit_account_id)){
-					return 'failed';
-				}
+				update_account_balance($res1->debit_account_id,$res1->debit_amt,false);
 
         	}
         }

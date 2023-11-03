@@ -268,6 +268,70 @@
 
 
 
+	$data = $sales_id;
+
+
+	$i = 0;
+	$tot_qty = 0;
+	$subtotal = 0;
+	$tax_amt = 0;
+	$tot_total_gross = 0;
+	$tot_net_amt = 0;
+	$tot_discount = 0;
+	$q2 = $this->db->query("select b.item_name,a.sales_qty,a.unit_total_cost,a.price_per_unit,a.discount_amt,c.tax_name,a.tax_amt,a.tax_type,c.tax,a.total_cost from db_salesitems a,db_items b,db_tax c where c.id=a.tax_id and b.id=a.item_id and a.sales_id='$sales_id'");
+	foreach ($q2->result() as $res2) {
+		$str = ($res2->tax_type == 'Inclusive') ? 'Inc.' : 'Exc.';
+
+		if ($res2->tax_type == 'Inclusive') {
+
+
+
+			$gross = ($res2->sales_qty * $res2->price_per_unit) - $res2->tax_amt;
+			$gross -= $res2->discount_amt;
+			$total = $gross;
+			$net_amt = $total + $res2->tax_amt;
+		} else {
+			$gross = ($res2->sales_qty * $res2->price_per_unit);
+			$total = ($gross - $res2->discount_amt) + $res2->tax_amt;
+			$net_amt = $total;
+		}
+		$tot_qty += $res2->sales_qty;
+		$subtotal += ($res2->total_cost);
+		$tax_amt += $res2->tax_amt;
+		$tot_total_gross += $gross;
+		$tot_net_amt += $net_amt;
+		$tot_discount += $res2->discount_amt;
+	}
+	$before_tax = $subtotal - $tax_amt;
+			              
+
+
+	use Salla\ZATCA\GenerateQrCode;
+	use Salla\ZATCA\Tags\InvoiceDate;
+	use Salla\ZATCA\Tags\InvoiceTaxAmount;
+	use Salla\ZATCA\Tags\InvoiceTotalAmount;
+	use Salla\ZATCA\Tags\Seller;
+	use Salla\ZATCA\Tags\TaxNumber;
+
+	$fdata = gmdate($sales_date."\T".$created_time."\Z");
+
+	if($company_vat_number !=""){
+		$vat_ = $company_vat_number;
+	}else{
+	   $vat_ = 123456789;
+	}
+
+	$displayQRCodeAsBase64 = GenerateQrCode::fromArray([
+		new Seller($store_name), // seller name        
+		new TaxNumber($vat_), // seller tax number
+		new InvoiceDate($fdata), // invoice date as Zulu ISO8601 @see https://en.wikipedia.org/wiki/ISO_8601
+		new InvoiceTotalAmount(number_format($tot_net_amt,2,'.','')), // invoice total amount
+		new InvoiceTaxAmount(number_format(($tax_amt),2,'.','')) // invoice tax amount
+		// TODO :: Support others tags
+	])->render();
+
+	echo "<img src='".$displayQRCodeAsBase64."' alt='QR Code' style='width:130px; height:130px;' />";
+
 
 
     ?>

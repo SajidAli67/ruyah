@@ -170,7 +170,7 @@ class Money_deposit_model extends CI_Model {
 													'payment_code'  		=> '',
 													'customer_id'  			=> '',
 													'supplier_id'  			=> '',
-													'payment_type' 			=> null,
+													'payment_type'			=> $payment_type,
 											));
 		if(!$insert_bit){
 			return "failed";

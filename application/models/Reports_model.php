@@ -543,7 +543,7 @@ class Reports_model extends CI_Model
 		$tot_purchase_price = 0;
 		$tot_total_cost = 0;
 		$tot_payment = 0;
-		
+
 		$str1 = "SELECT
             a.id as id,
             a.`purchase_date` AS tr_date,
@@ -612,7 +612,7 @@ class Reports_model extends CI_Model
 		}
 
 		$str1 .= " ORDER BY `tr_date`, `created_time`";
-		
+
 		$q1 = $this->db->query($str1);
 
 		// echo "<pre>";print_r($q1->result());exit();
@@ -657,10 +657,9 @@ class Reports_model extends CI_Model
 					$details = get_purchase_details($res2->id);
 				} elseif ($res2->tr_type ==	'payments') {
 					$details = get_purchase_payment_details($res2->id);
-				}elseif ($res2->tr_type ==	'transfer_suppler') {
+				} elseif ($res2->tr_type ==	'transfer_suppler') {
 					$details = get_moneytransfersuppler_details($res2->id);
-				}
-				 else {
+				} else {
 					$details = get_purchasereturn_details3($res2->id);
 				}
 
@@ -720,15 +719,13 @@ class Reports_model extends CI_Model
 				// print_r($details);
 				if ($res2->tr_type != 'invoice') {
 					if ($res2->tr_type != 'return') {
-						if($res2->tr_type == 'transfer_suppler'){
-							$str2 ="";
-						}
-						else{
+						if ($res2->tr_type == 'transfer_suppler') {
+							$str2 = "";
+						} else {
 							$str2 = "<br><b>Bill Ref.No :<b>" . get_purchase_details($details->purchase_id)->reference_no;
-
 						}
 					}
-					
+
 					if (empty(isset($details->reference_no))) {
 
 						$str3 =	get_purchase_details(get_purchase_payment_details($res2->id)->purchase_id)->purchase_code;
@@ -743,11 +740,9 @@ class Reports_model extends CI_Model
 					echo "Invoice: " . $res2->tr_code;
 				} elseif ($res2->tr_type == 'payments') {
 					echo 'Receive' . $str2 . " " . $str3;
-				}
-				elseif ($res2->tr_type == 'transfer_suppler') {
-					echo 'Transfer: '.$res2->tr_code;
-				}
-				else {
+				} elseif ($res2->tr_type == 'transfer_suppler') {
+					echo 'Transfer: ' . $res2->tr_code;
+				} else {
 					echo "Return: " . $res2->tr_code;
 				}
 				// Stop5
@@ -791,10 +786,9 @@ class Reports_model extends CI_Model
 					}
 				} elseif ($res2->tr_type == 'return') {
 					echo "<b>Return Invoice</b><i>" . "" . "</i><br>";
-				}elseif ($res2->tr_type == 'transfer_suppler') {
+				} elseif ($res2->tr_type == 'transfer_suppler') {
 					echo "<b>Transfer</b><i>" . "" . "</i><br>";
-				}
-				 else {
+				} else {
 
 					echo "<b>purchase Invoice</b><i>" . "" . "</i><br>";
 				}
@@ -824,12 +818,10 @@ class Reports_model extends CI_Model
 				if ($res2->tr_type == 'invoice') {
 
 					echo store_number_format($details->grand_total);
-				} elseif ($res2->tr_type == 'return' && $details->paid_amount ==0) {
+				} elseif ($res2->tr_type == 'return' && $details->paid_amount == 0) {
 
-					echo 0.00;//store_number_format($details->grand_total);
-				}
-				
-				elseif ($res2->tr_type == 'return' && $details->paid_amount !=0) {
+					echo 0.00; //store_number_format($details->grand_total);
+				} elseif ($res2->tr_type == 'return' && $details->paid_amount != 0) {
 
 					echo store_number_format($details->grand_total);
 				}
@@ -846,15 +838,13 @@ class Reports_model extends CI_Model
 				if ($res2->tr_type == 'payments') {
 
 					echo store_number_format($details->payment);
-				} elseif ($res2->tr_type == 'return' && $details->paid_amount ==0) {
+				} elseif ($res2->tr_type == 'return' && $details->paid_amount == 0) {
 
 					echo store_number_format($details->grand_total);
-				}
-				elseif ($res2->tr_type == 'return' && $details->paid_amount !=0) {
+				} elseif ($res2->tr_type == 'return' && $details->paid_amount != 0) {
 
-					echo 0.00;//store_number_format($details->grand_total);
-				}
-				elseif ($res2->tr_type == 'transfer_suppler') {
+					echo 0.00; //store_number_format($details->grand_total);
+				} elseif ($res2->tr_type == 'transfer_suppler') {
 
 					echo store_number_format($details->amount);
 				}
@@ -881,11 +871,9 @@ class Reports_model extends CI_Model
 					$tot_bal = $details->grand_total + $tot_bal;
 				} elseif ($res2->tr_type == 'payments') {
 					$tot_bal = $tot_bal - $details->payment;
-				}
-				elseif ($res2->tr_type == 'transfer_suppler') {
+				} elseif ($res2->tr_type == 'transfer_suppler') {
 					$tot_bal = $tot_bal - $details->amount;
-				}
-				elseif($res2->tr_type == 'return' && $details->paid_amount ==0) {
+				} elseif ($res2->tr_type == 'return' && $details->paid_amount == 0) {
 					$tot_bal = $tot_bal - $details->grand_total;
 				}
 				$tot_bal_updated_with_opening_balance = $tot_bal + $result_opening_balance;
@@ -929,7 +917,7 @@ class Reports_model extends CI_Model
 		//Total
 
 		echo "<tr class='text-center' style='font-size:16px; background-color: #dee2e6'>";
-        echo "<td></td>";
+		echo "<td></td>";
 		echo "<td  colspan='3'>";
 
 		echo "Total";
@@ -965,7 +953,7 @@ class Reports_model extends CI_Model
 
 
 
-        echo "<td> </td>";
+		echo "<td> </td>";
 		echo "</tr>";
 
 		echo "<tr>";
@@ -2697,9 +2685,9 @@ class Reports_model extends CI_Model
 
 
 		//echo $this->db->get_compiled_select();
-		
+
 		if (!empty($from_date)) {
-		
+
 			echo "<tr>";
 			$result_opening_balance = $this->sales_and_payments_report123_old($from_date); // Call another function
 			echo "<td colspan='4' style='text-align:left'>";
@@ -6986,7 +6974,7 @@ class Reports_model extends CI_Model
 
 		$from_date = (!empty($from_date)) ? system_fromatted_date($from_date) : '';
 		$to_date = (!empty($to_date)) ? system_fromatted_date($to_date) : '';
-		
+
 		$i = 0;
 		$tot_qty = 0;
 		$tot_sales_price = 0;
@@ -7002,7 +6990,8 @@ class Reports_model extends CI_Model
 
 	              					a.sales_code as tr_code,
 
-	              					a.`created_time_auto` AS created_time
+	              					a.`created_time_auto` AS created_time,
+									a.`created_time` AS time_at
 
               					FROM 
 
@@ -7032,7 +7021,8 @@ class Reports_model extends CI_Model
 
 									b.payment_code as tr_code,
 
-									b.`created_time_auto` AS created_time
+									b.`created_time_auto` AS created_time,
+									b.`created_time` AS time_at
 
 								FROM 
 
@@ -7066,7 +7056,9 @@ class Reports_model extends CI_Model
 
 									c.return_code  as tr_code,
 
-									c.`created_time_auto` AS created_time
+									c.`created_time_auto` AS created_time,
+
+									c.`created_time` AS time_at
 
 								FROM 
 
@@ -7097,7 +7089,9 @@ class Reports_model extends CI_Model
 
 									d.deposit_code as tr_code,
 
-									d.`created_date` AS created_time
+									d.`created_date` AS created_time,
+
+									'3-nov-2023' AS time_at
 
 								FROM 
 
@@ -7110,9 +7104,9 @@ class Reports_model extends CI_Model
 
 		//$str1.=" ORDER BY `tr_date`,`id`,`created_time` ";
 
-		$str1 .= " ORDER BY `created_time` ";
+		$str1 .= " ORDER BY `created_time`,time_at ASC ";
 		// print_r($str1);exit();
-		
+
 		//echo $str1;exit;
 		// print_r($str1);exit();
 		$q1 = $this->db->query($str1);
@@ -7130,7 +7124,7 @@ class Reports_model extends CI_Model
 
 
 		if (!empty($from_date)) {
-			
+
 			echo "<tr>";
 			$result_opening_balance = $this->sales_and_payments_report123_old($from_date); // Call another function
 			echo "<td colspan='4' style='text-align:left'>";
@@ -7160,11 +7154,9 @@ class Reports_model extends CI_Model
 					$details = get_sales_details($res2->id);
 				} elseif ($res2->tr_type ==	'payments') {
 					$details = get_sales_payment_details($res2->id);
-				}
-				elseif ($res2->tr_type ==	'deposit') {
+				} elseif ($res2->tr_type ==	'deposit') {
 					$details = get_moneydeposits_details($res2->id);
-				}
-				else {
+				} else {
 					$details = get_salesreturn_details($res2->id);
 				}
 
@@ -7219,7 +7211,7 @@ class Reports_model extends CI_Model
 
 				echo "<td colspan='1'>";
 
-				echo show_date($res2->tr_date);
+				echo show_date($res2->tr_date) . '</br><small>' . $res2->time_at . '</small>';
 				// echo "<pre>";print_r($res2);
 
 				echo "</td>";
@@ -7234,11 +7226,9 @@ class Reports_model extends CI_Model
 					$str2 = '';
 					if (isset($details) && is_object($details) && property_exists($details, 'reference_no')) {
 						$str2 = "<br><b>Bill Ref.No :<b>" . $details->reference_no;
-					}
-					elseif ($res2->tr_type == 'deposit') {
+					} elseif ($res2->tr_type == 'deposit') {
 						echo '';
-					}
-					 else {
+					} else {
 						$str3 = get_sales_details(get_sales_payment_details($res2->id)->sales_id)->sales_code;
 						// print_r($str3);exit();
 					}
@@ -7252,11 +7242,9 @@ class Reports_model extends CI_Model
 					echo "Invoice: " . $res2->tr_code;
 				} elseif ($res2->tr_type == 'payments') {
 					echo 'Receive' . $str2 . " " . $str3;
-				}
-				elseif ($res2->tr_type == 'deposit') {
+				} elseif ($res2->tr_type == 'deposit') {
 					echo 'Deposit: ' . $res2->tr_code;
-				}
-				else {
+				} else {
 					echo "Return: " . $res2->tr_code;
 				}
 				// Stop5
@@ -7300,11 +7288,9 @@ class Reports_model extends CI_Model
 					}
 				} elseif ($res2->tr_type == 'return') {
 					echo "<b>Return Invoice</b><i>" . "" . "</i><br>";
-				}
-				elseif ($res2->tr_type == 'deposit') {
+				} elseif ($res2->tr_type == 'deposit') {
 					echo "<b>Deposit</b><i>" . "" . "</i><br>";
-				}
-				else {
+				} else {
 
 					echo "<b>Sales Invoice</b><i>" . "" . "</i><br>";
 				}
@@ -7355,8 +7341,7 @@ class Reports_model extends CI_Model
 				} elseif ($res2->tr_type == 'return') {
 
 					echo store_number_format($details->paid_amount);
-				}
-				elseif ($res2->tr_type == 'deposit') {
+				} elseif ($res2->tr_type == 'deposit') {
 
 					echo store_number_format($details->amount);
 				}
@@ -7386,8 +7371,7 @@ class Reports_model extends CI_Model
 					$tot_bal = $tot_bal - $details->payment;
 				} elseif ($res2->tr_type == 'return') {
 					$tot_bal = $tot_bal - $details->paid_amount;
-				}
-				elseif ($res2->tr_type == 'deposit') {
+				} elseif ($res2->tr_type == 'deposit') {
 					$tot_bal = $tot_bal - $details->amount;
 				}
 				$tot_bal_updated_with_opening_balance = $tot_bal + $result_opening_balance;
@@ -7817,25 +7801,22 @@ class Reports_model extends CI_Model
 
 				// $tot_bal = ($res2->tr_type=='invoice') ? $details->grand_total+$tot_bal : $tot_bal-$details->payment ;
 				if ($res2->tr_type == 'invoice') {
-					$tot_bal += $details->grand_total ;
+					$tot_bal += $details->grand_total;
 				}
 				if ($res2->tr_type == 'payments') {
 					$tot_bal -= $details->payment;
-					
-					
 				}
-				
-				
-			
+
+
+
 				if ($res2->tr_type == 'return') {
-					$tot_bal = ($tot_bal ) - $details->grand_total;
-						
+					$tot_bal = ($tot_bal) - $details->grand_total;
 				}
-				
-					
+
+
 				// print_r("Total Balance line :".$tot_bal);
 				echo store_number_format($tot_bal);
-				
+
 				echo "</td>";
 
 
@@ -8290,8 +8271,6 @@ class Reports_model extends CI_Model
 				$total_columns_count++;
 			}
 
-
-
 			echo "<tr>
 
 					  <td class='text-right text-bold' colspan='$total_columns_count'><b>Total :</b></td>
@@ -8320,8 +8299,294 @@ class Reports_model extends CI_Model
 			echo "</tr>";
 		}
 
-
-
 		exit;
+	}
+
+
+	public function show_payments_type_report()
+	{
+		$this->load->model('accounts_model','accounts');
+		$list = $this->accounts->get_datatables();
+		
+		$data = array();
+		$no = $_POST['start'];
+		//Find previouse balance -> which follows transactions
+		$prev_balance=0;
+		$account_id = 1;//$this->input->post('account_id');
+		$from_date = $this->input->post('from_date');
+     	$from_date = system_fromatted_date($from_date);
+     	
+     	$total_debit = 0;
+		$total_credit = 0;
+		$total_close_balance = 0;
+		
+     	if($from_date!='1970-01-01'){
+     		//$this->db->where("a.transaction_date>=",$from_date);
+			$credit_amt = $this->db->select("coalesce(sum(credit_amt),0) as credit_amt")
+									->where("credit_account_id",$account_id)
+									->where("transaction_date <",$from_date)
+									->get("ac_transactions a")->row()->credit_amt;
+								
+			$debit_amt = $this->db->select("coalesce(sum(debit_amt),0) as debit_amt")
+									->where("debit_account_id",$account_id)
+									->where("transaction_date <",$from_date)
+									->get("ac_transactions a")->row()->debit_amt;
+			$prev_balance = $credit_amt - $debit_amt;
+		
+		
+     	}
+		
+     	 array_push($data,array(
+			0=>'',
+			1=>'<h4 class="text-danger"><strong>Opening balance</strong><h4>',
+			2=> '',
+			2=> '',
+			3=>'',
+			4=>0,
+			5=>0,
+			6=>'',
+			7=>'',
+			8=>$prev_balance,
+			9=>'',
+		));
+		
+		foreach ($list as $accounts) {
+		  
+			$no++;
+			$row = array();
+			$row[] = show_date($accounts->transaction_date);
+
+				$account_cr_dr = ($_POST['account_id']==$accounts->debit_account_id && empty($accounts->credit_account_id)) ? 'Debit_entry' : 'Credit_entry';
+				
+				if($accounts->transaction_type=='TRANSFER_SUPPLER' || $accounts->transaction_type=='TRANSFER'){
+					$account_cr_dr = 'Debit_entry';
+				}
+				
+				if($accounts->credit_account_id ==$account_id && $accounts->transaction_type=='TRANSFER'){
+					$account_cr_dr = 'Credit_entry';
+				}
+
+				$description = ($account_cr_dr=='Debit_entry') ? ucwords(strtolower($accounts->transaction_type)) : ucwords(strtolower($accounts->transaction_type));
+				$description = "<b>".$description."</b>";
+
+				//CUSTOMER OR ACCOUNT
+				$from_='';
+				$to_='';
+				if($accounts->transaction_type!='OPENING BALANCE PAID'){
+					
+					if(!empty($accounts->supplier_id)){
+						if(!empty($accounts->ref_purchasepayments_id)){
+							$query = $this->get_purchase_code($accounts->ref_purchasepayments_id);
+							$purchase_code = $query->purchase_code;
+							$purchase_id = $query->id;
+							$from_ = "<a data-toggle='tooltip' title='View Purchase Payments' href='".base_url('purchase/invoice/').$purchase_id."'>".$purchase_code."</a>";
+						}
+						else if(!empty($accounts->ref_purchasepaymentsreturn_id)){
+							$query = $this->get_purchase_return_code($accounts->ref_purchasepaymentsreturn_id);
+							$return_code = $query->return_code;
+							$return_id = $query->id;
+							$from_ = "<a data-toggle='tooltip' title='View Purchase Return Payments' href='".base_url('purchase_return/invoice/').$return_id."'>".$return_code."</a>";
+						}
+					}
+					else if(!empty($accounts->customer_id)){
+						if(!empty($accounts->ref_salespayments_id)){
+							$query = $this->get_sales_code($accounts->ref_salespayments_id);
+							$sales_code = $query->sales_code;
+							$sales_id = $query->id;
+							$from_ = "<a data-toggle='tooltip' title='View Sales Payments' href='".base_url('sales/invoice/').$sales_id."'>".$sales_code."</a>";
+						}
+						else if(!empty($accounts->ref_salespaymentsreturn_id)){
+							$query = $this->get_sales_return_code($accounts->ref_salespaymentsreturn_id);
+							$return_code = $query->return_code;
+							$return_id = $query->id;
+							$from_ = "<a data-toggle='tooltip' title='View Sales Return Payments' href='".base_url('sales_return/invoice/').$return_id."'>".$return_code."</a>";
+						}
+					}
+					else if($accounts->credit_account_id ==$account_id && $accounts->transaction_type=='TRANSFER'){
+    					$from_ = get_account_name($accounts->debit_account_id);
+    				}
+					else{
+						$from_ = "suppler_account";//get_account_name($accounts->credit_account_id);
+					}
+
+					if(!empty($accounts->supplier_id)){
+						if(!empty($accounts->ref_purchasepayments_id)){
+							$query = $this->get_purchase_code($accounts->ref_purchasepayments_id);
+							$purchase_code = $query->purchase_code;
+							$purchase_id = $query->id;
+							$to_ = "<a data-toggle='tooltip' title='View Purchase Payments' href='".base_url('purchase/invoice/').$purchase_id."'>".$purchase_code."</a>";
+						}
+						else if(!empty($accounts->ref_purchasepaymentsreturn_id)){
+							$query = $this->get_purchase_return_code($accounts->ref_purchasepaymentsreturn_id);
+							$return_code = $query->return_code;
+							$return_id = $query->id;
+							$to_ = "<a data-toggle='tooltip' title='View Purchase Return Payments' href='".base_url('purchase_return/invoice/').$return_id."'>".$return_code."</a>";
+						}
+					}
+					else if(!empty($accounts->customer_id)){
+						//It mean it has sales code
+						if(!empty($accounts->ref_salespayments_id)){
+							$query = $this->get_sales_code($accounts->ref_salespayments_id);
+							$sales_code = $query->sales_code;
+							$sales_id = $query->id;
+							$to_ = "<a data-toggle='tooltip' title='View Sales Payments' href='".base_url('sales/invoice/').$sales_id."'>".$sales_code."</a>";
+						}
+						else if(!empty($accounts->ref_salespaymentsreturn_id)){
+							$query = $this->get_sales_return_code($accounts->ref_salespaymentsreturn_id);
+							$return_code = $query->return_code;
+							$return_id = $query->id;
+							$to_ = "<a data-toggle='tooltip' title='View Sales Return Payments' href='".base_url('sales_return/invoice/').$return_id."'>".$return_code."</a>";
+						}
+					}
+					else if(!empty($accounts->ref_expense_id)){
+							
+								$query = $this->get_expense_code($accounts->ref_expense_id);
+								$expense_code = $query->expense_code;
+								$expense_id = $accounts->ref_expense_id;
+								$to_ = "<a data-toggle='tooltip' title='View Expense Details' href='".base_url('expense/update/').$expense_id."'>".$expense_code."</a>";
+							
+					}
+					else{
+						$to_ = "suppler_account";// get_account_name($accounts->credit_account_id); //!empty(get_customer_details($accounts->credit_account_id)->customer_name) ? get_customer_details($accounts->credit_account_id)->customer_name : '-'; 
+					}
+					
+					$description_ext = 
+							($account_cr_dr=='Debit_entry') ? 
+							'[To: '.$to_."]" 
+							:
+							 ((!empty($from_)) ? '[From: '.$from_.']' : '');
+
+					$description = ($accounts->transaction_type!='OPENING BALANCE') ? $description."<br>".$description_ext : $description;
+				}
+			$row[] = $description;
+            $row[] = $accounts->payment_type;
+			$row[] = ($account_cr_dr=='Debit_entry') ? store_number_format($accounts->debit_amt) : '';
+			$row[] = ($account_cr_dr=='Credit_entry') ? store_number_format($accounts->credit_amt) : '';
+
+			$balance = ($account_cr_dr=='Debit_entry') ? (0-$accounts->debit_amt) : ($accounts->credit_amt-0);
+			$prev_balance += $balance;
+			
+			$total_debit += ($account_cr_dr=='Debit_entry') ? $accounts->debit_amt : 0;
+			$total_credit += ($account_cr_dr=='Credit_entry') ? $accounts->credit_amt : 0;
+			$total_close_balance =  store_number_format($prev_balance);
+			
+			$row[] = store_number_format($prev_balance);
+
+			$row[] = $accounts->note;			
+			$row[] = ($accounts->created_by);			
+					$link='';
+					$title='';
+					$entry_of='';
+					$record_id='';
+
+					if($accounts->ref_moneytransfer_id){
+						$link = "money_transfer/update/".$accounts->ref_moneytransfer_id;
+						$title = 'Edit Transfer Entry';
+						$entry_of=1;
+						$record_id=$accounts->ref_moneytransfer_id;
+					}
+					else if($accounts->ref_moneydeposits_id){
+						$link = "money_deposit/update/".$accounts->ref_moneydeposits_id;
+						$title = 'Edit Deposit Entry';
+						$entry_of=2;
+						$record_id=$accounts->ref_moneydeposits_id;
+					}
+					else if($accounts->ref_salespayments_id){
+						$link = "";
+						$title = '';
+						$entry_of=3;
+						$record_id=$accounts->ref_salespayments_id;
+					}
+					else if($accounts->ref_salespaymentsreturn_id){
+						$link = "";
+						$title = '';
+						$entry_of=4;
+						$record_id=$accounts->ref_salespaymentsreturn_id;
+					}
+					else if($accounts->ref_purchasepayments_id){
+						$link = "";
+						$title = '';
+						$entry_of=5;
+						$record_id=$accounts->ref_purchasepayments_id;
+					}
+					else if($accounts->ref_purchasepaymentsreturn_id){
+						$link = "";
+						$title = '';
+						$entry_of=6;
+						$record_id=$accounts->ref_purchasepaymentsreturn_id;
+					}
+					else if($accounts->ref_expense_id){
+						$link = "";
+						$title = '';
+						$entry_of=7;
+						$record_id=$accounts->ref_expense_id;
+					}
+
+
+				     $str2 = '<div class="btn-group" title="View Account">
+										<a class="btn btn-primary btn-o dropdown-toggle" data-toggle="dropdown" href="#">
+											Action <span class="caret"></span>
+										</a>
+										<ul role="menu" class="dropdown-menu dropdown-light pull-right">';
+
+
+											/*if($this->permissions('accounts_edit'))
+											$str2.='<li>
+												<a data-toggle="tooltip" title="Edit Record ?" href="'.base_url().$link.'">
+													<i class="fa fa-fw fa-edit text-blue"></i>'.$title.'
+												</a>
+											</li>';*/
+
+											if($this->permissions('accounts_delete'))
+											$str2.='<li>
+												<a style="cursor:pointer" title="Delete Record ?" onclick="delete_transaction('.$record_id.','.$entry_of.')">
+													<i class="fa fa-fw fa-trash text-red"></i>Delete
+												</a>
+											</li>
+											
+										</ul>
+									</div>';			
+			$row[] = ($accounts->transaction_type!='OPENING BALANCE') ? $str2 : '';
+			 $row[] = 0;
+			 $row[] = 0;
+
+			$data[] = $row;
+		}
+		
+		array_push($data,array(
+			0=>'',
+			1=>'<h4 ><strong>Total</strong><h4>',
+			2=> '',
+			3=>$total_debit,
+			4=>$total_credit,
+			5=>'',
+			6=>'',
+			7=>'',
+			8=>'',
+			9=>'',
+		));
+
+		array_push($data,array(
+			0=>'',
+			1=>'',
+			2=> '<h4 class="text-danger"><strong>Clousing Balance</strong><h4>',
+			3=>'',
+			4=>'',
+			5=>$total_close_balance,
+			6=>'',
+			7=>'',
+			8=>'',
+			9=>'',
+
+		));
+        
+		$output = array(
+						"draw" => $_POST['draw'],
+						"recordsTotal" => $this->accounts->count_all(),
+						"recordsFiltered" => $this->accounts->count_filtered(),
+						"data" => $data,
+				);
+		//output to json format
+		echo json_encode($output);
 	}
 }
