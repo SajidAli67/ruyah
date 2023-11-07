@@ -203,7 +203,21 @@ class Sales extends MY_Controller {
 												<a style="cursor:pointer" title="Delete Record ?" onclick="delete_sales(\''.$sales->id.'\')">
 													<i class="fa fa-fw fa-trash text-red"></i>Delete
 												</a>
+											</li>';
+
+											$str2.='<li>
+												<a title="Sales Return" href="'.base_url().'sales_return/add/'.$sales->id.'">
+													<i class="fa fa-fw fa-undo text-blue"></i>debit note
+												</a>
+											</li>';
+
+
+											$str2.='<li>
+												<a title="Sales Return" href="'.base_url().'sales_return/add/'.$sales->id.'">
+													<i class="fa fa-fw fa-undo text-blue"></i>crete note
+												</a>
 											</li>
+
 											
 										</ul>
 									</div>';			

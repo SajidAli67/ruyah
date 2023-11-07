@@ -203,7 +203,7 @@
                                                 <div class="form-group">
                                                    <label for="country" class="col-sm-4 control-label"><?= $this->lang->line('country'); ?></label>
                                                    <div class="col-sm-8">
-                                                      <select class="form-control select2" id="country" name="country"  style="width: 100%;" onkeyup="shift_cursor(event,'state')" value="<?php print $country; ?>">
+                                                      <select class="form-control select2" id="country" name="country"  style="width: 100%;" readonly onkeyup="shift_cursor(event,'state')" value="<?php print $country; ?>">
                                                          <?php
                                                             $query1="select * from db_country where status=1";
                                                             $q1=$this->db->query($query1);
@@ -256,9 +256,9 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                   <label for="city" class="col-sm-4 control-label"><?= $this->lang->line('city'); ?><label class="text-danger">*</label></label>
+                                                   <label for="city" class="col-sm-4 control-label"><?= $this->lang->line('city'); ?></label>
                                                    <div class="col-sm-8">
-                                                      <input type="text" class="form-control" id="city" name="city" placeholder="" value="<?php print $city; ?>" onkeyup="shift_cursor(event,'postcode')" >
+                                                      <input type="text" class="form-control" id="city" name="city" placeholder="" value="<?php print $city; ?>" onkeyup="shift_cursor(event,'postcode')" readonly>
                                                       <span id="city_msg" style="display:none" class="text-danger"></span>
                                                    </div>
                                                 </div>
@@ -563,8 +563,10 @@
                                                    <label for="pos_invoice_formats" class="col-sm-3 control-label"><?= $this->lang->line('pos_invoice_formats'); ?><label class="text-danger">*</label> </label>
                                                    <div class="col-sm-4">
                                                       <select class="form-control select2" id="pos_invoice_format_id" name="pos_invoice_format_id"  style="width: 100%;">
-                                                         <option value="1">Default</option>
+                                                         <option value="1">A4</option>
+                                                         
                                                          <option value="2">GST Format</option>
+                                                         <option value="3">Thermal</option>
                                                       </select>
                                                       <span id="pos_invoice_format_id_msg" style="display:none" class="text-danger"></span>
                                                    </div>

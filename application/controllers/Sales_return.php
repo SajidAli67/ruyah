@@ -310,7 +310,9 @@ class Sales_return extends MY_Controller {
 	}
 	/*Sales List from existing sales entry*/
 	public function sales_list($sales_id){
+
 		echo $this->sales->sales_list($sales_id);
+		
 	}
 	public function delete_payment(){
 		$this->permission_check_with_msg('sales_return_payment_delete');

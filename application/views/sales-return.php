@@ -208,9 +208,13 @@
                                           <?php 
                                                $return_select = ($return_status=='Return') ? 'selected' : ''; 
                                                $cancel_select = ($return_status=='Cancel') ? 'selected' : ''; 
+                                               $cancel_select = ($return_status=='debit_note') ? 'selected' : ''; 
+                                               $cancel_select = ($return_status=='crete_note') ? 'selected' : ''; 
                                           ?>
                                             <option <?= $return_select; ?> value="Return">Return</option>
                                             <option <?= $cancel_select; ?> value="Cancel">Cancel</option>
+                                            <option <?= $cancel_select; ?> value="debit_note">Debit note</option>
+                                            <option <?= $cancel_select; ?> value="crete_note">Crete note</option>
                                        </select>
                                     <span id="return_status_msg" style="display:none" class="text-danger"></span>
                                  </div>
