@@ -165,7 +165,7 @@ class Pos extends MY_Controller {
 		$data=$this->data;
 		$data['page_title']=$this->lang->line('sales_invoice');
 		$data=array_merge($data,array('sales_id'=>$sales_id));
-		$invoice_id = 4;//get_pos_invoice_format_id();
+		$invoice_id = get_pos_invoice_format_id();
 		if($invoice_id==1){
 			$this->load->view('sal-invoice-pos',$data);
 		}

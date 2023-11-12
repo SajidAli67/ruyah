@@ -2776,4 +2776,16 @@ function get_purchasereturn_details($id){
 
   }
 
+  function get_sn_item_name($sn){
+    $CI =& get_instance();
+     $query =  $CI->db->select('item_id')->where("sn_number",$sn)->get('db_itemsn')->row();
+     if(!empty($query)){
+      return $query->item_id;
+     }
+     else{
+      return '';
+     }
+     
+  }
+
  

@@ -1072,6 +1072,12 @@
 
                <?php } ?>
 
+               <?php if($CI->permissions('items_add')) { ?>
+
+                <li class="items-active-li"><a href="<?php echo $base_url; ?>items/sn"><i class="fa fa-list"></i> <span><?= $this->lang->line('sn'); ?></span></a></li>
+
+                <?php } ?>
+
 
 
           </ul>

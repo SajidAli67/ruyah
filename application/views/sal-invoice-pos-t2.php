@@ -478,13 +478,13 @@
 
 							<th style="font-size: 11px; text-align: left;padding-left: 2px; padding-right: 2px;">#</th>
 
-							<th style="font-size: 11px; text-align: left;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('description'); ?></th>
+							<th style="font-size: 11px; text-align: left;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('description') .'<br> المنتج'; ?></th>
 
 
 
-							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('quantity'); ?></th>
-							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Unit Price"; ?></th>
-							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Tax"; ?></th>
+							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('quantity') . "<br> كمية"; ?></th>
+							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Unit Price <br> سعر الوحدة "; ?></th>
+							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Tax <br> ضريبة"; ?></th>
 
 							<?php if ($mrp_column) { ?>
 
@@ -493,7 +493,7 @@
 							<?php  } ?>
 
 
-							<th style="font-size: 11px; text-align: right;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('total'); ?></th>
+							<th style="font-size: 11px; text-align: right;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('total') . '<br> المجموع'; ?></th>
 
 						</tr>
 
@@ -569,12 +569,6 @@
 
 						$before_tax = $subtotal - $tax_amt;
 
-
-
-
-
-
-
 						?>
 
 
@@ -594,8 +588,8 @@
 
 						<tr>
 
-							<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('before_tax'); ?></td>
-
+							<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 2 ?>" align="right"><?= $this->lang->line('before_tax'); ?></td>
+							<td style=" padding-left: 2px; padding-right: 2px;" align="center"  colspan="3">الإجمالي قيل الضريبة</td>
 							<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($before_tax); ?></td>
 
 						</tr>
@@ -612,8 +606,8 @@
 
 							<tr style="margin-top: 50px;">
 
-								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('tax_amount'); ?></td>
-
+								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 2 ?>" align="right"><?= $this->lang->line('tax_amount'); ?></td>
+								<td style=" padding-left: 2px; padding-right: 2px;" align="center" colspan="3"> ضريبة القيمة المضافة (15%)</td>
 								<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($tax_amt); ?></td>
 
 							</tr>
@@ -628,52 +622,10 @@
 
 						<!-- End -->
 
-						<!-- <tr >
-
-						<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('subtotal'); ?></td>
-
-						<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($subtotal); ?></td>
-
-					</tr> -->
-
-						<!-- <tr>
-
-	                     <td style=' padding-left: 2px; padding-right: 2px;' colspan='<?= $mrp_column + 5 ?>' align='right'>Tax Amt</td>
-
-	                      <td style=' padding-left: 2px; padding-right: 2px;' align='right'><?= store_number_format($tax_amt); ?></td>
-
-	                </tr> -->
-
-						<?php if (!empty($coupon_code)) { ?>
-
-							<tr>
-
-								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('couponDiscount'); ?> <?= ($coupon_type == 'Percentage') ? $coupon_value . '%' : '[Fixed]'; ?></td>
-
-								<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($coupon_amt); ?></td>
-
-							</tr>
-
-						<?php } ?>
-
-
-
-						<?php if (!empty($tot_discount_to_all_amt) && $tot_discount_to_all_amt != 0) { ?>
-
-							<tr>
-
-								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('discount'); ?> <?= ($discount_to_all_type == 'in_percentage') ? $discount_to_all_input . '%' : '[Fixed]'; ?></td>
-
-								<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($tot_discount_to_all_amt); ?></td>
-
-							</tr>
-
-						<?php } ?>
-
 						<tr>
 
-							<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('total'); ?></td>
-
+							<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column +2 ?>" align="right"><?= $this->lang->line('total'); ?></td>
+							<td style=" padding-left: 2px; padding-right: 2px;" align="center" colspan="3">المجموع</td>
 							<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($grand_total); ?></td>
 
 						</tr>
@@ -716,14 +668,6 @@
 							</tr>
 
 						<?php } ?>
-
-
-						
-
-
-
-					
-
 
 
 					</tfoot>

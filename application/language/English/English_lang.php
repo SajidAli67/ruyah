@@ -1754,6 +1754,7 @@ $lang['add_sale'									] 	=  		"Add Sale";
 $lang['add_supplier'									] 	=  		"Add Supplier";
 
 $lang['add_item'									] 	=  		"Add Item";
+$lang['sn'									] 	=  		"SN number";
 
 $lang['add_service'									] 	=  		"Add Service";
 
