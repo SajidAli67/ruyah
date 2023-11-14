@@ -162,3 +162,29 @@ GROUP BY `a`.`id`
  LIMIT 20
 ERROR - 2023-11-12 20:09:16 --> Could not find the language line "company_address"
 ERROR - 2023-11-12 20:09:23 --> Could not find the language line "company_address"
+ERROR - 2023-11-12 20:12:03 --> Could not find the language line "company_address"
+ERROR - 2023-11-12 20:13:18 --> Could not find the language line "company_address"
+ERROR - 2023-11-12 20:14:04 --> Could not find the language line "company_address"
+ERROR - 2023-11-12 20:15:19 --> Could not find the language line "company_address"
+ERROR - 2023-11-12 20:19:15 --> Could not find the language line "company_address"
+ERROR - 2023-11-12 20:24:20 --> Could not find the language line "company_address"
+ERROR - 2023-11-12 20:24:20 --> Severity: Notice --> Undefined variable: company_vat_number C:\xampp\htdocs\ruyah\application\views\print-purchase-invoice-2.php 201
+ERROR - 2023-11-12 20:24:20 --> Severity: Notice --> Undefined variable: displayQRCodeAsBase64 C:\xampp\htdocs\ruyah\application\views\print-purchase-invoice-2.php 239
+ERROR - 2023-11-12 20:25:38 --> Could not find the language line "company_address"
+ERROR - 2023-11-12 20:25:38 --> Severity: Notice --> Undefined variable: company_vat_number C:\xampp\htdocs\ruyah\application\views\print-purchase-invoice-2.php 201
+ERROR - 2023-11-12 20:25:38 --> Severity: Notice --> Undefined variable: displayQRCodeAsBase64 C:\xampp\htdocs\ruyah\application\views\print-purchase-invoice-2.php 239
+ERROR - 2023-11-12 20:25:58 --> Could not find the language line "company_address"
+ERROR - 2023-11-12 20:25:58 --> Severity: Notice --> Undefined variable: displayQRCodeAsBase64 C:\xampp\htdocs\ruyah\application\views\print-purchase-invoice-2.php 239
+ERROR - 2023-11-12 20:26:38 --> Severity: error --> Exception: Class 'GenerateQrCode' not found C:\xampp\htdocs\ruyah\application\views\print-purchase-invoice-2.php 163
+ERROR - 2023-11-12 20:29:10 --> Severity: Notice --> Undefined variable: vat_ C:\xampp\htdocs\ruyah\application\views\print-purchase-invoice-2.php 175
+ERROR - 2023-11-12 20:29:10 --> Severity: Notice --> Undefined variable: sales_date C:\xampp\htdocs\ruyah\application\views\print-purchase-invoice-2.php 176
+ERROR - 2023-11-12 20:29:10 --> Severity: Notice --> Undefined variable: tot_total_cost C:\xampp\htdocs\ruyah\application\views\print-purchase-invoice-2.php 177
+ERROR - 2023-11-12 20:29:10 --> Severity: Notice --> Undefined variable: tax_amt C:\xampp\htdocs\ruyah\application\views\print-purchase-invoice-2.php 178
+ERROR - 2023-11-12 20:29:10 --> Could not find the language line "company_address"
+ERROR - 2023-11-12 20:30:53 --> Severity: Notice --> Undefined variable: tot_total_cost C:\xampp\htdocs\ruyah\application\views\print-purchase-invoice-2.php 177
+ERROR - 2023-11-12 20:30:53 --> Severity: Notice --> Undefined variable: tax_amt C:\xampp\htdocs\ruyah\application\views\print-purchase-invoice-2.php 178
+ERROR - 2023-11-12 20:30:53 --> Could not find the language line "company_address"
+ERROR - 2023-11-12 20:32:11 --> Severity: Notice --> Undefined variable: tax_amt C:\xampp\htdocs\ruyah\application\views\print-purchase-invoice-2.php 178
+ERROR - 2023-11-12 20:32:11 --> Could not find the language line "company_address"
+ERROR - 2023-11-12 20:34:59 --> Could not find the language line "company_address"
+ERROR - 2023-11-12 20:34:59 --> Severity: Notice --> Undefined variable: displayQRCodeAsBase64 C:\xampp\htdocs\ruyah\application\views\print-purchase-invoice-2.php 258
