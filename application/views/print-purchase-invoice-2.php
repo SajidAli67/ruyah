@@ -171,12 +171,12 @@
 
 
   $displayQRCodeAsBase64 = GenerateQrCode::fromArray([
-  	new Seller($store_name), // seller name        
-  	new TaxNumber($company_vat_no), // seller tax number
-  	new InvoiceDate($purchase_date .' ' . $created_time), // invoice date as Zulu ISO8601 @see https://en.wikipedia.org/wiki/ISO_8601
-  	new InvoiceTotalAmount(number_format($grand_total, 2, '.', '')), // invoice total amount
-  	// new InvoiceTaxAmount(number_format(($tax_amt), 2, '.', '')) // invoice tax amount
-  	// TODO :: Support others tags
+    new Seller($store_name), // seller name        
+    new TaxNumber($company_vat_no), // seller tax number
+    new InvoiceDate($purchase_date . ' ' . $created_time), // invoice date as Zulu ISO8601 @see https://en.wikipedia.org/wiki/ISO_8601
+    new InvoiceTotalAmount(number_format($grand_total, 2, '.', '')), // invoice total amount
+    // new InvoiceTaxAmount(number_format(($tax_amt), 2, '.', '')) // invoice tax amount
+    // TODO :: Support others tags
   ])->render();
 
 
@@ -198,9 +198,13 @@
       <tr>
         <th colspan="16">
           <table width="100%" height='100%' class="style_hidden fixed_table">
-             
-         
-          <tr>
+            <tr align="center">
+                <td >
+                  <img src="<?= base_url($store_logo);?>" width='100px' height='auto'>
+                </td>
+            </tr>
+
+            <tr>
               <td align="center">
 
                 <span>
@@ -241,7 +245,7 @@
             </tr>
 
             <tr>
-        
+
               <td align="center"><strong style="font-size:24px">فاتورة ضريبية مبسطة</strong><br>
 
               </td>
@@ -250,9 +254,9 @@
 
             <tr align="center">
               <td>
-              <?php echo "<img src='" . $displayQRCodeAsBase64 . "' alt='QR Code' style='width:130px; height:130px;' />" ?>
+                <?php echo "<img src='" . $displayQRCodeAsBase64 . "' alt='QR Code' style='width:130px; height:130px;' />" ?>
 
-              </td> 
+              </td>
             </tr>
             <tr>
 
@@ -286,52 +290,52 @@
                       </tr>
                     </table>
 
-                 
+
                   </td>
 
                   <!-- Second Half -->
                   <td width="50%" align="right">
-      
-                      <table style="width: 100%;">
 
-                        <tr align="right">
-                          <td colspan="4">
-                            Invoice No.
+                    <table style="width: 100%;">
 
-                          </td>
-                          <td align="right">
-                            <?php echo "$purchase_code"; ?></b>
+                      <tr align="right">
+                        <td colspan="4">
+                          Invoice No.
 
-                          </td>
-                        </tr>
-                        <tr align="right">
-                          <td colspan="4">
-                            Dated
-                          </td>
+                        </td>
+                        <td align="right">
+                          <?php echo "$purchase_code"; ?></b>
 
-                          <td align="right">
-                            <?php echo show_date($purchase_date); ?>
-                          </td>
-                        </tr>
-                        <tr align="right">
-                          <td colspan="4">
-                            Reference No.
+                        </td>
+                      </tr>
+                      <tr align="right">
+                        <td colspan="4">
+                          Dated
+                        </td>
+
+                        <td align="right">
+                          <?php echo show_date($purchase_date); ?>
+                        </td>
+                      </tr>
+                      <tr align="right">
+                        <td colspan="4">
+                          Reference No.
 
 
-                          </td>
-                          <td align="right">
-                            <?php echo "$reference_no"; ?>
-                          </td>
+                        </td>
+                        <td align="right">
+                          <?php echo "$reference_no"; ?>
+                        </td>
 
-                        </tr>
-                      </table>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
 
 
             </tr>
-      
+
         </th>
       </tr>
 
