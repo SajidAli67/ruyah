@@ -290,14 +290,14 @@ class Items extends MY_Controller {
 		$store_id=$this->input->get('store_id');
 		$warehouse_id=$this->input->get('warehouse_id');
 		$search_for=$this->input->get('search_for');
-		
+		$name = strtolower(trim($_GET['name']));
+		$sn_number = get_sn_item_name($name);
+        
 		$show_purchase_price = $this->permissions('show_purchase_price');
 		$data = array();
 		$display_json = array();
 			$name = strtolower(trim($_GET['name']));
-			
-			$sn_number = get_sn_item_name($name);
-			
+
 			if(isset($search_for) && $search_for=='purchase'){
 				//$this->db->where('a.service_bit=1');
 				$this->db->select("a.service_bit,a.purchase_price,a.id,a.item_name,a.item_code,COALESCE(SUM(a.stock),0) as stock,item_group");
@@ -316,17 +316,17 @@ class Items extends MY_Controller {
 				$this->db->where("b.warehouse_id=$warehouse_id");
 			}
 			
-			
 			$this->db->where("a.status",1);
 			$this->db->where("a.store_id",$store_id);
-			if(!empty($sn_number)){
-				$this->db->where("(LOWER(a.custom_barcode) LIKE '%$name%' or a.id LIKE '%$sn_number%')");
+		    if(!empty($sn_number)){
+		       
+		        $this->db->where('a.id',$sn_number);
+		    	//$this->db->where("(LOWER(a.custom_barcode) LIKE '%$name%' or a.id LIKE '%$sn_number%')");
 			}
 			else{
 				$this->db->where("(LOWER(a.custom_barcode) LIKE '%$name%' or LOWER(a.item_name) LIKE '%$name%' or LOWER(a.item_code) LIKE '%$name%')");
 
 			}
-			
 
 			$this->db->group_by("a.id");
 			$this->db->limit("20");
@@ -410,8 +410,7 @@ class Items extends MY_Controller {
 	public function getItems($id=''){
 		echo $this->items->getItemsJson($id);
 	}
-
-
+	
 	public function sn(){
 		$this->permission_check('brand_view');
 		$data = $this->data;

@@ -117,8 +117,9 @@ class Sales extends MY_Controller {
 			$info = (!empty($sales->quotation_id)) ? "<br><span class='label label-success' style='cursor:pointer'><i class='fa fa-fw  fa-check-circle'></i>Against Quotation</span>" : '';
 
 			$info .= (!empty($sales->return_bit)) ? "<br><span class='label label-danger' style='cursor:pointer'><i class='fa fa-fw fa-undo'></i>Return Raised</span>" : '';
-
-			$row[] = $sales->sales_code.$info;
+            $info .= (!empty(get_debit_note($sales->id))) ? "<br><span class='label label-warning' style='cursor:pointer'><i class='fa fa-fw  fa-check-circle'></i>Debit note</span>" : '';
+			
+		    $row[] = (!empty(get_debit_note($sales->id))) ? get_debit_note($sales->id)->debit_code.$info : $sales->sales_code.$info;
 			
 			$row[] = $sales->reference_no;
 			$row[] = $sales->customer_name;
@@ -187,16 +188,16 @@ class Sales extends MY_Controller {
 											</li>
 											<li>
 												<a style="cursor:pointer" title="Print POS Invoice ?" onclick="print_invoice('.$sales->id.')">
-													<i class="fa fa-fw fa-file-text text-blue"></i>POS Invoice
+													<i class="fa fa-fw fa-file-text text-blue"></i>Print
 												</a>
 											</li>';
 
 											if($this->permissions('sales_return_add'))
-											$str2.='<li>
+										/*	$str2.='<li>
 												<a title="Sales Return" href="'.base_url().'sales_return/add/'.$sales->id.'">
 													<i class="fa fa-fw fa-undo text-blue"></i>Sales Return
 												</a>
-											</li>';
+											</li>'; */
 
 											if($this->permissions('sales_delete'))
 											$str2.='<li>
@@ -204,20 +205,18 @@ class Sales extends MY_Controller {
 													<i class="fa fa-fw fa-trash text-red"></i>Delete
 												</a>
 											</li>';
-
+											
 											$str2.='<li>
-												<a title="Sales Return" href="'.base_url().'sales_return/add/'.$sales->id.'">
-													<i class="fa fa-fw fa-undo text-blue"></i>debit note
+												<a title="Sales Return" href="'.base_url().'sales_return/debit_note/'.$sales->id.'">
+													<i class="fa fa-fw fa-undo text-blue"></i>Debit note
 												</a>
 											</li>';
-
-
 											$str2.='<li>
 												<a title="Sales Return" href="'.base_url().'sales_return/add/'.$sales->id.'">
-													<i class="fa fa-fw fa-undo text-blue"></i>crete note
+													<i class="fa fa-fw fa-undo text-blue"></i>Credit note
 												</a>
 											</li>
-
+											
 											
 										</ul>
 									</div>';			

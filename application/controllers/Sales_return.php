@@ -58,6 +58,32 @@ class Sales_return extends MY_Controller {
 	    $data['subtitle']=$this->lang->line('return_against_sales');;
 	    $this->load->view('sales-return', $data);
 	  }
+	  
+	public function debit_note($id){
+		//echo "db_sales <br>";
+		$this->belong_to('db_sales',$id);
+		$this->permission_check('sales_return_edit');
+		$q2=$this->db->query("select sales_status from db_sales where id=".$id);
+	  if($q2->row()->sales_status=='Quotation'){
+		  $this->session->set_flashdata('warning','Sorry! Quotation could not be returned!');
+		  redirect($_SERVER['HTTP_REFERER']);
+		  exit();
+	  }
+	  //echo "db_salesreturn <br>";
+		$q1=$this->db->query("select id from db_salesreturn where sales_id=".$id);
+	  if($q1->num_rows()>0){
+		  $this->belong_to('db_salesreturn',$q1->row()->id);
+		  $this->session->set_flashdata('success','Sales Return Invoice Already Generated!');
+		  redirect(base_url('sales_return/edit/'.$q1->row()->id),'refresh');exit();
+	  }
+	  
+	  $data=$this->data;
+	  $data['sales_id']=$id;;
+	  $data['page_title']=$this->lang->line('sales_return');
+	  $data['oper']='return_against_sales';
+	  $data['subtitle']=$this->lang->line('return_against_sales');;
+	  $this->load->view('sales-return-debit', $data);
+	}  
 
 	public function sales_save_and_update(){
 		$this->form_validation->set_rules('return_date', 'Return Date', 'trim|required');
@@ -66,6 +92,20 @@ class Sales_return extends MY_Controller {
 		if ($this->form_validation->run() == TRUE) {
 	    	$result = $this->sales->verify_save_and_update();
 	    	echo $result;
+		} else {
+			echo "Please Fill Compulsory(* marked) Fields.";
+		}
+	}
+	
+	
+	public function debit_save(){
+		$this->form_validation->set_rules('return_date', 'Return Date', 'trim|required');
+		$this->form_validation->set_rules('customer_id', 'Customer Name', 'trim|required');
+	
+		if ($this->form_validation->run() == TRUE) {
+	    	$result = $this->sales->save_debit_note();
+	    	echo $result;
+			// redirect('')
 		} else {
 			echo "Please Fill Compulsory(* marked) Fields.";
 		}
@@ -238,6 +278,18 @@ class Sales_return extends MY_Controller {
 		$this->load->view('sal-return-invoice',$data);
 	}
 	
+	
+	public function invoice_debit_note($id){
+		
+		if(!$this->permissions('sales_return_add') && !$this->permissions('sales_return_edit')){
+			$this->show_access_denied_page();
+		}
+		$data=$this->data;
+		$data['page_title']=$this->lang->line('sales_invoice');
+		$data=array_merge($data,array('sales_id'=>$id));
+		$this->load->view('sal-invoice-pos-t4',$data);
+	}
+	
 	//Print sales invoice 
 	public function print_invoice($return_id)
 	{
@@ -310,9 +362,7 @@ class Sales_return extends MY_Controller {
 	}
 	/*Sales List from existing sales entry*/
 	public function sales_list($sales_id){
-
 		echo $this->sales->sales_list($sales_id);
-		
 	}
 	public function delete_payment(){
 		$this->permission_check_with_msg('sales_return_payment_delete');

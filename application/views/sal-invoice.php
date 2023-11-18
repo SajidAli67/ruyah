@@ -1079,7 +1079,7 @@
 
               <i class="fa fa-file-text"></i>
 
-              POS Invoice
+              Print
 
             </a>
 
@@ -1113,12 +1113,16 @@
 
             <a href="<?php echo $base_url; ?>pos/print_invoice_tax/<?php echo  $sales_id ?>" target="_blank" class="btn btn-primary">
               
-              Print with Tax
+              Print Tax Invoice 
             </a>
 
+
             <a href="<?php echo $base_url; ?>pdf/sales/<?php echo  $sales_id ?>" target="_blank" class="btn btn-primary">
+
               <i class="fa fa-file-pdf-o"></i>
+
               PDF
+
             </a>
 
 

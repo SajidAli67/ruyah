@@ -60,6 +60,7 @@
                                        <option value="<?= $item->id ?>"> <?= $item->item_code . ' - ' . $item->item_name ?> </option>
 
                                     <?php endforeach  ?>
+                                    <option value=""></option>
                                  </select>
                                  <span id="sn_number_msg" style="display:none" class="text-danger"></span>
                               </div>
@@ -74,6 +75,11 @@
                                  <div class="sn_number_area" style="width: 100%; border:1px solid #d2d6de; padding:20px; margin-top:20px  ;">
                                        
                                  </div>
+
+                                 <!-- <select class="col-sm-2 control-label js-example-basic-multiple" name="states[]" multiple="multiple">
+                                    <option value="AL">Alabama</option>
+                                    <option value="WY">Wyoming</option>
+                                 </select> -->
                               </div>
                            </div>
                         </div>

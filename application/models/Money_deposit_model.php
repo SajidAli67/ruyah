@@ -149,6 +149,7 @@ class Money_deposit_model extends CI_Model {
 	    				'system_ip' 				=> $SYSTEM_IP,
 	    				'system_name' 				=> $SYSTEM_NAME,
 	    				'status' 					=> 1,
+	    				'created_time_auto' 		=> date("Y/m/d H:i:s")
 	    			);
 		$q1 = $this->db->insert('ac_moneydeposits', $info);
 		if(!$q1){
@@ -170,7 +171,7 @@ class Money_deposit_model extends CI_Model {
 													'payment_code'  		=> '',
 													'customer_id'  			=> '',
 													'supplier_id'  			=> '',
-													'payment_type'			=> $payment_type,
+													'payment_type' 			=> null,
 											));
 		if(!$insert_bit){
 			return "failed";

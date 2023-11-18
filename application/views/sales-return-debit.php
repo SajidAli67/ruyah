@@ -133,7 +133,7 @@
                         
                         <!-- form start -->
                          <!-- OK START -->
-                        <?= form_open('#', array('class' => 'form-horizontal', 'id' => 'sales-form', 'enctype'=>'multipart/form-data', 'method'=>'POST'));?>
+                        <?= form_open('', array('class' => 'form-horizontal', 'id' => 'sales-form', 'enctype'=>'multipart/form-data', 'method'=>'POST'));?>
                            <input type="hidden" id="base_url" value="<?php echo $base_url;; ?>">
                            <input type="hidden" value='1' id="hidden_rowcount" name="hidden_rowcount">
                            <input type="hidden" value='0' id="hidden_update_rowid" name="hidden_update_rowid">
@@ -203,18 +203,9 @@
                               <div class="form-group">
                                  <label for="return_status" class="col-sm-2 control-label"><?= $this->lang->line('status'); ?> <label class="text-danger">*</label></label>
                                  <div class="col-sm-3">
-                                       <select class="form-control select2" id="return_status" name="return_status"  style="width: 100%;" onkeyup="shift_cursor(event,'mobile')">
-                                          <!-- <option value="">-Select-</option> -->
-                                          <?php 
-                                               $return_select = ($return_status=='Return') ? 'selected' : ''; 
-                                               $cancel_select = ($return_status=='Cancel') ? 'selected' : ''; 
-                                               $cancel_select = ($return_status=='debit_note') ? 'selected' : ''; 
-                                               $cancel_select = ($return_status=='crete_note') ? 'selected' : ''; 
-                                          ?>
-                                            <option <?= $return_select; ?> value="Return">Return</option>
-                                            <option <?= $cancel_select; ?> value="Cancel">Cancel</option>
-                                            <option <?= $cancel_select; ?> value="debit_note">Debit note</option>
-                                            <option <?= $cancel_select; ?> value="crete_note">Crete note</option>
+                                       <select class="form-control select2" id="return_status" name="return_status"  style="width: 100%;" onkeyup="shift_cursor(event,'mobile')" readonly>
+                                            <option selected value="debit_note">Debit note</option>
+                                            
                                        </select>
                                     <span id="return_status_msg" style="display:none" class="text-danger"></span>
                                  </div>
@@ -575,21 +566,12 @@
                               <center>
                                 <?php
 
-                                if($oper=='return_against_sales'){
-                                  $btn_id='save';
+                               
+                                  $btn_id='save_debit';
                                   $btn_name="Save";
                                   echo '<input type="hidden" name="sales_id" id="sales_id" value="'.$sales_id.'"/>';
-                                }
-                                if($oper=='edit_existing_return'){
-                                  $btn_id='update';
-                                  $btn_name="Update";
-                                  echo '<input type="hidden" name="return_id" id="return_id" value="'.$return_id.'"/>';
-                                  echo '<input type="hidden" name="sales_id" id="sales_id" value="'.$sales_id.'"/>';
-                                }
-                                if($oper=='create_new_return'){
-                                  $btn_id='create';
-                                  $btn_name="Create";
-                                }
+                                
+                               
 
                                 /*if(isset($sales_id)){
                                   $btn_id='update';
@@ -1061,6 +1043,121 @@
               }); 
              });
          <?php }?>
+
+
+$('#save_debit').on("click",function (e) {
+	var base_url=$("#base_url").val();
+
+    //Initially flag set true
+    var flag=true;
+
+    function check_field(id)
+    {
+
+      if(!$("#"+id).val() ) //Also check Others????
+        {
+
+            $('#'+id+'_msg').fadeIn(200).show().html('Required Field').addClass('required');
+           // $('#'+id).css({'background-color' : '#E8E2E9'});
+            flag=false;
+        }
+        else
+        {
+             $('#'+id+'_msg').fadeOut(200).hide();
+             //$('#'+id).css({'background-color' : '#FFFFFF'});    //White color
+        }
+    }
+
+
+   //Validate Input box or selection box should not be blank or empty
+	  check_field("customer_id");
+    check_field("return_date");
+    check_field("return_status");
+    //check_field("warehouse_id");
+	/*if(!isNaN($("#amount").val()) && parseInt($("#amount").val())==0){
+        toastr["error"]("You have entered Payment Amount! <br>Please Select Payment Type!");
+        return;
+    }*/
+
+	if(flag==false)
+	{
+		toastr["error"]("You have missed Something to Fillup!");
+		return;
+	}
+
+	//Atleast one record must be added in sales table 
+    var rowcount=document.getElementById("hidden_rowcount").value;
+	var flag1=false;
+	for(var n=1;n<=rowcount;n++){
+		if($("#td_data_"+n+"_3").val()!=null && $("#td_data_"+n+"_3").val()!=''){
+			flag1=true;
+		}	
+	}
+	
+    if(flag1==false){
+    	toastr["warning"]("Please Select Item!!");
+        $("#item_search").focus();
+		return;
+    }
+    //end
+
+
+    if($("#amount").val()!=''){
+      if(parseFloat($("#amount").val())!=0){
+          if($("#payment_type").val()==''){
+            toastr["warning"]("Please Select Payment Type!!");
+            return;
+          }
+      }
+    }
+
+    var tot_subtotal_amt=$("#subtotal_amt").text();
+    var other_charges_amt=$("#other_charges_amt").text();//other_charges include tax calcualated amount
+    var tot_discount_to_all_amt=$("#discount_to_all_amt").text();
+    var tot_round_off_amt=$("#round_off_amt").text();
+    var tot_total_amt=$("#total_amt").text();
+    var coupon_discount_amt=$("#coupon_discount_amt").text();
+
+    var this_id=this.id;
+    
+			//if(confirm("Do You Wants to Save Record ?")){
+				e.preventDefault();
+				data = new FormData($('#sales-form')[0]);//form name
+        /*Check XSS Code*/
+        if(!xss_validation(data)){ return false; }
+        
+        $(".box").append('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+        $("#"+this_id).attr('disabled',true);  //Enable Save or Update button
+				$.ajax({
+				type: 'POST',
+				url: base_url+'sales_return/debit_save?command='+this_id+'&rowcount='+rowcount+'&tot_subtotal_amt='+tot_subtotal_amt+'&tot_discount_to_all_amt='+tot_discount_to_all_amt+'&tot_round_off_amt='+tot_round_off_amt+'&tot_total_amt='+tot_total_amt+"&other_charges_amt="+other_charges_amt+"&coupon_discount_amt="+coupon_discount_amt,
+				data: data,
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(result){
+         // alert(result);return;
+				result=result.split("<<<###>>>");
+					if(result[0]=="success")
+					{
+						location.href=base_url+"sales_return/invoice_debit_note/"+result[1];
+					}
+					else if(result[0]=="failed")
+					{
+					   toastr['error']("Sorry! Failed to save Record.Try again");
+					}
+					else
+					{
+						alert(result);
+					}
+					$("#"+this_id).attr('disabled',false);  //Enable Save or Update button
+					$(".overlay").remove();
+
+			   }
+			   });
+		//}
+  
+});
       </script>
       <!-- UPDATE OPERATIONS end-->
 

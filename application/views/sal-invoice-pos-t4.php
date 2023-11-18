@@ -4,7 +4,7 @@
 
 <head>
 
-	<title>Tax Invoice Format</title>
+	<title>Default Invoice Format</title>
 
 	<!-- TABLES CSS CODE -->
 
@@ -93,7 +93,7 @@
                            ");
 
 
-
+	$debit_note = get_debit_note($sales_id);
 
 
 	$res3 = $q3->row();
@@ -120,13 +120,13 @@
 
 	$customer_opening_balance = $res3->opening_balance;
 
-	$sales_date = show_date($res3->sales_date);
+	$sales_date = show_date($debit_note->created_time_auto);
 
 	$reference_no = $res3->reference_no;
 
 	$due_date = $res3->due_date;
 
-	$created_time = show_time($res3->created_time);
+	$created_time = show_time($debit_note->created_time_auto);
 
 	$sales_code = $res3->sales_code;
 
@@ -225,7 +225,7 @@
 
 	$overall_discounted = $tot_discount_to_all_amt + $coupon_amt;
 
-
+	
 
 	$q1 = $this->db->query("select * from db_store where id=" . $res3->store_id . " ");
 
@@ -317,14 +317,14 @@
 	if ($company_vat_number != "") {
 		$vat_ = $company_vat_number;
 	} else {
-		$vat_ = '';
+		$vat_ = 123456789;
 	}
 
 	$displayQRCodeAsBase64 = GenerateQrCode::fromArray([
 		new Seller($store_name), // seller name        
 		new TaxNumber($vat_), // seller tax number
-		new InvoiceDate($sales_date .' '. $created_time), // invoice date as Zulu ISO8601 @see https://en.wikipedia.org/wiki/ISO_8601
-		new InvoiceTotalAmount(number_format($tot_net_amt, 2, '.', '')), // invoice total amount
+		new InvoiceDate($sales_date), // invoice date as Zulu ISO8601 @see https://en.wikipedia.org/wiki/ISO_8601
+		new InvoiceTotalAmount(number_format($debit_note->debit_note_amount	, 2, '.', '')), // invoice total amount
 		new InvoiceTaxAmount(number_format(($tax_amt), 2, '.', '')) // invoice tax amount
 		// TODO :: Support others tags
 	])->render();
@@ -386,8 +386,7 @@
 
 		<tr>
 		<tr>
-		    <td align="center"><strong style="font-size:24px">فاتورة ضريبية </strong><br>
-			
+			<td align="center"><strong style="font-size:24px">إشعار مدين للفاتورة الضريبية المبسطة</strong><br>
 			
 		</td>
 			
@@ -430,7 +429,7 @@
 								</tr>
 								<tr>
 
-									<td><?= 'VAT No' ?></td>
+									<td><?= 'VAT' ?></td>
 
 									<td><?= $customer_tax_number; ?></td>
 
@@ -452,9 +451,9 @@
 
 								<tr>
 
-									<td width="40%" align="center"><?= "Invoice No" ?></td>
+									<td width="40%" align="center"><?= 'Debit Note No'; ?></td>
 
-									<td align="right"><b><?= $sales_code; ?></b></td>
+									<td align="right"><b><?= $debit_note->debit_code; ?></b></td>
 
 								</tr>
 
@@ -467,19 +466,6 @@
 									<td align="center"><?=  $this->lang->line('time'). ":"  ?></td>
 									<td align="right"><?=  $created_time; ?></td>
 								</tr>
-
-								<tr>
-
-									<td align="center"><?= $this->lang->line('due_date'). ":"  ?></td>
-									<td align="right"><?= $due_date  ?></td>
-								</tr>
-								<tr>
-
-									<td align="center"><?= "Reference No" ?></td>
-									<td align="right"><?= $reference_no  ?></td>
-								</tr>
-								
-								
 
 							</table>
 
@@ -498,9 +484,6 @@
 		<tr>
 
 			<td>
-
-
-
 				<table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 20px;">
 
 					<thead class="bg-gray">
@@ -509,26 +492,27 @@
 
 							<th style="font-size: 11px; text-align: left;padding-left: 2px; padding-right: 2px;">#</th>
 
-							<th style="font-size: 11px; text-align: left;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('description') . '<br> المنتج ';; ?></th>
+							<th style="font-size: 11px; text-align: left;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('description'); ?></th>
 
-							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Unit Price <br> سعر الوحدة"; ?></th>
+							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Unit Price"; ?></th>
 
-							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('quantity') . '<br> الكمية '; ?></th>
-							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Price <br> المجموع الفرعي بدون الضريبة"; ?></th>
-
-							
-							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Tax <br> نسبة الضريبة"; ?></th>
-							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Tax Amount<br> ضريبة القيمة المضافة (15%)"; ?></th>
+							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('quantity'); ?></th>
+							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Price"; ?></th>
+							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Debit note Amount"; ?></th>
 
 							
+							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Tax"; ?></th>
+							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Tax Amount"; ?></th>
+
+							
 
 
-							<th style="font-size: 11px; text-align: right;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('total') ."<br>الإجمالي ( شامل الضريبة"; ?></th>
+							<th style="font-size: 11px; text-align: right;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('total'); ?></th>
 
 						</tr>
 
 					</thead>
-							
+
 					<tbody style="border-bottom-style: dashed;border-width: 0.1px;">
 
 						<?php
@@ -541,7 +525,7 @@
 
 						$tax_amt = 0;
 
-						$this->db->select(" a.description,c.mrp,c.item_name, a.sales_qty,a.tax_type,
+						$this->db->select("a.id, a.description,c.mrp,c.item_name, a.sales_qty,a.tax_type,
 
                                   a.price_per_unit, b.tax,b.tax_name,a.tax_amt,
 
@@ -560,9 +544,12 @@
 						$this->db->join("db_items c", "c.id=a.item_id", "left");
 
 						$this->db->join("db_units d", "d.id = c.unit_id", "left");
+				
+							// print_r(get_debit_note($sales_id));
+							// exit();
 
 						$q2 = $this->db->get();
-
+						
 						foreach ($q2->result() as $res2) {
 
 							echo "<tr>";
@@ -575,6 +562,7 @@
 
 							echo "<td style='text-align: center;padding-left: 2px; padding-right: 2px;'>" . format_qty($res2->sales_qty) . "</td>";
 							echo "<td style='text-align: center;padding-left: 2px; padding-right: 2px;'>" . format_qty($res2->price_per_unit) . "</td>";
+							echo "<td style='text-align: center;padding-left: 2px; padding-right: 2px;'>" . format_qty($debit_note->debit_note_amount) . "</td>";
 							
 							echo "<td style='text-align: center;padding-left: 2px; padding-right: 2px;'>" . format_qty($res2->tax) . "</td>";
 							echo "<td style='text-align: center;padding-left: 2px; padding-right: 2px;'>" . format_qty($res2->tax_amt) . "</td>";
@@ -586,7 +574,7 @@
 
 
 
-							echo "<td style='text-align: right;padding-left: 2px; padding-right: 2px;' >" . store_number_format($res2->total_cost) . "</td>";
+							echo "<td style='text-align: right;padding-left: 2px; padding-right: 2px;' >" . store_number_format($res2->total_cost + $debit_note->debit_note_amount) . "</td>";
 
 							echo "</tr>";
 
@@ -626,8 +614,8 @@
 
 						<tr>
 
-							<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column +5 ?>" align="right"><?= $this->lang->line('before_tax'); ?></td>
-							<td style=" padding-left: 2px; padding-right: 2px;" align="center" colspan="2">الإجمالي قيل الضريبة</td>
+							<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 7 ?>" align="right"><?= $this->lang->line('before_tax'); ?></td>
+
 							<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($before_tax); ?></td>
 
 						</tr>
@@ -644,8 +632,8 @@
 
 							<tr style="margin-top: 50px;">
 
-								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('tax_amount'); ?></td>
-								<td style=" padding-left: 2px; padding-right: 2px;" align="center" colspan="2"> ضريبة القيمة المضافة (15%)</td>
+								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 7 ?>" align="right"><?= $this->lang->line('tax_amount'); ?></td>
+
 								<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($tax_amt); ?></td>
 
 							</tr>
@@ -732,11 +720,6 @@
 
 
 									}
-
-
-
-
-
 									?>
 
 
@@ -763,7 +746,7 @@
 						<!-- <tr>
 
 	                     <td style=' padding-left: 2px; padding-right: 2px;' colspan='<?= $mrp_column + 5 ?>' align='right'>Tax Amt</td>
-						 <td style=' padding-left: 2px; padding-right: 2px;' align='center' colspan='2'>ضريبة القيمة المضافة (15%)</td>
+
 	                      <td style=' padding-left: 2px; padding-right: 2px;' align='right'><?= store_number_format($tax_amt); ?></td>
 
 	                </tr> -->
@@ -772,8 +755,8 @@
 
 							<tr>
 
-								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('couponDiscount'); ?> <?= ($coupon_type == 'Percentage') ? $coupon_value . '%' : '[Fixed]'; ?></td>
-								<td style=' padding-left: 2px; padding-right: 2px;' align='center' colspan='2'></td>
+								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 7 ?>" align="right"><?= $this->lang->line('couponDiscount'); ?> <?= ($coupon_type == 'Percentage') ? $coupon_value . '%' : '[Fixed]'; ?></td>
+
 								<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($coupon_amt); ?></td>
 
 							</tr>
@@ -786,8 +769,8 @@
 
 							<tr>
 
-								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5?>" align="right"><?= $this->lang->line('discount'); ?> <?= ($discount_to_all_type == 'in_percentage') ? $discount_to_all_input . '%' : '[Fixed]'; ?></td>
-								<td style=' padding-left: 2px; padding-right: 2px;' align='center' colspan='2'></td>
+								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 7 ?>" align="right"><?= $this->lang->line('discount'); ?> <?= ($discount_to_all_type == 'in_percentage') ? $discount_to_all_input . '%' : '[Fixed]'; ?></td>
+
 								<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($tot_discount_to_all_amt); ?></td>
 
 							</tr>
@@ -796,8 +779,7 @@
 
 						<tr>
 
-							<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('total'); ?></td>
-							<td  style=" padding-left: 2px; padding-right: 2px;" align="center" colspan="2">المجموع شامل ضريبة القيمة المضافة 15% ( ريال )</td>
+							<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 7 ?>" align="right"><?= $this->lang->line('total'); ?></td>
 
 							<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($grand_total); ?></td>
 
@@ -827,26 +809,20 @@
 
 							<tr>
 
-								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('paid_amount'); ?></td>
-								<td  style=" padding-left: 2px; padding-right: 2px;" align="center" colspan="2"></td>
+								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 7 ?>" align="right"><?= $this->lang->line('paid_amount'); ?></td>
+
 								<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($paid_amount + $change_return_amount); ?></td>
 
 							</tr>
 
-							<tr>
-
-								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('refund'); ?></td>
-								<td  style=" padding-left: 2px; padding-right: 2px;" align="center" colspan="2"></td>
-								<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($change_return_amount); ?></td>
-
-							</tr>
+				
 
 						<?php } else { ?>
 
 							<tr>
 
-								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('paid_amount'); ?></td>
-								<td  style=" padding-left: 2px; padding-right: 2px;" align="center" colspan="2"></td>
+								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 7 ?>" align="right"><?= $this->lang->line('paid_amount'); ?></td>
+
 								<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($paid_amount); ?></td>
 
 							</tr>
@@ -854,44 +830,6 @@
 
 
 						<?php } ?>
-
-
-
-						<?php if ($previous_balance_bit == 1) { ?>
-
-							<tr>
-
-								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('previous_due'); ?></td>
-								<td  style=" padding-left: 2px; padding-right: 2px;" align="center" colspan="2"></td>
-								<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($previous_due); ?></td>
-
-							</tr>
-
-							<tr>
-
-								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('total_due_amount'); ?></td>
-								<td  style=" padding-left: 2px; padding-right: 2px;" align="center" colspan="2"></td>
-								<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($total_due); ?></td>
-
-							</tr>
-
-						<?php } ?>
-
-						<?php if (!empty($coupon_code)) { ?>
-
-							<tr>
-
-								<td colspan="<?= $mrp_column + 7 ?>" align="left">
-
-									<b><?= $this->lang->line('couponCode'); ?>:</b> <i><?= getTruncatedCCNumber($coupon_code); ?></i>
-
-								</td>
-
-							</tr>
-
-						<?php } ?>
-
-
 
 						<tr>
 
@@ -902,11 +840,6 @@
 							</td>
 
 						</tr>
-
-
-
-
-
 
 
 						<tr>
