@@ -169,10 +169,6 @@
 		$coupon_type = $coupon_details->type;
 	}
 
-
-
-
-
 	$subtotal = $res3->subtotal;
 
 	$grand_total = $res3->grand_total;
@@ -429,7 +425,7 @@
 								</tr>
 								<tr>
 
-									<td><?= 'VAT / نسبة الضريبة' ?></td>
+									<td><?= 'VAT No' ?></td>
 
 									<td><?= $customer_tax_number; ?></td>
 
@@ -451,7 +447,7 @@
 
 								<tr>
 
-									<td width="40%" align="center"><?= $this->lang->line('invoice') . 'No';  ?></td>
+									<td width="40%" align="center"><?= $this->lang->line('invoice') . ' No';  ?></td>
 
 									<td align="right"><b><?= $sales_code; ?></b></td>
 
@@ -513,7 +509,7 @@
 
 
 							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('quantity') . '<br> الكمية'; ?></th>
-							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Unit Price <br> المجموع الفرعي بدون الضريبة"; ?></th>
+							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Unit Price  <br> المجموع الفرعي بدون الضريبة "; ?></th>
 							<th style="font-size: 11px; text-align: center;padding-left: 2px; padding-right: 2px;"><?= "Tax <br> ضريبة القيمة المضافة"; ?></th>
 
 							<?php if ($mrp_column) { ?>
@@ -523,7 +519,7 @@
 							<?php  } ?>
 
 
-							<th style="font-size: 11px; text-align: right;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('total') . ' <br>الإجمالي ( شامل الضريبة )'; ?></th>
+							<th style="font-size: 11px; text-align: right;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('total') .'<br> الإجمالي شامل الضريبة'; ?></th>
 
 						</tr>
 
@@ -575,7 +571,7 @@
 
 							echo "<td style='text-align: center;padding-left: 2px; padding-right: 2px;'>" . format_qty($res2->sales_qty) . "</td>";
 							echo "<td style='text-align: center;padding-left: 2px; padding-right: 2px;'>" . format_qty($res2->price_per_unit) . "</td>";
-							echo "<td style='text-align: center;padding-left: 2px; padding-right: 2px;'>" . format_qty($res2->tax) . "</td>";
+							echo "<td style='text-align: center;padding-left: 2px; padding-right: 2px;'>" . format_qty($res2->tax_amt) . "</td>";
 
 							if ($mrp_column) {
 
@@ -831,8 +827,8 @@
 
 						<tr>
 
-							<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 4 ?>" align="right"><?= $this->lang->line('total'); ?></td>
-							<td style=" padding-left: 2px; padding-right: 2px;" align="right"></td>
+							<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 4 ?>" align="right"><?= $this->lang->line('total').' with tax'; ?></td>
+							<td style=" padding-left: 2px; padding-right: 2px;" align="right">الإجمالي شامل الضريبة</td>
 							<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($grand_total); ?></td>
 
 						</tr>

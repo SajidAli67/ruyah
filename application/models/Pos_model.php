@@ -526,7 +526,7 @@ class Pos_model extends CI_Model {
 				}
 				//end
 
-				
+
 				$tot_received_amt += $amount;
 				
 			}//if()

@@ -127,14 +127,14 @@ class Money_transfer_model_suppler extends CI_Model {
 	public function verify_and_save(){
 		//Filtering XSS and html escape from user inputs 
 		extract($this->security->xss_clean(html_escape(array_merge($this->data,$_POST))));
-		$store_id=(store_module() && is_admin()) ? $store_id : get_current_store_id();	
-
+		$store_id=(store_module() && is_admin()) ? $store_id : get_current_store_id();
+		
 		$check_balance  = $this->db->select('balance')->where('id',$debit_account_id)->get('ac_accounts')->row()->balance;
 			
 		if($amount >= $check_balance){
 			return 'This Account balance is less then ' . $amount; 
 		}
-		
+
 		$this->db->query("ALTER TABLE ac_moneytransfersuppler AUTO_INCREMENT = 1");
 
 		$info = array(  
@@ -143,7 +143,7 @@ class Money_transfer_model_suppler extends CI_Model {
 	    				'transfer_code' 			=> $transfer_code,
 	    				'transfer_date' 			=> system_fromatted_date($transfer_date),
 	    				'debit_account_id' 			=> $debit_account_id,
-	    				'credit_account_id' 		=> $credit_account_id, 
+	    				'credit_account_id' 			=> $credit_account_id,
 	    				'amount' 					=> $amount,
 	    				'payment_type'				=> $payment_type,
 	    				'note' 						=> $note,
@@ -155,6 +155,7 @@ class Money_transfer_model_suppler extends CI_Model {
 	    				'system_ip' 				=> $SYSTEM_IP,
 	    				'system_name' 				=> $SYSTEM_NAME,
 	    				'status' 					=> 1,
+	    				'created_time_auto' 		=> date("Y/m/d H:i:s")
 	    			);
 		$q1 = $this->db->insert('ac_moneytransfersuppler', $info);
 		if(!$q1){
@@ -177,7 +178,7 @@ class Money_transfer_model_suppler extends CI_Model {
 													'payment_code'  		=> '',
 													'customer_id'  			=> '',
 													'supplier_id'  			=> '',
-													'payment_type'			=> $payment_type,
+													'payment_type' 			=> null,
 											));
 		if(!$insert_bit){
 			return "failed";

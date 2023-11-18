@@ -4,7 +4,7 @@
 
 <head>
 
-	<title>Default Invoice Format</title>
+	<title>Thermal Invoice Format</title>
 
 	<!-- TABLES CSS CODE -->
 
@@ -390,7 +390,7 @@
 
 		<tr>
 		<tr>
-			<td align="center"><strong style="font-size:24px">فاتورة ضريبية مبسطة</strong><br>
+				<td align="center"><strong style="font-size:24px">فاتورة ضريبية مبسطة</strong><br>
 			
 		</td>
 			
@@ -434,9 +434,9 @@
 
 								<tr>
 
-									<td width="40%" align="center"><?= $this->lang->line('invoice'); ?></td>
+									<td width="40%" align="center"><?= $this->lang->line('invoice') .' No'; ?></td>
 
-									<td align="right"><b>#<?= $sales_code; ?></b></td>
+									<td align="right"><b><?= $sales_code; ?></b></td>
 
 								</tr>
 
@@ -493,7 +493,7 @@
 							<?php  } ?>
 
 
-							<th style="font-size: 11px; text-align: right;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('total') . '<br> المجموع'; ?></th>
+							<th style="font-size: 11px; text-align: right;padding-left: 2px; padding-right: 2px;"><?= $this->lang->line('total') . '<br> الإجمالي شامل الضريبة'; ?></th>
 
 						</tr>
 
@@ -624,50 +624,15 @@
 
 						<tr>
 
-							<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column +2 ?>" align="right"><?= $this->lang->line('total'); ?></td>
-							<td style=" padding-left: 2px; padding-right: 2px;" align="center" colspan="3">المجموع</td>
+							<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column +2 ?>" align="right"><?= $this->lang->line('total') . ' with tax'; ?></td>
+							<td style=" padding-left: 2px; padding-right: 2px;" align="center" colspan="3">المجموع شامل ضريبة القيمة المضافة  ( ريال )</td>
 							<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($grand_total); ?></td>
 
 						</tr>
 
 
-
-
-
-						<!-- <tr><td style="border-bottom-style: dashed;border-width: 0.1px;" colspan="5"></td></tr>   -->
-
-						<!-- <tr>
-
-						<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('tot_discounted_amt'); ?></td>
-
-						<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($overall_discounted); ?></td>
-
-					</tr> -->
-
-
-
 						<!-- change_return_status -->
 
-						
-
-							
-
-
-
-
-						<?php if (!empty($coupon_code)) { ?>
-
-							<tr>
-
-								<td colspan="<?= $mrp_column + 5 ?>" align="left">
-
-									<b><?= $this->lang->line('couponCode'); ?>:</b> <i><?= getTruncatedCCNumber($coupon_code); ?></i>
-
-								</td>
-
-							</tr>
-
-						<?php } ?>
 
 
 					</tfoot>

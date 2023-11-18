@@ -164,11 +164,11 @@ function insert_account_transaction($data=array()){
 	else if($transaction_type=='TRANSFER_SUPPLER'){
 		if($process=='UPDATE'){
 			//delete previouse data of the transactions
-			$CI->db->where("ref_moneydeposits_id",$reference_table_id)->delete("ac_transactions");
+			$CI->db->where("ac_moneytransfersuppler",$reference_table_id)->delete("ac_transactions");
 		}
 		$transaction = array( 
 								"transaction_type" 		=> $transaction_type,
-								
+								"ref_suppler_transfer_id" => $reference_table_id,
 								"debit_account_id" 		=> $debit_account_id,
 								"credit_account_id" 	=> $credit_account_id,
 								"debit_amt"		 		=> $debit_amt,
@@ -273,4 +273,9 @@ function update_customer_balance($customer_id, $amount, $status = false){
 	}
 	return true;
 
+}
+
+function get_debit_note($sale_id){
+	$CI =& get_instance();
+	return  $CI->db->select('*')->where('sale_id',$sale_id)->get('db_saleitemdebitnote as e')->row();
 }

@@ -1075,6 +1075,14 @@
       return str_pad($maxid, 4, '0', STR_PAD_LEFT);
 
     }
+    
+    if($value=='saleitemdebitnote'){
+
+      $maxid=get_count_id('db_saleitemdebitnote');
+
+      return str_pad($maxid, 4, '0', STR_PAD_LEFT);
+
+    }
 
     if($value=='sales_payment'){
 
@@ -2775,8 +2783,9 @@ function get_purchasereturn_details($id){
     return true;
 
   }
-
-  function get_sn_item_name($sn){
+  
+  
+ function get_sn_item_name($sn){
     $CI =& get_instance();
      $query =  $CI->db->select('item_id')->where("sn_number",$sn)->get('db_itemsn')->row();
      if(!empty($query)){

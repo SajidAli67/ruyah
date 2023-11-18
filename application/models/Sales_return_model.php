@@ -460,6 +460,42 @@ class Sales_return_model extends CI_Model {
 		return "success<<<###>>>$return_id";
 		
 	}//verify_save_and_update() function end
+	
+	
+	public function save_debit_note(){
+		extract($this->xss_html_filter(array_merge($this->data,$_POST,$_GET)));
+		
+		$data = array(
+				'sale_id' => $sales_id,
+				'debit_note_amount' => $amount,
+				'store_id' => get_current_store_id(),
+				'count_id' =>  get_count_id('db_saleitemdebitnote'),
+				'debit_code' => get_init_code("saleitemdebitnote")
+			);
+			
+			$this->db->insert('db_saleitemdebitnote',$data);
+
+
+			$insert_bit = insert_account_transaction(array(
+				'transaction_type'  	=> 'SALES PAYMENT RETURN',
+				'reference_table_id'  	=> null,
+				'debit_account_id'  	=> $account_id,
+				'credit_account_id'  	=> null,
+				'debit_amt'  			=> $amount,
+				'credit_amt'  			=> 0,
+				'process'  				=> 'SAVE',
+				'transaction_date'  	=> $CUR_DATE,
+				'customer_id'  			=> $customer_id,
+				'supplier_id'  			=> null,
+				'payment_type' 			=> $payment_type,
+		));
+
+		update_account_balance($account_id, $amount, false);
+		// $this->update_sales_payment_status($return_id,$customer_id);
+		
+			$this->session->set_flashdata('success', 'Success!! Record Saved Successfully! ');
+			return "success<<<###>>>$sales_id";
+	}
 
 
 
@@ -899,10 +935,10 @@ class Sales_return_model extends CI_Model {
                <td id="td_<?=$rowcount;?>_3">
                   <div class="input-group ">
                      <span class="input-group-btn">
-                     <button onclick="decrement_qty(<?=$rowcount;?>)" type="button" class="btn btn-default btn-flat"><i class="fa fa-minus text-danger"></i></button></span>
-                     <input typ="text" value="<?=format_qty($item_sales_qty);?>" class="form-control no-padding text-center" onkeyup="calculate_tax(<?=$rowcount;?>)" id="td_data_<?=$rowcount;?>_3" name="td_data_<?=$rowcount;?>_3">
+                     <button onclick="decrement_qty(<?=$rowcount;?>)" type="button" class="btn btn-default btn-flat" disabled><i class="fa fa-minus text-danger"></i></button></span>
+                     <input typ="text" value="<?=format_qty($item_sales_qty);?>" class="form-control no-padding text-center" onkeyup="calculate_tax(<?=$rowcount;?>)" id="td_data_<?=$rowcount;?>_3" name="td_data_<?=$rowcount;?>_3" readonly>
                      <span class="input-group-btn">
-                     <button onclick="increment_qty(<?=$rowcount;?>)" type="button" class="btn btn-default btn-flat"><i class="fa fa-plus text-success"></i></button></span>
+                     <button onclick="increment_qty(<?=$rowcount;?>)" type="button" class="btn btn-default btn-flat" disabled><i class="fa fa-plus text-success"></i></button></span>
                   </div>
                </td>
                
