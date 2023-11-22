@@ -333,4 +333,53 @@ class Purchase_return extends MY_Controller {
 	}
 
 
+
+	public function crete_note($id){
+		$this->belong_to('db_purchase',$id);
+		$this->permission_check('purchase_return_edit');
+
+		$q2=$this->db->query("select purchase_status from db_purchase where id=".$id);
+		if($q2->row()->purchase_status!='Received'){
+			$this->session->set_flashdata('warning','Sorry! '.$q2->row()->purchase_status.' Invoice could not be returned!');
+			redirect($_SERVER['HTTP_REFERER']);
+			exit();
+		}
+
+		$data=$this->data;
+		$data=array_merge($data,array('purchase_id'=>$id));
+		$data['page_title']=$this->lang->line('purchase_return');
+		$data['oper']='return_against_purchase';
+		$data['subtitle']=$this->lang->line('return_against_purchase');;
+		$this->load->view('purchase/crete_note', $data);
+	}
+
+
+	public function debit_save(){
+		$this->form_validation->set_rules('return_date', 'Return Date', 'trim|required');
+		$this->form_validation->set_rules('supplier_id', 'Supplier Name', 'trim|required');
+	
+		if ($this->form_validation->run() == TRUE) {
+	    	$result = $this->purchase->save_crete_note();
+	    	echo $result;
+			// redirect('')
+		} else {
+			echo "Please Fill Compulsory(* marked) Fields.";
+		}
+	}
+
+	public function crete_note_invoice($id)
+	{	
+		
+		//$this->belong_to('db_purchasereturn',$return_id);
+		$this->belong_to('db_purchase',$id);
+		if(!$this->permissions('purchase_add') && !$this->permissions('purchase_edit')){
+			$this->show_access_denied_page();
+		}
+		$data=$this->data;
+		$data=array_merge($data,array('purchase_id'=>$id));
+		$data['page_title']=$this->lang->line('purchase_invoice');
+		// $this->load->view('pur-invoice',$data);
+		$this->load->view('purchase/purchase_crete_invoice',$data);
+
+	}
 }

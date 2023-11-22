@@ -1076,9 +1076,17 @@
 
     }
     
-    if($value=='saleitemdebitnote'){
+    if($value=='db_saledebitnote'){
 
-      $maxid=get_count_id('db_saleitemdebitnote');
+      $maxid=get_count_id('db_saledebitnote');
+
+      return str_pad($maxid, 4, '0', STR_PAD_LEFT);
+
+    }
+
+    if($value=='db_purchasedebitnote'){
+
+      $maxid=get_count_id('db_purchasedebitnote');
 
       return str_pad($maxid, 4, '0', STR_PAD_LEFT);
 
