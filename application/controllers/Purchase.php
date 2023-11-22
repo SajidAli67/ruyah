@@ -154,21 +154,17 @@ class Purchase extends MY_Controller {
 											if($this->permissions('purchase_return_add'))
 											$str2.='<li>
 												<a title="Purchase Return" href="'.base_url().'purchase_return/add/'.$purchase->id.'">
-													<i class="fa fa-fw fa-undo text-blue"></i>Purchase Return
+													<i class="fa fa-fw fa-undo text-blue"></i>debit note
 												</a>
 											</li>';
 
 											$str2.='<li>
-												<a title="Purchase Return" href="'.base_url().'purchase_return/add/'.$purchase->id.'">
-													<i class="fa fa-fw fa-undo text-blue"></i>Debit note
+												<a title="Sales Return" href="'.base_url().'purchase_return/crete_note/'.$purchase->id.'">
+													<i class="fa fa-fw fa-undo text-blue"></i>crete note
 												</a>
 											</li>';
 
-											$str2.='<li>
-												<a title="Purchase Return" href="'.base_url().'purchase_return/add/'.$purchase->id.'">
-													<i class="fa fa-fw fa-undo text-blue"></i>Credit note
-												</a>
-											</li>';
+			
 
 											if($this->permissions('purchase_delete'))
 											$str2.='<li>

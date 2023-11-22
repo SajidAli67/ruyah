@@ -279,3 +279,8 @@ function get_debit_note($sale_id){
 	$CI =& get_instance();
 	return  $CI->db->select('*')->where('sale_id',$sale_id)->get('db_saleitemdebitnote as e')->row();
 }
+
+function get_credit_note($purchase_id){
+	$CI =& get_instance();
+	return  $CI->db->select('*')->where('purchase_id',$purchase_id)->get('db_purchasedebitnote as e')->row();
+}

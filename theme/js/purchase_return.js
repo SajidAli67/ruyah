@@ -557,4 +557,107 @@ function delete_return_payment(payment_id){
  if(key == 13){
     $("#item_search").autocomplete('search');
   }
-});  
+}); 
+
+
+$('#save_crete_note').on("click",function (e) {
+	var base_url=$("#base_url").val();
+
+    //Initially flag set true
+    var flag=true;
+
+    function check_field(id)
+    {
+
+      if(!$("#"+id).val() ) //Also check Others????
+        {
+
+            $('#'+id+'_msg').fadeIn(200).show().html('Required Field').addClass('required');
+           // $('#'+id).css({'background-color' : '#E8E2E9'});
+            flag=false;
+        }
+        else
+        {
+             $('#'+id+'_msg').fadeOut(200).hide();
+             //$('#'+id).css({'background-color' : '#FFFFFF'});    //White color
+        }
+    }
+
+
+   //Validate Input box or selection box should not be blank or empty
+	  check_field("supplier_id");
+    check_field("return_date");
+    check_field("return_status");
+    //check_field("warehouse_id");
+	/*if(!isNaN($("#amount").val()) && parseInt($("#amount").val())==0){
+        toastr["error"]("You have entered Payment Amount! <br>Please Select Payment Type!");
+        return;
+    }*/
+	if(flag==false)
+	{
+		toastr["error"]("You have missed Something to Fillup!");
+		return;
+	}
+
+	//Atleast one record must be added in purchase table 
+    var rowcount=document.getElementById("hidden_rowcount").value;
+	var flag1=false;
+	for(var n=1;n<=rowcount;n++){
+		if($("#td_data_"+n+"_3").val()!=null && $("#td_data_"+n+"_3").val()!=''){
+			flag1=true;
+		}	
+	}
+	
+    if(flag1==false){
+    	toastr["warning"]("Please Select Item!!");
+        $("#item_search").focus();
+		return;
+    }
+    //end
+
+    var tot_subtotal_amt=$("#subtotal_amt").text();
+    var other_charges_amt=$("#other_charges_amt").text();//other_charges include tax calcualated amount
+    var tot_discount_to_all_amt=$("#discount_to_all_amt").text();
+    var tot_round_off_amt=$("#round_off_amt").text();
+    var tot_total_amt=$("#total_amt").text();
+
+    var this_id=this.id;
+    
+			//if(confirm("Do You Wants to Save Record ?")){
+				e.preventDefault();
+				data = new FormData($('#purchase-form-crete-note')[0]);//form name
+        /*Check XSS Code*/
+        if(!xss_validation(data)){ return false; }
+        
+        $(".box").append('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+        $("#"+this_id).attr('disabled',true);  //Enable Save or Update button
+				$.ajax({
+				type: 'POST',
+				url: base_url+'purchase_return/debit_save?command='+this_id+'&rowcount='+rowcount+'&tot_subtotal_amt='+tot_subtotal_amt+'&tot_discount_to_all_amt='+tot_discount_to_all_amt+'&tot_round_off_amt='+tot_round_off_amt+'&tot_total_amt='+tot_total_amt+"&other_charges_amt="+other_charges_amt,
+				data: data,
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(result){
+         // alert(result);return;
+				result=result.split("<<<###>>>");
+					if(result[0]=="success")
+					{
+						location.href=base_url+"purchase_return/crete_note_invoice/"+result[1];
+					}
+					else if(result[0]=="failed")
+					{
+					   toastr['error']("Sorry! Failed to save Record.Try again");
+					}
+					else
+					{
+						alert(result);
+					}
+					$("#"+this_id).attr('disabled',false);  //Enable Save or Update button
+					$(".overlay").remove();
+
+			   }
+			   });
+		//}
+  
+});

@@ -1084,6 +1084,14 @@
 
     }
 
+    if($value=='db_purchasedebitnote'){
+
+      $maxid=get_count_id('db_purchasedebitnote');
+
+      return str_pad($maxid, 4, '0', STR_PAD_LEFT);
+
+    }
+
     if($value=='sales_payment'){
 
       $maxid=get_count_id('db_salespayments');
