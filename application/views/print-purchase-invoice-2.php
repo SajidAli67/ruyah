@@ -83,13 +83,6 @@
   <?php
 
 
-  use Salla\ZATCA\GenerateQrCode;
-  use Salla\ZATCA\Tags\InvoiceDate;
-  use Salla\ZATCA\Tags\InvoiceTaxAmount;
-  use Salla\ZATCA\Tags\InvoiceTotalAmount;
-  use Salla\ZATCA\Tags\Seller;
-  use Salla\ZATCA\Tags\TaxNumber;
-
 
   $q1 = $this->db->query("select * from db_store where status=1 and id=" . get_current_store_id());
   $res1 = $q1->row();
@@ -170,27 +163,10 @@
 
 
 
-  $displayQRCodeAsBase64 = GenerateQrCode::fromArray([
-    new Seller($store_name), // seller name        
-    new TaxNumber($company_vat_no), // seller tax number
-    new InvoiceDate($purchase_date . ' ' . $created_time), // invoice date as Zulu ISO8601 @see https://en.wikipedia.org/wiki/ISO_8601
-    new InvoiceTotalAmount(number_format($grand_total, 2, '.', '')), // invoice total amount
-    // new InvoiceTaxAmount(number_format(($tax_amt), 2, '.', '')) // invoice tax amount
-    // TODO :: Support others tags
-  ])->render();
-
-
   ?>
 
-  <caption>
-    <center>
-      <span style="font-size: 18px;text-transform: uppercase;">
-        <?= $this->lang->line('purchase_invoice') ?>
-      </span>
-    </center>
-  </caption>
 
-  <table autosize="1" id='mytable' align="center" width="100%" cellpadding="0" cellspacing="0">
+  <table id='mytable' align="center" width="100%" cellpadding="0" cellspacing="0">
     <!-- <table align="center" width="100%" height='100%'   > -->
 
     <thead>
@@ -246,18 +222,12 @@
 
             <tr>
 
-              <td align="center"><strong style="font-size:24px">فاتورة ضريبية مبسطة</strong><br>
+              <td align="center"><strong style="font-size:24px"><?= $this->lang->line('purchase_invoice') ?></strong><br>
 
               </td>
 
             </tr>
 
-            <tr align="center">
-              <td>
-                <?php echo "<img src='" . $displayQRCodeAsBase64 . "' alt='QR Code' style='width:130px; height:130px;' />" ?>
-
-              </td>
-            </tr>
             <tr>
 
               <table width="100%">
@@ -300,7 +270,7 @@
 
                       <tr align="right">
                         <td colspan="4">
-                          Invoice No.
+                          Order No.
 
                         </td>
                         <td align="right">
@@ -345,12 +315,13 @@
       <tr class="bg-sky"><!-- Colspan 10 -->
         <th colspan='2' class="text-center"><?= $this->lang->line('sl_no'); ?></th>
         <th colspan='4' class="text-center"><?= $this->lang->line('description_of_goods'); ?></th>
-        <th colspan='2' class="text-center"><?= $this->lang->line('hsn'); ?></th>
         <th colspan='2' class="text-center"><?= $this->lang->line('unit_cost'); ?></th>
         <th colspan='1' class="text-center"><?= $this->lang->line('qty'); ?></th>
+        <th colspan='2' class="text-center"><?= $this->lang->line('price'); ?></th>
+        <th colspan='1' class="text-center"><?= $this->lang->line('disc.'); ?></th>
         <th colspan='1' class="text-center"><?= $this->lang->line('tax'); ?></th>
         <th colspan='1' class="text-center"><?= $this->lang->line('tax_amt'); ?></th>
-        <th colspan='1' class="text-center"><?= $this->lang->line('disc.'); ?></th>
+        
         <!-- <th colspan='2' class="text-center"><?= $this->lang->line('rate'); ?></th> -->
         <th colspan='2' class="text-center"><?= $this->lang->line('amount'); ?></th>
       </tr>
@@ -358,9 +329,9 @@
 
 
 
-    <tbody>
+    <tbody class="text-center">
       <tr>
-        <td colspan='16'>
+        <td  colspan="16">
           <?php
           $i = 1;
           $tot_qty = 0;
@@ -394,23 +365,24 @@
 
             echo "<tr>";
             echo "<td colspan='2' class='text-center'>" . $i++ . "</td>";
-            echo "<td colspan='4'>";
+            echo "<td colspan='4' class='text-center'>";
             echo $res2->item_name;
             echo (!empty($res2->description)) ? "<br><i>[" . nl2br($res2->description) . "]</i>" : '';
             echo "</td>";
-            echo "<td colspan='2' class='text-left'>" . $res2->hsn . "</td>";
-            echo "<td colspan='2' class='text-right'>" . store_number_format($res2->price_per_unit) . "</td>";
+            echo "<td colspan='2' class='text-center'>" . store_number_format($res2->price_per_unit) . "</td>";
 
             echo "<td class='text-center'>" . format_qty($res2->purchase_qty) . "</td>";
-            echo "<td colspan='1' class='text-right'>" . store_number_format($res2->tax) . "%</td>";
-            echo "<td style='text-align: right;'>" . store_number_format($res2->tax_amt) . "</td>";
+            echo "<td  colspan='2 class='text-center'>" . store_number_format($res2->price_per_unit) . "</td>";
+            echo "<td class='text-center'>" . store_number_format($discount_amt) . "</td>";
+            echo "<td colspan='1' class='text-center'>" . store_number_format($res2->tax) . "%</td>";
+            echo "<td class='text-center'>" . store_number_format($res2->tax_amt) . "</td>";
             //echo "<td style='text-align: right;'>".$discount."</td>";
-            echo "<td style='text-align: right;'>" . store_number_format($discount_amt) . "</td>";
+           
 
             //echo "<td colspan='2' class='text-right'>".number_format($before_tax,2)."</td>";
             //echo "<td class='text-right'>".$res2->price_per_unit."</td>";
 
-            echo "<td colspan='2' class='text-right'>" . store_number_format($res2->total_cost) . "</td>";
+            echo "<td colspan='2' class='text-center'>" . store_number_format($res2->total_cost) . "</td>";
             echo "</tr>";
             $tot_qty += $res2->purchase_qty;
             $tot_purchase_price += $res2->price_per_unit;
@@ -427,32 +399,34 @@
 
 
     <tfoot>
+      
 
 
       <tr class="bg-sky">
         <td colspan="8" class='text-center text-bold'><?= $this->lang->line('total'); ?></td>
-        <td colspan="2" class='text-right'><b><?php echo store_number_format($tot_purchase_price); ?></b></td>
+        <td colspan="2" class='text-center'><b><?php echo store_number_format($tot_purchase_price); ?></b></td>
         <td colspan="1" class='text-bold text-center'><?= format_qty($tot_qty); ?></td>
         <td colspan="1" class='text-bold text-center'></td>
-        <td colspan="1" class='text-right'><b><?php echo store_number_format($tot_tax_amt); ?></b></td>
-        <td colspan="1" class='text-right'><b><?php echo store_number_format($tot_discount_amt); ?></b></td>
-        <td colspan="2" class='text-right'><b><?php echo store_number_format($tot_total_cost); ?></b></td>
+        <td colspan="1" class='text-centert'><b><?php echo store_number_format($tot_tax_amt); ?></b></td>
+        <td colspan="1" class='text-center'><b><?php echo store_number_format($tot_discount_amt); ?></b></td>
+        <td colspan="2" class='text-center'><b><?php echo store_number_format($tot_total_cost); ?></b></td>
       </tr>
       <tr>
         <td colspan="14" class='text-right'><b><?= $this->lang->line('subtotal'); ?></b></td>
         <td colspan="2" class='text-right'><b><?php echo store_number_format($tot_total_cost); ?></b></td>
       </tr>
 
-
-      <tr>
-        <td colspan="14" class='text-right'><b><?= $this->lang->line('other_charges'); ?></b></td>
-        <td colspan="2" class='text-right'><b><?php echo store_number_format($other_charges_amt); ?></b></td>
-      </tr>
-
       <tr>
         <td colspan="14" class='text-right'><b><?= $this->lang->line('discount_on_all'); ?>(<?= store_number_format($discount_to_all_input) . " " . $discount_to_all_type; ?>)</b></td>
         <td colspan="2" class='text-right'><b><?php echo store_number_format($tot_discount_to_all_amt); ?></b></td>
       </tr>
+
+      <tr>
+        <td colspan="14" class='text-right'><b><?= 'Tax Amount'; ?></b></td>
+        <td colspan="2" class='text-right'><b><?php echo store_number_format($tot_tax_amt); ?></b></td>
+      </tr>
+
+     
 
       <tr>
         <td colspan="14" class='text-right'><b><?= $this->lang->line('grand_total'); ?></b></td>
@@ -473,57 +447,10 @@
           </span>
         </td>
       </tr>
-
-
-
-      <!-- T&C & Bank Details & signatories-->
-      <tr>
-        <td colspan="16">
-          <table width="100%" class="style_hidden fixed_table">
-
-            <tr>
-              <td colspan="16">
-                <span>
-                  <table style="width: 100%;" class="style_hidden fixed_table">
-
-                    <!-- T&C & Bank Details -->
-                    <!-- <tr>
-                          <td colspan="16">
-                            <span><b> <?= $this->lang->line('terms_and_conditions'); ?></b></span><br>
-                            <span style='font-size: 8px;'><?= nl2br($terms_and_conditions);  ?></span>
-                          </td>
-                        </tr>
- -->
-                    <tr>
-                      <td colspan='8' style="height:80px;">
-                        <span><b> <?= $this->lang->line('supplier_signature'); ?></b></span>
-                      </td>
-                      <td colspan='8'>
-                        <span><b> <?= $this->lang->line('authorised_signatory'); ?></b></span>
-                      </td>
-                    </tr>
-
-                  </table>
-                </span>
-              </td>
-            </tr>
-
-          </table>
-        </td>
-      </tr>
-      <!-- T&C & Bank Details & signatories End -->
-
-
     </tfoot>
 
   </table>
-  <!-- <caption>
-      <center>
-        <span style="font-size: 11px;text-transform: uppercase;">
-          This is Computer Generated Invoice
-        </span>
-      </center>
-</caption> -->
+  
 </body>
 
 </html>
