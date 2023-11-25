@@ -277,7 +277,7 @@ function update_customer_balance($customer_id, $amount, $status = false){
 
 function get_debit_note($sale_id){
 	$CI =& get_instance();
-	return  $CI->db->select('*')->where('sale_id',$sale_id)->get('db_saleitemdebitnote as e')->row();
+	return  $CI->db->select('*')->where('sale_id',$sale_id)->get('db_saledebitnote as e')->row();
 }
 
 function get_credit_note($purchase_id){
