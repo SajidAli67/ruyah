@@ -87,7 +87,7 @@ class Purchase extends MY_Controller {
 			
 			$row[] = show_date($purchase->purchase_date);
 
-			$info = (!empty($purchase->return_bit)) ? "<br><span class='label label-danger' style='cursor:pointer'><i class='fa fa-fw fa-undo'></i>Return Raised</span>" : '';
+			$info = (!empty($purchase->return_bit)) ? "<br><span class='label label-danger' style='cursor:pointer'><i class='fa fa-fw fa-undo'></i>Debit Note</span>" : '';
 
 			$row[] = $purchase->purchase_code.$info;
 			$row[] = $purchase->purchase_status;
