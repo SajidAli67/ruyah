@@ -531,7 +531,8 @@
 
                                   a.discount_input,a.discount_amt, a.unit_total_cost,
 
-                                  a.total_cost , d.unit_name,c.sku,c.hsn
+                                  a.total_cost , d.unit_name,c.sku,c.hsn,e.debit_note_amount,f.unit_price,f.qty,f.tax_amt,
+                                  f.unit_total_cost
 
                               ");
 
@@ -544,6 +545,9 @@
 						$this->db->join("db_items c", "c.id=a.item_id", "left");
 
 						$this->db->join("db_units d", "d.id = c.unit_id", "left");
+						$this->db->join("db_saledebitnote e", "e.sale_id = a.sales_id", "left");
+						$this->db->join("db_saleitemdebitnote f", "f.item_id = a.item_id AND f.saledebit_id = e.id", "left");
+						$this->db->where("e.sale_id", $sales_id);
 				
 							// print_r(get_debit_note($sales_id));
 							// exit();
@@ -551,7 +555,7 @@
 						$q2 = $this->db->get();
 						
 						foreach ($q2->result() as $res2) {
-
+							if($res2->qty != 0){
 							echo "<tr>";
 
 							echo "<td style='padding-left: 2px; padding-right: 2px;' valign='top'>" . ++$i . "</td>";
@@ -580,11 +584,12 @@
 
 							//$tot_qty+=$res2->sales_qty;
 
-							$subtotal += ($res2->total_cost);
+							$subtotal += ($res2->total_cost + $debit_note->debit_note_amount);
 
 							$tax_amt += $res2->tax_amt;
 
 							$overall_discounted += $res2->discount_amt;
+							}
 						}
 
 						$before_tax = $subtotal - $tax_amt;
@@ -619,6 +624,18 @@
 							<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($before_tax); ?></td>
 
 						</tr>
+
+						<?php if (!empty($tot_discount_to_all_amt) && $tot_discount_to_all_amt != 0) { ?>
+
+						<tr>
+
+							<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 7 ?>" align="right"><?= $this->lang->line('discount'); ?> <?= ($discount_to_all_type == 'in_percentage') ? $discount_to_all_input . '%' : '[Fixed]'; ?></td>
+
+							<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($tot_discount_to_all_amt); ?></td>
+
+						</tr>
+
+						<?php } ?>
 
 
 
@@ -733,24 +750,6 @@
 
 						?>
 
-						<!-- End -->
-
-						<!-- <tr >
-
-						<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 5 ?>" align="right"><?= $this->lang->line('subtotal'); ?></td>
-
-						<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($subtotal); ?></td>
-
-					</tr> -->
-
-						<!-- <tr>
-
-	                     <td style=' padding-left: 2px; padding-right: 2px;' colspan='<?= $mrp_column + 5 ?>' align='right'>Tax Amt</td>
-
-	                      <td style=' padding-left: 2px; padding-right: 2px;' align='right'><?= store_number_format($tax_amt); ?></td>
-
-	                </tr> -->
-
 						<?php if (!empty($coupon_code)) { ?>
 
 							<tr>
@@ -765,71 +764,21 @@
 
 
 
-						<?php if (!empty($tot_discount_to_all_amt) && $tot_discount_to_all_amt != 0) { ?>
-
-							<tr>
-
-								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 7 ?>" align="right"><?= $this->lang->line('discount'); ?> <?= ($discount_to_all_type == 'in_percentage') ? $discount_to_all_input . '%' : '[Fixed]'; ?></td>
-
-								<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($tot_discount_to_all_amt); ?></td>
-
-							</tr>
-
-						<?php } ?>
+					
 
 						<tr>
 
 							<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 7 ?>" align="right"><?= $this->lang->line('total'); ?></td>
 
-							<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($grand_total); ?></td>
+							<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($before_tax + $tax_amt); ?></td>
 
 						</tr>
 
 
 
-
-
-						<!-- <tr><td style="border-bottom-style: dashed;border-width: 0.1px;" colspan="5"></td></tr>   -->
-
-						<!-- <tr>
-
-						<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 7 ?>" align="right"><?= $this->lang->line('tot_discounted_amt'); ?></td>
-
-						<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($overall_discounted); ?></td>
-
-					</tr> -->
-
-
-
 						<!-- change_return_status -->
 
-						<?php if (change_return_status()) {
-
-							$change_return_amount = get_change_return_amount($sales_id); ?>
-
-							<tr>
-
-								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 7 ?>" align="right"><?= $this->lang->line('paid_amount'); ?></td>
-
-								<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($paid_amount + $change_return_amount); ?></td>
-
-							</tr>
-
-				
-
-						<?php } else { ?>
-
-							<tr>
-
-								<td style=" padding-left: 2px; padding-right: 2px;" colspan="<?= $mrp_column + 7 ?>" align="right"><?= $this->lang->line('paid_amount'); ?></td>
-
-								<td style=" padding-left: 2px; padding-right: 2px;" align="right"><?= store_number_format($paid_amount); ?></td>
-
-							</tr>
-
-
-
-						<?php } ?>
+					
 
 						<tr>
 

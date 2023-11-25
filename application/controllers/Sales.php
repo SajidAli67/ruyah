@@ -215,10 +215,18 @@ class Sales extends MY_Controller {
 												<a title="Sales Return" href="'.base_url().'sales_return/add/'.$sales->id.'">
 													<i class="fa fa-fw fa-undo text-blue"></i>Credit note
 												</a>
-											</li>
+											</li>';
+										
+											if(!empty(get_debit_note($sales->id))){
+												$str2.='<li>
+												<a title="Print Invoice Debit" target="_blank" href="'.base_url().'sales_return/invoice_debit_note/'.$sales->id.'">
+												<i class="fa fa-fw fa-file-text text-blue"></i>Print Debit note
+												</a>
+												</li>';
+												
+											}
 											
-											
-										</ul>
+											$str2.='</ul>
 									</div>';			
 
 			$row[] = $str2;
