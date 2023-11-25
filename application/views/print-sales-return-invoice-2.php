@@ -21,8 +21,7 @@
 
     th,
     td {
-      /*padding: 5px;*/
-      text-align: left;
+    
       vertical-align: top
     }
 
@@ -115,7 +114,7 @@
   $q3 = $this->db->query("SELECT b.coupon_id,b.coupon_amt,a.customer_name,a.mobile,a.phone,a.gstin,a.tax_number,a.email,
                            a.opening_balance,a.country_id,a.state_id,a.created_by,
                            a.postcode,a.address,b.return_date,b.created_time,b.reference_no,
-                           b.return_code,b.return_note,b.return_status,
+                           b.return_code,b.return_note,b.return_status,b.sales_id,
                            coalesce(b.grand_total,0) as grand_total,
                            coalesce(b.subtotal,0) as subtotal,
                            coalesce(b.paid_amount,0) as paid_amount,
@@ -155,7 +154,7 @@
   $return_note = $res3->return_note;
   $return_status = $res3->return_status;
   $created_by = $res3->created_by;
-
+  $sale_id = $res3->sales_id;
   $coupon_id = $res3->coupon_id;
   $coupon_amt = $res3->coupon_amt;
 
@@ -185,17 +184,12 @@
 
 
 
+$sale_detail = get_sales_details($sale_id);
 
 
   ?>
 
-  <caption>
-    <center>
-      <span style="font-size: 18px;text-transform: uppercase;">
-        <?= $this->lang->line('return_invoice') ?>
-      </span>
-    </center>
-  </caption>
+
 
   <table autosize="1" style="overflow: wrap" id='mytable' align="center" width="100%" height='100%' cellpadding="0" cellspacing="0">
     <!-- <table align="center" width="100%" height='100%'   > -->
@@ -248,98 +242,119 @@
                         ?>  -->
 
                 </span>
-                <br><strong style="font-size:24px">فاتورة ضريبية مبسطة</strong><br>
+                <br><strong style="font-size:24px"> Sale Credit Note</strong><br>
               </td>
             </tr>
 
-            <tr>
-              <!-- First Half -->
-
-
-              <td colspan="8">
-                <b><?php echo $store_name; ?></b><br />
-                <span style="font-size: 10px;">
-                  <?php echo $company_address; ?><br />
-                  <?php echo $this->lang->line('mob.') . ":" . $company_mobile; ?><br />
-
-
-                  <?php echo (!empty(trim($company_email))) ? $this->lang->line('email') . ": " . $company_email . "<br>" : ''; ?>
-                  <?php echo (!empty(trim($company_gst_no))) ? $this->lang->line('gst_number') . ": " . $company_gst_no . "<br>" : ''; ?>
-                  <?php echo (!empty(trim($company_vat_number))) ? $this->lang->line('tax_number') . ": " . $company_vat_number . "<br>" : ''; ?>
-                </span>
-              </td>
-
-              <!-- Second Half -->
-              <td colspan="8" rowspan="1">
-                <span>
-                  <table style="width: 100%;" class="style_hidden fixed_table">
-
-                    <tr>
-                      <td colspan="8">
-                        Invoice No.<br>
-                        <span style="font-size: 25px;">
-                          <b><?php echo "$return_code"; ?></b>
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="8">
-                        Dated<br>
-                        <span style="font-size: 10px;">
-                          <b><?php echo show_date($return_date); ?></b>
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="8">
-                        Reference No.<br>
-                        <span style="font-size: 10px;">
-                          <b><?php echo "$reference_no"; ?></b>
-                        </span>
-                      </td>
-
-                    </tr>
-
-
-
-
-
-
-
-                  </table>
-                </span>
-              </td>
-            </tr>
 
             <tr>
               <!-- Bottom Half -->
               <td colspan="16">
-                <b><?= $this->lang->line('customer_address'); ?></b><br />
-                <span style="font-size: 10px;">
-                  <?php echo $this->lang->line('name') . ": " . $customer_name; ?><br />
-                  <?php echo (!empty(trim($customer_mobile))) ? $this->lang->line('mobile') . ": " . $customer_mobile . "<br>" : ''; ?>
-                  <?php
-                  if (!empty($customer_address)) {
-                    echo $customer_address;
-                  }
-                  /*if(!empty($customer_country)){
-                                  echo $customer_country;
-                                }
-                                if(!empty($customer_state)){
-                                  echo ",".$customer_state;
-                                }
-                                if(!empty($customer_city)){
-                                  echo ",".$customer_city;
-                                }
-                                if(!empty($customer_postcode)){
-                                  echo "-".$customer_postcode;
-                                }*/
-                  ?>
-                  <br>
-                  <?php echo (!empty(trim($customer_email))) ? $this->lang->line('email') . ": " . $customer_email . "<br>" : ''; ?>
-                  <?php echo (!empty(trim($customer_gst_no))) ? $this->lang->line('gst_number') . ": " . $customer_gst_no . "<br>" : ''; ?>
-                  <!--<?php echo (!empty(trim($customer_tax_number))) ? $this->lang->line('tax_number') . ": " . $customer_tax_number . "<br>" : ''; ?> -->
-                </span>
+
+              <table width="100%"> 
+                <tr>
+                  <td width="50%">
+                      <table>
+                        <tr>
+                          <td> <?= $this->lang->line('name') ?></td>
+                          <td><?php echo $customer_name; ?></td>
+                        </tr>
+
+                        <tr>
+                          <td><?= $this->lang->line('email') ?></td>
+                          <td><?php echo $customer_email; ?></td>
+                        </tr>
+
+                        <tr>
+                          <td><?= $this->lang->line('mobile') ?></td>
+                          <td><?php echo $customer_mobile; ?></td>
+                        </tr>
+
+                        <tr>
+                          <td><?= 'VAT' ?></td>
+                          <td><?php echo $customer_tax_number; ?></td>
+                        </tr>
+
+                        <tr>
+                          <td><?= $this->lang->line('address') ?></td>
+                          <td><?php echo $customer_address; ?></td>
+                        </tr>
+                      </table>
+                  </td>
+
+                  <!-- Second Half -->
+                  <td width="50%" align="right">
+      
+                      <table style="width: 100%;">
+
+
+                        <tr align="right">
+                          <td colspan="4">
+                            Invoice Return.
+                          </td>
+                          <td align="right">
+                              <?php echo $return_code; ?>
+                          </td>
+                        </tr>
+
+                        <tr align="right">
+                          <td colspan="4">
+                            Return status.
+                          </td>
+                          <td align="right">
+                              <?= 'Credit Note'; ?>
+
+                          </td>
+                        </tr>
+
+                        <tr align="right">
+                          <td colspan="4">
+                            Dated
+                          </td>
+
+                          <td align="right">
+                            <?php echo show_date($return_date); ?>
+                          </td>
+                        </tr>
+                       
+
+                        <tr align="right">
+                          <td colspan="4">
+                            Reference No.
+
+                          </td>
+                          <td align="right">
+                            <?php echo  $reference_no; ?>
+
+                          </td>
+                        </tr>
+                        <tr align="right">
+                          <td colspan="4">
+                          Return Agains Sale Invoice.
+
+                          </td>
+                          <td align="right">
+                            <?php echo $sale_detail->sales_code; ?>
+
+                          </td>
+                        </tr>
+
+                        <tr align="right">
+                          <td colspan="4">
+                            Sale Dated
+                          </td>
+
+                          <td align="right">
+                            <?php echo show_date($sale_detail->sales_date); ?>
+                          </td>
+                        </tr>
+                   
+                      </table>
+                  </td>
+                </tr>
+              
+              </table>
+           
               </td>
 
 
@@ -359,13 +374,12 @@
       <tr class="bg-sky"><!-- Colspan 10 -->
         <th colspan='2' class="text-center"><?= $this->lang->line('sl_no'); ?></th>
         <th colspan='4' class="text-center"><?= $this->lang->line('description_of_goods'); ?></th>
-        <th colspan='2' class="text-center"><?= $this->lang->line('hsn'); ?></th>
         <th colspan='2' class="text-center"><?= $this->lang->line('unit_cost'); ?></th>
+        <th colspan='2' class="text-center"><?= 'Price'; ?></th>
         <th colspan='1' class="text-center"><?= $this->lang->line('qty'); ?></th>
+        <th colspan='1' class="text-center"><?= $this->lang->line('disc.'); ?></th>
         <th colspan='1' class="text-center"><?= $this->lang->line('tax'); ?></th>
         <th colspan='1' class="text-center"><?= $this->lang->line('tax_amt'); ?></th>
-        <th colspan='1' class="text-center"><?= $this->lang->line('disc.'); ?></th>
-        <!-- <th colspan='2' class="text-center"><?= $this->lang->line('rate'); ?></th> -->
         <th colspan='2' class="text-center"><?= $this->lang->line('amount'); ?></th>
       </tr>
     </thead>
@@ -409,19 +423,20 @@
             echo $res2->item_name;
             echo (!empty($res2->description)) ? "<br><i>[" . nl2br($res2->description) . "]</i>" : '';
             echo "</td>";
-            echo "<td colspan='2' class='text-left'>" . $res2->hsn . "</td>";
-            echo "<td colspan='2' class='text-right'>" . store_number_format($res2->price_per_unit) . "</td>";
+            echo "<td colspan='2' class='text-center'>" . store_number_format($res2->price_per_unit) . "</td>";
+            echo "<td colspan='2' class='text-center'>" . store_number_format($res2->price_per_unit * $res2->return_qty) . "</td>";
 
             echo "<td class='text-center'>" . format_qty($res2->return_qty) . "</td>";
-            echo "<td colspan='1' class='text-right'>" . store_number_format($res2->tax) . "%</td>";
-            echo "<td style='text-align: right;'>" . store_number_format($res2->tax_amt) . "</td>";
+            echo "<td  class='text-center'>" . store_number_format($discount_amt) . "</td>";
+            echo "<td colspan='1'  class='text-center'>" . store_number_format($res2->tax) . "%</td>";
+            echo "<td  class='text-center'>" . store_number_format($res2->tax_amt) . "</td>";
             //echo "<td style='text-align: right;'>".$discount."</td>";
-            echo "<td style='text-align: right;'>" . store_number_format($discount_amt) . "</td>";
+           
 
             //echo "<td colspan='2' class='text-right'>".number_format($before_tax,2)."</td>";
             //echo "<td class='text-right'>".$res2->price_per_unit."</td>";
 
-            echo "<td colspan='2' class='text-right'>" . store_number_format($res2->total_cost) . "</td>";
+            echo "<td colspan='2'  class='text-center'>" . store_number_format($res2->total_cost) . "</td>";
             echo "</tr>";
             $tot_qty += $res2->return_qty;
             $tot_return_price += $res2->price_per_unit;
@@ -442,12 +457,18 @@
 
       <tr class="bg-sky">
         <td colspan="8" class='text-center text-bold'><?= $this->lang->line('total'); ?></td>
-        <td colspan="2" class='text-right'><b><?php echo store_number_format($tot_return_price); ?></b></td>
+        <td colspan="2" class='text-center'><b><?php echo store_number_format($tot_return_price); ?></b></td>
         <td colspan="1" class='text-bold text-center'><?= format_qty($tot_qty); ?></td>
+        <td colspan="1" class='text-center'><b><?php echo store_number_format($tot_discount_amt); ?></b></td>
         <td colspan="1" class='text-bold text-center'></td>
-        <td colspan="1" class='text-right'><b><?php echo store_number_format($tot_tax_amt); ?></b></td>
-        <td colspan="1" class='text-right'><b><?php echo store_number_format($tot_discount_amt); ?></b></td>
-        <td colspan="2" class='text-right'><b><?php echo store_number_format($tot_total_cost); ?></b></td>
+        
+       
+        <td colspan="1" class='text-center'><b><?php echo store_number_format($tot_tax_amt); ?></b></td>
+        <td colspan="2" class='text-center'><b><?php echo store_number_format($tot_total_cost); ?></b></td>
+      </tr>
+
+      <tr>
+        <td colspan="16">&nbsp; </td>
       </tr>
       <tr>
         <td colspan="14" class='text-right'><b><?= $this->lang->line('subtotal'); ?></b></td>
@@ -455,10 +476,7 @@
       </tr>
 
 
-      <tr>
-        <td colspan="14" class='text-right'><b><?= $this->lang->line('other_charges'); ?></b></td>
-        <td colspan="2" class='text-right'><b><?php echo store_number_format($other_charges_amt); ?></b></td>
-      </tr>
+     
 
       <?php if (!empty($coupon_code)) { ?>
         <tr>
@@ -477,6 +495,11 @@
       <tr>
         <td colspan="14" class='text-right'><b><?= $this->lang->line('discount_on_all'); ?>(<?= store_number_format($discount_to_all_input) . " " . $discount_to_all_type; ?>)</b></td>
         <td colspan="2" class='text-right'><b><?php echo store_number_format($tot_discount_to_all_amt); ?></b></td>
+      </tr>
+
+      <tr>
+        <td colspan="14" class='text-right'><b><?= 'Tax Amount'; ?></td>
+        <td colspan="2" class='text-right'><b><?php echo store_number_format($tot_tax_amt); ?></b></td>
       </tr>
 
       <tr>
@@ -542,13 +565,7 @@
     </tfoot>
 
   </table>
-  <!-- <caption>
-      <center>
-        <span style="font-size: 11px;text-transform: uppercase;">
-          This is Computer Generated Invoice
-        </span>
-      </center>
-</caption> -->
+
 </body>
 
 </html>

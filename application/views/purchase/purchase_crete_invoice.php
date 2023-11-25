@@ -167,13 +167,7 @@
 
   ?>
 
-  <caption>
-    <center>
-      <span style="font-size: 18px;text-transform: uppercase;">
-        <?= $this->lang->line('purchase_invoice') ?>
-      </span>
-    </center>
-  </caption>
+ 
 
   <table autosize="1" id='mytable' align="center" width="100%" cellpadding="0" cellspacing="0">
     <!-- <table align="center" width="100%" height='100%'   > -->
@@ -224,6 +218,9 @@
               </td>
 
             </tr>
+            <tr>
+                <td align="center"><strong style="font-size:24px"><?= 'Purchase Credit Note' ?></strong></td>
+            </tr>
 
           
             <tr>
@@ -266,9 +263,11 @@
       
                       <table style="width: 100%;">
 
+                       
+
                         <tr align="right">
                           <td colspan="4">
-                            Credit Note No.
+                            Credit note No.
 
                           </td>
                           <td align="right">
@@ -276,6 +275,7 @@
 
                           </td>
                         </tr>
+
                         <tr align="right">
                           <td colspan="4">
                             Dated
@@ -283,6 +283,27 @@
 
                           <td align="right">
                             <?php echo show_date($credit_details->created_time_auto); ?>
+                          </td>
+                        </tr>
+
+                        <tr align="right">
+                          <td colspan="4">
+                            Purchase No.
+
+                          </td>
+                          <td align="right">
+                            <?php echo $purchase_code; ?></b>
+
+                          </td>
+                        </tr>
+
+                        <tr align="right">
+                          <td colspan="4">
+                            Purchase Dated
+                          </td>
+
+                          <td align="right">
+                            <?php echo show_date($purchase_date); ?>
                           </td>
                         </tr>
                    
@@ -302,13 +323,15 @@
       </tr>
       <tr class="bg-sky"><!-- Colspan 10 -->
         <th colspan='2' class="text-center"><?= $this->lang->line('sl_no'); ?></th>
-        <th colspan='5' class="text-center"><?= $this->lang->line('description_of_goods'); ?></th>
-      
-        <th colspan='3' class="text-center"><?= $this->lang->line('unit_cost'); ?></th>
+        <th colspan='4' class="text-center"><?= $this->lang->line('description_of_goods'); ?></th>
+
+        <th colspan='2' class="text-center"><?= $this->lang->line('unit_cost'); ?></th>
         <th colspan='1' class="text-center"><?= $this->lang->line('qty'); ?></th>
+        <th colspan='2' class="text-center"><?= 'Price'; ?></th>
+        <th colspan='1' class="text-center"><?= $this->lang->line('disc.'); ?></th>
         <th colspan='1' class="text-center"><?= $this->lang->line('tax'); ?></th>
         <th colspan='1' class="text-center"><?= $this->lang->line('tax_amt'); ?></th>
-        <th colspan='1' class="text-center"><?= $this->lang->line('disc.'); ?></th>
+        
         <!-- <th colspan='2' class="text-center"><?= $this->lang->line('rate'); ?></th> -->
         <th colspan='2' class="text-center"><?= $this->lang->line('amount'); ?></th>
       </tr>
@@ -360,23 +383,25 @@
 
             echo "<tr>";
             echo "<td colspan='2' class='text-center'>" . $i++ . "</td>";
-            echo "<td colspan='5'>";
+            echo "<td colspan='4'>";
             echo $res2->item_name;
             echo (!empty($res2->description)) ? "<br><i>[" . nl2br($res2->description) . "]</i>" : '';
             echo "</td>";
        
-            echo "<td colspan='3' class='text-right'>" . store_number_format($res2->unit_price) . "</td>";
+            echo "<td colspan='2' class='text-center'>" . store_number_format($res2->unit_price) . "</td>";
 
             echo "<td class='text-center'>" . format_qty($res2->qty) . "</td>";
-            echo "<td colspan='1' class='text-right'>" . store_number_format($res2->tax) . "%</td>";
-            echo "<td style='text-align: right;'>" . store_number_format($res2->tax_amt) . "</td>";
+            echo "<td colspan='2' class='text-center'>" . store_number_format($res2->unit_price) . "</td>";
+            echo "<td class='text-center'>" . store_number_format($discount_amt) . "</td>";
+            echo "<td colspan='1' class='text-center'>" . store_number_format($res2->tax) . "%</td>";
+            echo "<td class='text-center'>" . store_number_format($res2->tax_amt) . "</td>";
             //echo "<td style='text-align: right;'>".$discount."</td>";
-            echo "<td style='text-align: right;'>" . store_number_format($discount_amt) . "</td>";
+           
 
             //echo "<td colspan='2' class='text-right'>".number_format($before_tax,2)."</td>";
             //echo "<td class='text-right'>".$res2->price_per_unit."</td>";
 
-            echo "<td colspan='2' class='text-right'>" . store_number_format($res2->unit_total_cost) . "</td>";
+            echo "<td colspan='2' class='text-center'>" . store_number_format($res2->unit_total_cost) . "</td>";
             echo "</tr>";
             $tot_qty += $res2->qty;
             $tot_purchase_price += $res2->unit_price;
@@ -401,19 +426,13 @@
         <td colspan="2" class='text-right'><b><?php echo store_number_format($tot_purchase_price); ?></b></td>
         <td colspan="1" class='text-bold text-center'><?= format_qty($tot_qty); ?></td>
         <td colspan="1" class='text-bold text-center'></td>
-        <td colspan="1" class='text-right'><b><?php echo store_number_format($tot_tax_amt); ?></b></td>
-        <td colspan="1" class='text-right'><b><?php echo store_number_format($tot_discount_amt); ?></b></td>
-        <td colspan="2" class='text-right'><b><?php echo store_number_format($tot_total_cost); ?></b></td>
+        <td colspan="1" class='text-center'><b><?php echo store_number_format($tot_tax_amt); ?></b></td>
+        <td colspan="1" class='text-center'><b><?php echo store_number_format($tot_discount_amt); ?></b></td>
+        <td colspan="2" class='text-center'><b><?php echo store_number_format($tot_total_cost); ?></b></td>
       </tr>
       <tr>
         <td colspan="14" class='text-right'><b><?= $this->lang->line('subtotal'); ?></b></td>
         <td colspan="2" class='text-right'><b><?php echo store_number_format($tot_total_cost); ?></b></td>
-      </tr>
-
-
-      <tr>
-        <td colspan="14" class='text-right'><b><?= $this->lang->line('other_charges'); ?></b></td>
-        <td colspan="2" class='text-right'><b><?php echo store_number_format($other_charges_amt); ?></b></td>
       </tr>
 
       <tr>
@@ -422,17 +441,15 @@
       </tr>
 
       <tr>
+        <td colspan="14" class='text-right'><b><?= 'Tax Amount'; ?></b></td>
+        <td colspan="2" class='text-right'><b><?php echo store_number_format($tot_tax_amt); ?></b></td>
+      </tr>
+
+      <tr>
         <td colspan="14" class='text-right'><b><?= $this->lang->line('grand_total'); ?></b></td>
         <td colspan="2" class='text-right'><b><?php echo store_number_format($tot_total_cost); ?></b></td>
       </tr>
-      <tr>
-        <td colspan="16">
-          <span class='amt-in-word'>Amount in words:
-            <i style='font-weight:bold;'><?= $this->session->userdata('currency_code') . " " . no_to_words($grand_total) ?>
-            </i>
-          </span>
-        </td>
-      </tr>
+
       <tr>
         <td colspan="16">
           <span class='amt-in-word'>
@@ -443,42 +460,6 @@
 
 
 
-      <!-- T&C & Bank Details & signatories-->
-      <tr>
-        <td colspan="16">
-          <table width="100%" class="style_hidden fixed_table">
-
-            <tr>
-              <td colspan="16">
-                <span>
-                  <table style="width: 100%;" class="style_hidden fixed_table">
-
-                    <!-- T&C & Bank Details -->
-                    <!-- <tr>
-                          <td colspan="16">
-                            <span><b> <?= $this->lang->line('terms_and_conditions'); ?></b></span><br>
-                            <span style='font-size: 8px;'><?= nl2br($terms_and_conditions);  ?></span>
-                          </td>
-                        </tr>
- -->
-                    <tr>
-                      <td colspan='8' style="height:80px;">
-                        <span><b> <?= $this->lang->line('supplier_signature'); ?></b></span>
-                      </td>
-                      <td colspan='8'>
-                        <span><b> <?= $this->lang->line('authorised_signatory'); ?></b></span>
-                      </td>
-                    </tr>
-
-                  </table>
-                </span>
-              </td>
-            </tr>
-
-          </table>
-        </td>
-      </tr>
-      <!-- T&C & Bank Details & signatories End -->
 
 
     </tfoot>
