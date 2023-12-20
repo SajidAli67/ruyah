@@ -343,7 +343,7 @@ class Account_transactions extends MY_Controller {
 		$no = $_POST['start'];
 		//Find previouse balance -> which follows transactions
 		$prev_balance=0;
-		$account_id = 1;//$this->input->post('account_id');
+		$account_id = $this->input->post('account_id');
 		$from_date = $this->input->post('from_date');
      	$from_date = system_fromatted_date($from_date);
      	
@@ -377,7 +377,7 @@ class Account_transactions extends MY_Controller {
 			5=>0,
 			6=>'',
 			7=>'',
-			8=>$prev_balance,
+			8=>store_number_format($prev_balance),
 			9=>'',
 		));
 		
@@ -557,7 +557,7 @@ class Account_transactions extends MY_Controller {
 			$credit_cash = null;
 			$credit_bank = null;
 			if($account_cr_dr=='Debit_entry'){
-				if($accounts->payment_type=='cash paymint'){
+				if($accounts->payment_type=='( نقــدي ) CASH PAYMINT'){
 					$debit_cash =store_number_format($accounts->debit_amt);
 				}
 				else{
@@ -567,7 +567,7 @@ class Account_transactions extends MY_Controller {
 			}
 
 			if($account_cr_dr=='Credit_entry'){
-				if($accounts->payment_type=='bank / mada'){
+				if($accounts->payment_type=='( شبــكة / بنــــك ) BANK / MADA MACHINE'){
 					$credit_cash =store_number_format($accounts->credit_amt);
 				}
 				else{
