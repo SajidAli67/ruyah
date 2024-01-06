@@ -372,6 +372,10 @@ class Account_transactions extends MY_Controller {
 		$total_credit = 0;
 		$total_close_balance = 0;
 		
+		$credit_amt_cash = 0;
+		$credit_amt_bank = 0;
+		$debit_amt_cash = 0;
+		$debit_amt_bank = 0;
      	if($from_date!='1970-01-01'){
      		//$this->db->where("a.transaction_date>=",$from_date);
 			$credit_amt = $this->db->select("coalesce(sum(credit_amt),0) as credit_amt")
@@ -383,7 +387,36 @@ class Account_transactions extends MY_Controller {
 									->where("debit_account_id",$account_id)
 									->where("transaction_date <",$from_date)
 									->get("ac_transactions a")->row()->debit_amt;
+
 			$prev_balance = $credit_amt - $debit_amt;
+
+			//create cash 
+
+			$credit_amt_cash = $this->db->select("coalesce(sum(credit_amt),0) as credit_amt")
+									->where("payment_type",'cash')
+									->where("credit_account_id",$account_id)
+									->where("transaction_date <",$from_date)
+									->get("ac_transactions a")->row()->credit_amt;
+			//credit back
+			$credit_amt_bank = $this->db->select("coalesce(sum(credit_amt),0) as credit_amt")
+									->where("payment_type",'bank')
+									->where("credit_account_id",$account_id)
+									->where("transaction_date <",$from_date)
+									->get("ac_transactions a")->row()->credit_amt;	
+			
+			//debit cash						
+			$debit_amt_cash = $this->db->select("coalesce(sum(debit_amt),0) as debit_amt")
+									->where("payment_type",'cash')
+									->where("debit_account_id",$account_id)
+									->where("transaction_date <",$from_date)
+									->get("ac_transactions a")->row()->debit_amt;
+
+			//debit bank						
+			$debit_amt_bank = $this->db->select("coalesce(sum(debit_amt),0) as debit_amt")
+									->where("payment_type",'bank')
+									->where("debit_account_id",$account_id)
+									->where("transaction_date <",$from_date)
+									->get("ac_transactions a")->row()->debit_amt;						
 		
 		
      	}
@@ -392,12 +425,12 @@ class Account_transactions extends MY_Controller {
 			0=>'',
 			1=>'<h4 class="text-danger"><strong>Opening balance</strong><h4>',
 			2=> '',
-			2=> '',
+			2=>'',
 			3=>'',
-			4=>0,
-			5=>0,
-			6=>'',
-			7=>'',
+			4=>store_number_format($credit_amt_cash),
+			5=>store_number_format($credit_amt_bank),
+			6=>store_number_format($debit_amt_cash),
+			7=>store_number_format($debit_amt_bank),
 			8=>store_number_format($prev_balance),
 			9=>'',
 		));
@@ -585,7 +618,7 @@ class Account_transactions extends MY_Controller {
 			
 
 			if($account_cr_dr=='Debit_entry'){
-				if($accounts->payment_type=='( نقــدي ) CASH PAYMINT'){
+				if($accounts->payment_type=='cash'){
 					$debit_cash =store_number_format($accounts->debit_amt);
 					$total_debit_cash += $accounts->debit_amt;
 				}
@@ -597,7 +630,7 @@ class Account_transactions extends MY_Controller {
 			}
 
 			if($account_cr_dr=='Credit_entry'){
-				if($accounts->payment_type=='( نقــدي ) CASH PAYMINT'){
+				if($accounts->payment_type=='cash'){
 					$credit_cash =store_number_format($accounts->credit_amt);
 					$total_credit_cash += $accounts->credit_amt;
 
