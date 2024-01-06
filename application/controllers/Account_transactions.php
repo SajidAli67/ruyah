@@ -380,6 +380,10 @@ class Account_transactions extends MY_Controller {
 			8=>store_number_format($prev_balance),
 			9=>'',
 		));
+		$total_debit_cash  = 0;
+		$total_debit_bank  = 0;
+		$total_credit_cash = 0;
+		$total_credit_bank = 0;
 		
 		foreach ($list as $accounts) {
 		  
@@ -550,36 +554,45 @@ class Account_transactions extends MY_Controller {
 						$entry_of=7;
 						$record_id=$accounts->ref_expense_id;
 					}
-
+					
 			$row[] = $accounts->payment_type;
-			$debit_cash = null;
-			$debit_bank =null;
+			$debit_cash  = null;
+			$debit_bank  = null;
 			$credit_cash = null;
 			$credit_bank = null;
+
+			
+
 			if($account_cr_dr=='Debit_entry'){
 				if($accounts->payment_type=='( نقــدي ) CASH PAYMINT'){
 					$debit_cash =store_number_format($accounts->debit_amt);
+					$total_debit_cash += $accounts->debit_amt;
 				}
 				else{
 					$debit_bank = store_number_format($accounts->debit_amt);
+					$total_debit_bank += $debit_bank;
 				}
 
 			}
 
 			if($account_cr_dr=='Credit_entry'){
-				if($accounts->payment_type=='( شبــكة / بنــــك ) BANK / MADA MACHINE'){
+				if($accounts->payment_type=='( نقــدي ) CASH PAYMINT'){
 					$credit_cash =store_number_format($accounts->credit_amt);
+					$total_credit_cash += $credit_cash;
+
 				}
 				else{
 					$credit_bank = store_number_format($accounts->credit_amt);
+					$total_credit_bank += $credit_bank;
+
 				}
 
 			}
-			$row[] = $debit_cash;//($account_cr_dr=='Debit_entry') ? store_number_format($accounts->debit_amt) : '';
-			$row[] = $debit_bank ;
-			$row[] = $credit_cash;//($account_cr_dr=='Credit_entry') ? store_number_format($accounts->credit_amt) : '';
-			
+			$row[] = $credit_cash;//($account_cr_dr=='Debit_entry') ? store_number_format($accounts->debit_amt) : '';
 			$row[] = $credit_bank;
+			$row[] = $debit_cash;//($account_cr_dr=='Credit_entry') ? store_number_format($accounts->credit_amt) : '';
+			
+			$row[] = $debit_bank;
 			$row[] = store_number_format($prev_balance);
 			$row[] = $accounts->note;
 			
@@ -591,11 +604,11 @@ class Account_transactions extends MY_Controller {
 			0=>'',
 			1=>'<h4 ><strong>Total</strong><h4>',
 			2=> '',
-			3=>$total_debit,
-			4=>$total_credit,
-			5=>'',
-			6=>'',
-			7=>'',
+			3=>'',
+			4=>store_number_format($total_credit_cash),
+			5=>store_number_format($total_credit_bank),
+			6=>store_number_format($total_debit_cash),
+			7=>store_number_format($total_debit_bank),
 			8=>'',
 			9=>'',
 		));
@@ -606,10 +619,10 @@ class Account_transactions extends MY_Controller {
 			2=> '<h4 class="text-danger"><strong>Clousing Balance</strong><h4>',
 			3=>'',
 			4=>'',
-			5=>$total_close_balance,
+			5=>'',
 			6=>'',
 			7=>'',
-			8=>'',
+			8=>$total_close_balance,
 			9=>'',
 
 		));
