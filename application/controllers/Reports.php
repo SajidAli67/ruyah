@@ -323,13 +323,7 @@ class Reports extends MY_Controller {
 		echo $this->reports->show_sales_summary_report();
 	}
 
-	public function payment_type_report(){
-		$this->permission_check('sales_payments_report');
-		$data=$this->data;
-		$data['page_title']='Payment Type ';
-		$data['account_id']=2;
-		$this->load->view('report-payments-type', $data);
-	}
+	
 	
 
 

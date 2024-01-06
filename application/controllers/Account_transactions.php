@@ -577,10 +577,10 @@ class Account_transactions extends MY_Controller {
 					}
 					
 			$row[] = $accounts->payment_type;
-			$debit_cash  = null;
-			$debit_bank  = null;
-			$credit_cash = null;
-			$credit_bank = null;
+			$debit_cash  = 0;
+			$debit_bank  = 0;
+			$credit_cash = 0;
+			$credit_bank = 0;
 
 			
 
@@ -591,7 +591,7 @@ class Account_transactions extends MY_Controller {
 				}
 				else{
 					$debit_bank = store_number_format($accounts->debit_amt);
-					$total_debit_bank += $debit_bank;
+					$total_debit_bank += $accounts->debit_amt;
 				}
 
 			}
@@ -599,12 +599,12 @@ class Account_transactions extends MY_Controller {
 			if($account_cr_dr=='Credit_entry'){
 				if($accounts->payment_type=='( نقــدي ) CASH PAYMINT'){
 					$credit_cash =store_number_format($accounts->credit_amt);
-					$total_credit_cash += $credit_cash;
+					$total_credit_cash += $accounts->credit_amt;
 
 				}
 				else{
 					$credit_bank = store_number_format($accounts->credit_amt);
-					$total_credit_bank += $credit_bank;
+					$total_credit_bank += $accounts->credit_amt;
 
 				}
 

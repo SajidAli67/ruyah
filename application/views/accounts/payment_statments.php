@@ -299,7 +299,7 @@
 
    <!-- Make sidebar menu hughlighter/selector -->
    <script>
-      $(".accounts_list-active-li").addClass("active");
+      $(".accounts_statuments-active-li").addClass("active");
    </script>
 </body>
 

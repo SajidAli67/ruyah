@@ -122,7 +122,7 @@ class Accounts extends MY_Controller {
 											
 										</ul>
 									</div>';			
-			$row[] = $str2;
+			$row[] = '-';//$str2;
 
 			$data[] = $row;
 		}
@@ -146,6 +146,17 @@ class Accounts extends MY_Controller {
 		$this->permission_check_with_msg('accounts_delete');
 		$ids=implode (",",$_POST['checkbox']);
 		echo $this->accounts->delete_accounts_from_table($ids);
+	}
+
+
+	//accoutns payment statment
+
+	public function accounts_statements(){
+		$this->permission_check('sales_payments_report');
+		$data=$this->data;
+		$data['page_title']='Payment Type ';
+		$data['account_id']=2;
+		$this->load->view('accounts/payment_statments', $data);
 	}
 	
 

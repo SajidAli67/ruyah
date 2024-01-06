@@ -884,7 +884,7 @@
 
     <!-- <li class="header">ACCOUNTING</li> -->
 
-    <li class="accounts_list-active-li accounts-active-li journal-active-li journal_list-active-li money_transfer-active-li money_transfer_list-active-li money_deposit-active-li expense-list-active-li expense-active-li expense-category-active-li expense-category-list-active-li money_deposit_list-active-li cash_transactions-active-li treeview " >
+    <li class="accounts_list-active-li accounts-active-li journal-active-li journal_list-active-li money_transfer-active-li money_transfer_list-active-li money_deposit-active-li expense-list-active-li expense-active-li expense-category-active-li expense-category-list-active-li money_deposit_list-active-li cash_transactions-active-li treeview  accounts_statuments-active-li" >
 
           <a href="#">
 
@@ -908,6 +908,8 @@
 
             <?php } ?>
 
+            
+
 
 
             <?php if($CI->permissions('accounts_view')) { ?>
@@ -917,8 +919,12 @@
             <?php } ?>
 
 
+            <?php if($CI->permissions('accounts_view')) { ?>
 
-           
+            <li class="accounts_statuments-active-li"><a href="<?php echo $base_url; ?>accounts/accounts_statements" ><i class="fa fa-list "></i> <span><?= 'Account Book' ?></span></a></li>  
+
+            <?php } ?>
+
 
             <?php if($CI->permissions('money_transfer_view')) { ?>
 
@@ -1506,11 +1512,7 @@
 
             <?php } ?>
 
-            <?php if($CI->permissions('sales_payments_report')) { ?>
-
-            <li class="report-payments_type-active-li"><a href="<?php echo $base_url; ?>reports/payment_type_report" ><i class="fa fa-files-o "></i> <span><?= 'Payment Type ' ?></span></a></li>  
-
-            <?php } ?>
+            
 
 
 
