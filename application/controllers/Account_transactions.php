@@ -17,14 +17,6 @@ class Account_transactions extends MY_Controller {
 						->where("a.id=b.sales_id")
 						->where("b.id=",$salespayment_id)->get()->row();
 	}
-
-	public function get_suppler_transfer_code($id){
-		// print_r($salespayment_id);
-		if(empty($salespayment_id)) { return ''; }
-		return $this->db->select("transfer_code,id")
-						->from("ac_moneytransfersuppler")
-						->where("id=",$id)->get()->row();
-	}
 	
 	public function get_sales_return_code($returnpayment_id){
 		if(empty($returnpayment_id)) { return ''; }
@@ -56,13 +48,23 @@ class Account_transactions extends MY_Controller {
 						->from("db_expense a")
 						->where("a.id=",$expense_id)->get()->row();
 	}
+	
+	public function get_suppler_code($suppler_id){
+		if(empty($suppler_id)) { return ''; }
+		return $this->db->select("a.transfer_code,a.id")
+						->from("ac_moneytransfersuppler a")
+						->where("a.id=",$suppler_id)->get()->row();
+	}
+	
 	public function ajax_list()
 	{
 		
 		$list = $this->accounts->get_datatables();
-		
+	
 		$data = array();
 		$no = $_POST['start'];
+		$count = 0;
+		
 		//Find previouse balance -> which follows transactions
 		$prev_balance=0;
 		$account_id = $this->input->post('account_id');
@@ -156,7 +158,7 @@ class Account_transactions extends MY_Controller {
     					$from_ = get_account_name($accounts->debit_account_id);
     				}
 					else{
-						$from_ = "suppler_account";//get_account_name($accounts->credit_account_id);
+						$from_ = get_account_name($accounts->credit_account_id);
 					}
 
 					if(!empty($accounts->supplier_id)){
@@ -196,8 +198,17 @@ class Account_transactions extends MY_Controller {
 								$to_ = "<a data-toggle='tooltip' title='View Expense Details' href='".base_url('expense/update/').$expense_id."'>".$expense_code."</a>";
 							
 					}
+					else if(!empty($accounts->ref_suppler_transfer_id)){
+							
+						$query = $this->get_suppler_code($accounts->ref_suppler_transfer_id);
+						
+						$transfer_code = $query->transfer_code;
+						$transfer_id = $accounts->ref_suppler_transfer_id;
+						$to_ = "<a data-toggle='tooltip' title='View Transfer Details' style='pointer-events: none' href='".base_url('expense/update/').$transfer_id."'>".$transfer_code."</a>";
+					
+					}
 					else{
-						$to_ = "suppler_account";// get_account_name($accounts->credit_account_id); //!empty(get_customer_details($accounts->credit_account_id)->customer_name) ? get_customer_details($accounts->credit_account_id)->customer_name : '-'; 
+						$to_ = get_account_name($accounts->credit_account_id); //!empty(get_customer_details($accounts->credit_account_id)->customer_name) ? get_customer_details($accounts->credit_account_id)->customer_name : '-'; 
 					}
 					
 					$description_ext = 
@@ -218,7 +229,7 @@ class Account_transactions extends MY_Controller {
 			
 			$total_debit += ($account_cr_dr=='Debit_entry') ? $accounts->debit_amt : 0;
 			$total_credit += ($account_cr_dr=='Credit_entry') ? $accounts->credit_amt : 0;
-			$total_close_balance =  store_number_format($prev_balance);
+			
 			
 			$row[] = store_number_format($prev_balance);
 
@@ -299,6 +310,17 @@ class Account_transactions extends MY_Controller {
 			$row[] = ($accounts->transaction_type!='OPENING BALANCE') ? $str2 : '';
 
 			$data[] = $row;
+		    $count++;
+			if($accounts->transaction_type == 'TRANSFER_SUPPLER' && $accounts->debit_account_id != $account_id){
+			        $prev_balance +=  $accounts->debit_amt;
+			       //unset($data[$count + 1]);
+					array_splice($data,$count);
+					
+					$count--;
+					
+				}
+					
+				$total_close_balance =  store_number_format($prev_balance);
 		}
 		
 		array_push($data,array(
@@ -332,6 +354,8 @@ class Account_transactions extends MY_Controller {
 		//output to json format
 		echo json_encode($output);
 	}
+<<<<<<< Updated upstream
+=======
 
 
 	public function show_payments_type_report()
@@ -636,6 +660,7 @@ class Account_transactions extends MY_Controller {
 		//output to json format
 		echo json_encode($output);
 	}
+>>>>>>> Stashed changes
 	
 	public function delete_transaction(){
 		$entry_of =$this->input->post('entry_of');

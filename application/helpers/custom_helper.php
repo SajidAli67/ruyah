@@ -1075,6 +1075,22 @@
       return str_pad($maxid, 4, '0', STR_PAD_LEFT);
 
     }
+    
+    if($value=='db_saledebitnote'){
+
+      $maxid=get_count_id('db_saledebitnote');
+
+      return str_pad($maxid, 4, '0', STR_PAD_LEFT);
+
+    }
+
+    if($value=='db_purchasedebitnote'){
+
+      $maxid=get_count_id('db_purchasedebitnote');
+
+      return str_pad($maxid, 4, '0', STR_PAD_LEFT);
+
+    }
 
     if($value=='sales_payment'){
 
@@ -2774,6 +2790,19 @@ function get_purchasereturn_details($id){
 
     return true;
 
+  }
+  
+  
+ function get_sn_item_name($sn){
+    $CI =& get_instance();
+     $query =  $CI->db->select('item_id')->where("sn_number",$sn)->get('db_itemsn')->row();
+     if(!empty($query)){
+      return $query->item_id;
+     }
+     else{
+      return '';
+     }
+     
   }
 
  

@@ -393,6 +393,71 @@ class Purchase_returns_model extends CI_Model {
 		
 	}//verify_save_and_update() function end
 
+	public function save_crete_note(){
+		extract($this->xss_html_filter(array_merge($this->data,$_POST,$_GET)));
+		
+		$data = array(
+				'purchase_id' => $purchase_id,
+				'debit_note_amount' => $amount,
+				'store_id' => get_current_store_id(),
+				'count_id' =>  get_count_id('db_purchasedebitnote'),
+				'debit_code' => get_init_code("db_purchasedebitnote")
+			);
+			
+			 $this->db->insert('db_purchasedebitnote',$data);
+
+			$purchase_debit = $this->db->insert_id();
+		
+			$insert_bit = insert_account_transaction(array(
+				'transaction_type'  	=> 'SALES Purchase RETURN',
+				'reference_table_id'  	=> null,
+				'debit_account_id'  	=> $account_id,
+				'credit_account_id'  	=> null,
+				'debit_amt'  			=> $amount,
+				'credit_amt'  			=> 0,
+				'process'  				=> 'SAVE',
+				'transaction_date'  	=> $CUR_DATE,
+				'customer_id'  			=> null,
+				'supplier_id'  			=> $supplier_id,
+				'payment_type' 			=> $payment_type,
+				
+		));
+		
+		//update_account_balance($account_id, $amount, false);
+
+		for($i=1;$i<=$rowcount;$i++){
+			
+			if(isset($_REQUEST['tr_item_id_'.$i]) && !empty($_REQUEST['tr_item_id_'.$i])){
+
+
+				$item_id 			=$this->xss_html_filter(trim($_REQUEST['tr_item_id_'.$i]));
+				$return_qty		    =$this->xss_html_filter(trim($_REQUEST['td_data_'.$i.'_3']));
+				$price_per_unit 	=$this->xss_html_filter(trim($_REQUEST['td_data_'.$i.'_4']));
+				$tax_id 			=$this->xss_html_filter(trim($_REQUEST['tr_tax_id_'.$i]));
+				$tax_amt 			=$this->xss_html_filter(trim($_REQUEST['td_data_'.$i.'_5']));
+				
+				$unit_total_cost	=$this->xss_html_filter(trim($_REQUEST['td_data_'.$i.'_10']));
+				
+				$item_array=array(
+
+					'purchasedebit_id' => $purchase_debit,
+					'item_id' => $item_id,
+					'qty' => $return_qty,
+					'unit_price' => $price_per_unit,
+					'tax_it' => $tax_id,
+					'tax_amt' => $tax_amt,
+					'unit_total_cost' => $unit_total_cost
+				);
+				
+				$this->db->insert('db_purchasitemdebitnote',$item_array);
+			}
+		}
+			
+		
+			$this->session->set_flashdata('success', 'Success!! Record Saved Successfully! ');
+			return "success<<<###>>>$purchase_id";
+	}
+
 
 
 	public function delete_payment($payment_id){

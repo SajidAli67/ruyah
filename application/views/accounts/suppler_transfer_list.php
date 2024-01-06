@@ -178,7 +178,7 @@
                 className: 'btn bg-red color-palette btn-flat hidden delete_btn pull-left',
                 text: 'Delete',
                 action: function ( e, dt, node, config ) {
-                  multi_delete_suppler();
+                    multi_delete_suppler();
                 }
             },
             { extend: 'copy', className: 'btn bg-teal color-palette btn-flat',exportOptions: { columns: [1,2,3,4,5,6,7]} },

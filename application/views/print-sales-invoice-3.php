@@ -61,6 +61,7 @@ body { margin: 5px; }
 </head>
 <body onload="window.print();"><!-- window.print() -->
 <?php
+
     $q1=$this->db->query("select * from db_store where status=1 and id=".get_current_store_id());
     $res1=$q1->row();
     $store_name=$res1->store_name;

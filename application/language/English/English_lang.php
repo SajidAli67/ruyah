@@ -1755,7 +1755,12 @@ $lang['pos_list'] = "POS";
 
 $lang['add_supplier'] = "Add Supplier";
 
+<<<<<<< HEAD
 $lang['add_item'] = "Add Item";
+=======
+$lang['add_item'									] 	=  		"Add Item";
+$lang['sn'									] 	=  		"SN number";
+>>>>>>> e7da4d5d19f2cf3212d3df1755dc28a288d45ba7
 
 $lang['add_service'] = "Add Service";
 

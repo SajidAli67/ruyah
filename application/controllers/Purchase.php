@@ -87,7 +87,7 @@ class Purchase extends MY_Controller {
 			
 			$row[] = show_date($purchase->purchase_date);
 
-			$info = (!empty($purchase->return_bit)) ? "<br><span class='label label-danger' style='cursor:pointer'><i class='fa fa-fw fa-undo'></i>Return Raised</span>" : '';
+			$info = (!empty($purchase->return_bit)) ? "<br><span class='label label-danger' style='cursor:pointer'><i class='fa fa-fw fa-undo'></i>Debit Note</span>" : '';
 
 			$row[] = $purchase->purchase_code.$info;
 			$row[] = $purchase->purchase_status;
@@ -154,9 +154,17 @@ class Purchase extends MY_Controller {
 											if($this->permissions('purchase_return_add'))
 											$str2.='<li>
 												<a title="Purchase Return" href="'.base_url().'purchase_return/add/'.$purchase->id.'">
-													<i class="fa fa-fw fa-undo text-blue"></i>Purchase Return
+													<i class="fa fa-fw fa-undo text-blue"></i>debit note
 												</a>
 											</li>';
+
+											$str2.='<li>
+												<a title="Sales Return" href="'.base_url().'purchase_return/crete_note/'.$purchase->id.'">
+													<i class="fa fa-fw fa-undo text-blue"></i>crete note
+												</a>
+											</li>';
+
+			
 
 											if($this->permissions('purchase_delete'))
 											$str2.='<li>

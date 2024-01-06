@@ -166,8 +166,32 @@ class Pos extends MY_Controller {
 		$data['page_title']=$this->lang->line('sales_invoice');
 		$data=array_merge($data,array('sales_id'=>$sales_id));
 		
-		$this->load->view('sal-invoice-pos',$data);
+		$invoice_id = get_pos_invoice_format_id();
+		if($invoice_id==1){
+			$this->load->view('sal-invoice-pos',$data);
+		}
+		elseif($invoice_id==3){
+			$this->load->view('sal-invoice-pos-t2',$data);
+		}
+		elseif($invoice_id==4){
+			$this->load->view('sal-invoice-pos-t3',$data);
+		}
+		else{
+			$this->load->view('sal-invoice-pos-t3',$data);
+		}
 		
+	}
+	
+	public function print_invoice_tax($sales_id){
+		if(!$this->permissions('sales_add') && !$this->permissions('sales_edit')){
+			$this->show_access_denied_page();
+		}
+		$data=$this->data;
+		$data['page_title']=$this->lang->line('sales_invoice');
+		$data=array_merge($data,array('sales_id'=>$sales_id));
+		//$invoice_id = get_pos_invoice_format_id();
+		$this->load->view('sal-invoice-pos-t3',$data);
+	
 	}
 	public function get_item_details(){
 		echo $this->pos_model->get_item_details($this->input->post('item_id'));

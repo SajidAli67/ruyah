@@ -290,7 +290,9 @@ class Items extends MY_Controller {
 		$store_id=$this->input->get('store_id');
 		$warehouse_id=$this->input->get('warehouse_id');
 		$search_for=$this->input->get('search_for');
-
+		$name = strtolower(trim($_GET['name']));
+		$sn_number = get_sn_item_name($name);
+        
 		$show_purchase_price = $this->permissions('show_purchase_price');
 		$data = array();
 		$display_json = array();
@@ -316,7 +318,15 @@ class Items extends MY_Controller {
 			
 			$this->db->where("a.status",1);
 			$this->db->where("a.store_id",$store_id);
-			$this->db->where("(LOWER(a.custom_barcode) LIKE '%$name%' or LOWER(a.item_name) LIKE '%$name%' or LOWER(a.item_code) LIKE '%$name%')");
+		    if(!empty($sn_number)){
+		       
+		        $this->db->where('a.id',$sn_number);
+		    	//$this->db->where("(LOWER(a.custom_barcode) LIKE '%$name%' or a.id LIKE '%$sn_number%')");
+			}
+			else{
+				$this->db->where("(LOWER(a.custom_barcode) LIKE '%$name%' or LOWER(a.item_name) LIKE '%$name%' or LOWER(a.item_code) LIKE '%$name%')");
+
+			}
 
 			$this->db->group_by("a.id");
 			$this->db->limit("20");
@@ -399,6 +409,64 @@ class Items extends MY_Controller {
 
 	public function getItems($id=''){
 		echo $this->items->getItemsJson($id);
+	}
+	
+	public function sn(){
+		$this->permission_check('brand_view');
+		$data = $this->data;
+		$data['page_title'] = 'SN Number list';
+		$this->load->view('sn-view', $data);
+	}
+
+	public function sn_ajax_list(){
+		$list = $this->db->select()->get('db_itemsn')->result();
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $sn) {
+			$no++;
+			$row = array();
+			$row[] = $no;
+			$row[] = get_store_name($sn->store_id);
+			$row[] = get_item_name($sn->item_id);
+			$row[] = $sn->sn_number;
+			$row[] = $sn->sold;
+
+			$data[] = $row;
+		 }
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" =>20,
+			"recordsFiltered" => 20,
+			"data" => $data,
+		);
+		//output to json format
+		echo json_encode($output);
+	}
+
+
+
+	public function sn_add(){
+		$this->permission_check('brand_add');
+		$data = $this->data;
+		$data['items'] = $this->db->select('id,item_code,item_name')->where('store_id',get_current_store_id())->get('db_items')->result();
+		$data['page_title'] = $this->lang->line('SN Number');
+		$this->load->view('sn_add', $data);
+	}
+
+	public function save_sn(){
+		$sn_numbers = $this->input->post('sn_number');
+		$sn_number_arrays = explode(",",$sn_numbers);
+	
+		foreach($sn_number_arrays as $sn){
+			$data = array(
+				'item_id'=>$this->input->post('item'),
+				'store_id'=>get_current_store_id(),
+				'sn_number'=>$sn
+			);
+			$this->db->insert('db_itemsn',$data);
+		}
+		echo 'success';
 	}
 
 }

@@ -64,7 +64,7 @@
                                     </div>
                                     <label for="transfer_code" class="col-sm-2 control-label"><?= $this->lang->line('transfer_code'); ?> <label class="text-danger">*</label></label>
                                        <div class="col-sm-3">
-                                          <input type="text" class="form-control" id="transfer_code" name="transfer_code" placeholder=""  value="<?= $transfer_code; ?>" >
+                                          <input type="text" class="form-control" id="transfer_code" name="transfer_code" placeholder=""  value="<?php print $transfer_code; ?>" >
                                           <span id="transfer_code_msg" style="display:none" class="text-danger"></span>
                                        </div>
                               </div>

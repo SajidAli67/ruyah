@@ -191,6 +191,7 @@ class Purchase_model extends CI_Model {
 		    $purchase_entry['warehouse_id']=(warehouse_module() && warehouse_count()>1) ? $warehouse_id : get_store_warehouse_id();  	
 			$q1 = $this->db->insert('db_purchase', $purchase_entry);
 			$purchase_id = $this->db->insert_id();
+			
 		}
 		else if($command=='update'){	
 			$purchase_entry = array(
@@ -279,6 +280,19 @@ class Purchase_model extends CI_Model {
 				$q6=$this->pos_model->update_items_quantity($item_id);
 				if(!$q6){
 					return "failed";
+				}
+				
+				
+				$sn_number_arrays = explode(",", $_REQUEST['sn_number_'.$i]);
+				if(!empty($sn_number_arrays)){
+					foreach ($sn_number_arrays as $sn) {
+						$data = array(
+							'item_id' => $this->xss_html_filter(trim($_REQUEST['tr_item_id_'.$i])),
+							'store_id' => get_current_store_id(),
+							'sn_number' => $sn
+						);
+						$this->db->insert('db_itemsn', $data);
+					}
 				}
 
 				
@@ -763,6 +777,7 @@ class Purchase_model extends CI_Model {
                <!-- ADD button -->
                <td id="td_<?=$rowcount;?>_16" style="text-align: center;">
                   <a class=" fa fa-fw fa-minus-square text-red" style="cursor: pointer;font-size: 34px;" onclick="removerow(<?=$rowcount;?>)" title="Delete ?" name="td_data_<?=$rowcount;?>_16" id="td_data_<?=$rowcount;?>_16"></a>
+                    <button class="btn btn-primary btn_add_sn_number" type="button" sn_id='<?= $rowcount; ?>' id="td_data_<?= $rowcount; ?>_17">+</button>
                </td>
                <input type="hidden" id="tr_available_qty_<?=$rowcount;?>_13" value="<?=$item_available_qty;?>">
                <input type="hidden" id="tr_item_id_<?=$rowcount;?>" name="tr_item_id_<?=$rowcount;?>" value="<?=$item_id;?>">
@@ -778,6 +793,17 @@ class Purchase_model extends CI_Model {
                <input type="hidden" id="item_discount_input_<?=$rowcount;?>" name="item_discount_input_<?=$rowcount;?>" value="<?=store_number_format($item_discount_input,0);?>">
                
             </tr>
+            
+            <tr id="sn_number_tr_<?= $rowcount; ?>" style="display:none;">
+    			<td colspan="8">
+    				<textarea type="hidden" style="display:none;" class="form-control" id="sn_number_<?= $rowcount; ?>" name="sn_number_<?= $rowcount; ?>" placeholder=""></textarea>
+    				<input type="text" class="form-control sn_input" sn_id='<?= $rowcount; ?>' id="sn_input_<?= $rowcount; ?>" placeholder="Enter sn number">
+    
+    				<div class="sn_number_area_<?= $rowcount; ?>" style="width: 100%; border:1px solid #d2d6de; padding:20px; margin-top:20px  ;">
+    
+    				</div>
+    			</td>
+		    </tr>
 		<?php
 
 	}

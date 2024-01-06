@@ -1,4 +1,7 @@
 <?php
+
+use function PHPSTORM_META\map;
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Sales_return_model extends CI_Model {
@@ -460,6 +463,70 @@ class Sales_return_model extends CI_Model {
 		return "success<<<###>>>$return_id";
 		
 	}//verify_save_and_update() function end
+	
+	
+	public function save_debit_note(){
+		extract($this->xss_html_filter(array_merge($this->data,$_POST,$_GET)));
+		
+		$data = array(
+				'sale_id' => $sales_id,
+				'debit_note_amount' => $amount,
+				'store_id' => get_current_store_id(),
+				'count_id' =>  get_count_id('db_saledebitnote'),
+				'debit_code' => get_init_code("db_saledebitnote")
+			);
+			
+			 $this->db->insert('db_saledebitnote',$data);
+
+			$sale_debit = $this->db->insert_id();
+
+			$insert_bit = insert_account_transaction(array(
+				'transaction_type'  	=> 'SALES PAYMENT RETURN',
+				'reference_table_id'  	=> null,
+				'debit_account_id'  	=> $account_id,
+				'credit_account_id'  	=> null,
+				'debit_amt'  			=> $amount,
+				'credit_amt'  			=> 0,
+				'process'  				=> 'SAVE',
+				'transaction_date'  	=> $CUR_DATE,
+				'customer_id'  			=> $customer_id,
+				'supplier_id'  			=> null,
+				'payment_type' 			=> $payment_type,
+				
+		));
+
+		update_account_balance($account_id, $amount, false);
+
+		for($i=1;$i<=$rowcount;$i++){
+			
+			if(isset($_REQUEST['tr_item_id_'.$i]) && !empty($_REQUEST['tr_item_id_'.$i])){
+
+				$item_id 			=$this->xss_html_filter(trim($_REQUEST['tr_item_id_'.$i]));
+				$return_qty			=$this->xss_html_filter(trim($_REQUEST['td_data_'.$i.'_3']));
+				$price_per_unit 	=$this->xss_html_filter(trim($_REQUEST['td_data_'.$i.'_4']));
+				$tax_id 			=$this->xss_html_filter(trim($_REQUEST['td_data_'.$i.'_15']));
+				$tax_amt 			=$this->xss_html_filter(trim($_REQUEST['td_data_'.$i.'_11']));
+				$unit_total_cost	=$this->xss_html_filter(trim($_REQUEST['td_data_'.$i.'_10']));
+
+				$item_array=array(
+
+					'saledebit_id' => $sale_debit,
+					'item_id' => $item_id,
+					'qty' => $return_qty,
+					'unit_price' => $price_per_unit,
+					'tax_it' => $tax_id,
+					'tax_amt' => $tax_amt,
+					'unit_total_cost' => $unit_total_cost
+				);
+				
+				$this->db->insert('db_saleitemdebitnote',$item_array);
+			}
+		}
+			
+		
+			$this->session->set_flashdata('success', 'Success!! Record Saved Successfully! ');
+			return "success<<<###>>>$sales_id";
+	}
 
 
 
@@ -899,10 +966,10 @@ class Sales_return_model extends CI_Model {
                <td id="td_<?=$rowcount;?>_3">
                   <div class="input-group ">
                      <span class="input-group-btn">
-                     <button onclick="decrement_qty(<?=$rowcount;?>)" type="button" class="btn btn-default btn-flat"><i class="fa fa-minus text-danger"></i></button></span>
-                     <input typ="text" value="<?=format_qty($item_sales_qty);?>" class="form-control no-padding text-center" onkeyup="calculate_tax(<?=$rowcount;?>)" id="td_data_<?=$rowcount;?>_3" name="td_data_<?=$rowcount;?>_3">
+                     <button onclick="decrement_qty(<?=$rowcount;?>)" type="button" class="btn btn-default btn-flat" disabled><i class="fa fa-minus text-danger"></i></button></span>
+                     <input typ="text" value="<?=format_qty($item_sales_qty);?>" class="form-control no-padding text-center" onkeyup="calculate_tax(<?=$rowcount;?>)" id="td_data_<?=$rowcount;?>_3" name="td_data_<?=$rowcount;?>_3" readonly>
                      <span class="input-group-btn">
-                     <button onclick="increment_qty(<?=$rowcount;?>)" type="button" class="btn btn-default btn-flat"><i class="fa fa-plus text-success"></i></button></span>
+                     <button onclick="increment_qty(<?=$rowcount;?>)" type="button" class="btn btn-default btn-flat" disabled><i class="fa fa-plus text-success"></i></button></span>
                   </div>
                </td>
                

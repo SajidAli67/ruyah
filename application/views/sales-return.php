@@ -208,9 +208,13 @@
                                           <?php 
                                                $return_select = ($return_status=='Return') ? 'selected' : ''; 
                                                $cancel_select = ($return_status=='Cancel') ? 'selected' : ''; 
+                                               $cancel_select = ($return_status=='debit_note') ? 'selected' : ''; 
+                                               $cancel_select = ($return_status=='crete_note') ? 'selected' : ''; 
                                           ?>
                                             <option <?= $return_select; ?> value="Return">Return</option>
                                             <option <?= $cancel_select; ?> value="Cancel">Cancel</option>
+                                            <option <?= $cancel_select; ?> value="debit_note">Debit note</option>
+                                            <option <?= $cancel_select; ?> value="crete_note">Crete note</option>
                                        </select>
                                     <span id="return_status_msg" style="display:none" class="text-danger"></span>
                                  </div>
@@ -284,10 +288,10 @@
                                        <div class="form-group">
                                           <label for="other_charges_input" class="col-sm-4 control-label"><?= $this->lang->line('other_charges'); ?></label>    
                                           <div class="col-sm-4">
-                                             <input type="text" class="form-control text-right only_currency" id="other_charges_input" name="other_charges_input" onkeyup="final_total();" value="<?php echo  $other_charges_input; ?>">
+                                             <input type="text" class="form-control text-right only_currency" id="other_charges_input" name="other_charges_input" onkeyup="final_total();" value="<?php echo  $other_charges_input; ?>" readonly>
                                           </div>
                                           <div class="col-sm-4">
-                                             <select class="form-control " id="other_charges_tax_id" name="other_charges_tax_id" onchange="final_total();" style="width: 100%;">
+                                             <select class="form-control " id="other_charges_tax_id" name="other_charges_tax_id" onchange="final_total();" style="width: 100%;" readonly>
                                                  <?= get_tax_select_list($other_charges_tax_id,get_current_store_id());?>
                                              </select>
                                           </div>
@@ -299,7 +303,7 @@
                                        <div class="form-group">
                                           <label for="other_charges_input" class="col-sm-4 control-label"><?= $this->lang->line('discountCouponCode'); ?></label>    
                                           <div class="col-sm-8">
-                                             <input type="text" class="form-control" id="coupon_code" name="coupon_code" value="<?=$coupon_code; ?>">
+                                             <input type="text" class="form-control" id="coupon_code" name="coupon_code" value="<?=$coupon_code; ?>" readonly>
 
                                              <label class="control-label pull-left"><?= $this->lang->line('couponType'); ?>:<span class="coupon_type">---</span></label>
                                              <label class="control-label pull-right"><?= $this->lang->line('couponValue'); ?>:<span class="coupon_value">0.00</span></label>
@@ -324,10 +328,10 @@
                                        <div class="form-group">
                                           <label for="discount_to_all_input" class="col-sm-4 control-label"><?= $this->lang->line('discount_on_all'); ?></label>    
                                           <div class="col-sm-4">
-                                             <input type="text" class="form-control  text-right only_currency" id="discount_to_all_input" name="discount_to_all_input" onkeyup="enable_or_disable_item_discount();" value="<?php echo  $discount_input; ?>">
+                                             <input type="text" class="form-control  text-right only_currency" id="discount_to_all_input" name="discount_to_all_input" onkeyup="enable_or_disable_item_discount();" value="<?php echo  $discount_input; ?>" readonly>
                                           </div>
                                           <div class="col-sm-4">
-                                             <select class="form-control" onchange="final_total();" id='discount_to_all_type' name="discount_to_all_type">
+                                             <select class="form-control" onchange="final_total();" id='discount_to_all_type' name="discount_to_all_type" readonly>
                                                 <option value='in_percentage'>Per%</option>
                                                 <option value='in_fixed'>Fixed</option>
                                              </select>
@@ -347,7 +351,7 @@
                                        <div class="form-group">
                                           <label for="return_note" class="col-sm-4 control-label"><?= $this->lang->line('note'); ?></label>    
                                           <div class="col-sm-8">
-                                             <textarea class="form-control text-left" id='return_note' name="return_note"><?= $return_note; ?></textarea>
+                                             <textarea class="form-control text-left" id='return_note' name="return_note" readonly><?= $return_note; ?></textarea>
                                             <span id="return_note_msg" style="display:none" class="text-danger"></span>
                                           </div>
                                        </div>
