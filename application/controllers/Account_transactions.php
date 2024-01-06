@@ -354,9 +354,6 @@ class Account_transactions extends MY_Controller {
 		//output to json format
 		echo json_encode($output);
 	}
-<<<<<<< Updated upstream
-=======
-
 
 	public function show_payments_type_report()
 	{
@@ -660,7 +657,7 @@ class Account_transactions extends MY_Controller {
 		//output to json format
 		echo json_encode($output);
 	}
->>>>>>> Stashed changes
+
 	
 	public function delete_transaction(){
 		$entry_of =$this->input->post('entry_of');

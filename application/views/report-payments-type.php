@@ -67,7 +67,6 @@
                                  <span id="transfer_date_msg" style="display:none" class="text-danger"></span>
                               </div>
                            </div>
-<<<<<<< HEAD
                            <div class="col-md-6">
                               <div class="form-group">
                                   <label for="to_date"><?= "Account"; ?> </label></label>
@@ -85,23 +84,7 @@
                                     <span id="debit_account_id_msg" style="display:none" class="text-danger">
                                     </span>
                                  </div>
-=======
 
-                           <div class="form-group">
-                              
-                              <label for="debit_account_id" class="col-sm-2 control-label">
-                                 <?= $this->lang->line('debit_account'); ?>
-                              </label>
-                              <div class="col-sm-3">
-                                 <select class="form-control select2" id="debit_account_id" name="debit_account_id" style="width: 100%;">
-                                    <?php
-                                    echo '<option value="">Select</option>';
-                                    echo get_accounts_select_list(1);
-                                    ?>
-                                 </select>
-                                 <span id="debit_account_id_msg" style="display:none" class="text-danger">
-                                 </span>
->>>>>>> e7da4d5d19f2cf3212d3df1755dc28a288d45ba7
                               </div>
                            </div>
                         </div>
@@ -267,11 +250,7 @@
                "url": "<?php echo site_url('account_transactions/show_payments_type_report') ?>",
                "type": "POST",
                "data": {
-<<<<<<< HEAD
                   account_id: $("#debit_account_id").val(),
-=======
-                  account_id: $("#debit_account_id").val(),//'<?= $account_id ?>',
->>>>>>> e7da4d5d19f2cf3212d3df1755dc28a288d45ba7
                   from_date: $("#from_date").val(),
                   to_date: $("#to_date").val(),
                   users: $("#users").val(),
