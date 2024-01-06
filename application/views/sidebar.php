@@ -246,7 +246,7 @@
 
           <li class="text-center" id="">
 
-            <a title="POS [Shift+P]" href="<?php echo $base_url; ?>pos"><i class="fa fa-plus-square " ></i> POS </a>   
+            <a title="POS [Shift+P]" href="<?php echo $base_url; ?>pos"><i class="fa fa-plus-square " ></i> <?= $this->lang->line('pos_list'); ?> </a>   
 
           </li>
 
@@ -502,7 +502,7 @@
 
             <?php if($CI->permissions('pos')) { ?>
 
-        <li class="pos-active-li"><a href="<?php echo $base_url; ?>pos"><i class="fa fa-plus-square-o  "></i> <span>POS</span></a></li>
+        <li class="pos-active-li"><a href="<?php echo $base_url; ?>pos"><i class="fa fa-plus-square-o  "></i> <span><?= $this->lang->line('pos_list'); ?></span></a></li>
 
          <?php } ?>
 
@@ -923,7 +923,7 @@
             <?php if($CI->permissions('money_transfer_view')) { ?>
 
                 <li class="money_transfer_list-active-li"><a href="<?php echo $base_url; ?>money_transfer"><i class="fa fa-list "></i> <span><?= $this->lang->line('money_transfer_list'); ?></span></a></li>
-                <li class="money_transfer_list-active-li"><a href="<?php echo $base_url; ?>Transfer_to_supplier"><i class="fa fa-list "></i> <span><?= 'Transfer to Supplier' ?></span></a></li>
+                <li class="money_transfer_list-active-li"><a href="<?php echo $base_url; ?>Transfer_to_supplier"><i class="fa fa-list "></i> <span><?=  $this->lang->line('transfer_to_supplier') ?></span></a></li>
             <?php } ?>
 
 
@@ -1503,6 +1503,12 @@
             <?php if($CI->permissions('sales_payments_report')) { ?>
 
             <li class="report-sales-payments-active-li"><a href="<?php echo $base_url; ?>reports/sales_payments" ><i class="fa fa-files-o "></i> <span><?= $this->lang->line('sales_payments_report'); ?></span></a></li>  
+
+            <?php } ?>
+
+            <?php if($CI->permissions('sales_payments_report')) { ?>
+
+            <li class="report-payments_type-active-li"><a href="<?php echo $base_url; ?>reports/payment_type_report" ><i class="fa fa-files-o "></i> <span><?= 'Payment Type ' ?></span></a></li>  
 
             <?php } ?>
 

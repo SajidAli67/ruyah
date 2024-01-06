@@ -67,6 +67,25 @@
                                  <span id="transfer_date_msg" style="display:none" class="text-danger"></span>
                               </div>
                            </div>
+<<<<<<< HEAD
+                           <div class="col-md-6">
+                              <div class="form-group">
+                                  <label for="to_date"><?= "Account"; ?> </label></label>
+                                 
+                                 <div class="input-group date">
+                                   <div class="input-group-addon">
+                                       <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <select class="form-control select2" id="debit_account_id" name="debit_account_id" style="width: 100%;">
+                                       <?php
+                                       echo '<option value="">Select</option>';
+                                       echo get_accounts_select_list(1);
+                                       ?>
+                                    </select>
+                                    <span id="debit_account_id_msg" style="display:none" class="text-danger">
+                                    </span>
+                                 </div>
+=======
 
                            <div class="form-group">
                               
@@ -82,72 +101,73 @@
                                  </select>
                                  <span id="debit_account_id_msg" style="display:none" class="text-danger">
                                  </span>
+>>>>>>> e7da4d5d19f2cf3212d3df1755dc28a288d45ba7
                               </div>
+                           </div>
                         </div>
-                     </div>
 
+                     </div>
+                     <!-- /.box -->
                   </div>
-                  <!-- /.box -->
-               </div>
 
-               <div class="col-xs-12">
-                  <div class="box box-primary">
-                     <div class="box-header ">
-                        <h3 class="box-title"><?= $this->lang->line('transactions_list'); ?></h3>
+                  <div class="col-xs-12">
+                     <div class="box box-primary">
+                        <div class="box-header ">
+                           <h3 class="box-title"><?= $this->lang->line('transactions_list'); ?></h3>
 
-                     </div>
-                     <!-- /.box-header -->
-                     <div class="box-body">
-                        <table id="example2" class="table table-bordered custom_hover" width="100%">
-                           <caption style="text-align:center;">
-                              <h4><label id="from_date_label"></label> & <label id="to_date_label"></label></h4>
-                           </caption>
-                           <thead>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                           <table id="example2" class="table table-bordered custom_hover" width="100%">
+                              <caption style="text-align:center;">
+                                 <h4><label id="from_date_label"></label> & <label id="to_date_label"></label></h4>
+                              </caption>
+                              <thead>
                                  <tr class="bg-blue">
                                     <th style="">#</th>
-                                    <?php if(store_module() && is_admin()){ ?>
-                                    <th ><?= $this->lang->line('store_name'); ?></th>
+                                    <?php if (store_module() && is_admin()) { ?>
+                                       <th><?= $this->lang->line('store_name'); ?></th>
                                     <?php } ?>
                                     <th>Date</th>
-                                    <th >Payment Code</th>
-                                    <th >Description</th>
+                                    <th>Payment Code</th>
+                                    <th>Description</th>
                                     <th colspan="2">Receipt amount</th>
-                                   
+
                                     <th colspan="2">Payment amount</th>
-                                   
-                                    <th >balance</th>
-                                    <th >note</th>
+
+                                    <th>balance</th>
+                                    <th>note</th>
                                  </tr>
-                                    <tr class="bg-gray">
-                                       <th></th>
-                                       <?php if(store_module() && is_admin()){ ?>
+                                 <tr class="bg-gray">
+                                    <th></th>
+                                    <?php if (store_module() && is_admin()) { ?>
                                        <th><?= $this->lang->line('store_name'); ?></th>
-                                       <?php } ?>
-                                       <th></th>
-                                       <th></th>
-                                       <th></th>
-                                       <th >نقدي</th>
-                                       <th >مدي / تحويلة بنك</th>
-                                       <th>نقدي</th>
-                                       <th>مدي / تحويلة بنك</th>
-                                       <th></th>
-                                       <th></th>
-                                    </tr>
+                                    <?php } ?>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>نقدي</th>
+                                    <th>مدي / تحويلة بنك</th>
+                                    <th>نقدي</th>
+                                    <th>مدي / تحويلة بنك</th>
+                                    <th></th>
+                                    <th></th>
+                                 </tr>
                                  </tr>
                               </thead>
-                           <tbody>
+                              <tbody>
 
-                           </tbody>
+                              </tbody>
 
-                        </table>
+                           </table>
+                        </div>
+                        <!-- /.box-body -->
                      </div>
-                     <!-- /.box-body -->
+                     <!-- /.box -->
                   </div>
-                  <!-- /.box -->
+                  <!-- /.col -->
                </div>
-               <!-- /.col -->
-            </div>
-            <!-- /.row -->
+               <!-- /.row -->
          </section>
          <!-- /.content -->
          <?= form_close(); ?>
@@ -247,7 +267,11 @@
                "url": "<?php echo site_url('account_transactions/show_payments_type_report') ?>",
                "type": "POST",
                "data": {
+<<<<<<< HEAD
+                  account_id: $("#debit_account_id").val(),
+=======
                   account_id: $("#debit_account_id").val(),//'<?= $account_id ?>',
+>>>>>>> e7da4d5d19f2cf3212d3df1755dc28a288d45ba7
                   from_date: $("#from_date").val(),
                   to_date: $("#to_date").val(),
                   users: $("#users").val(),
