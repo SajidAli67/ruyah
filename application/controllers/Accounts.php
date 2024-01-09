@@ -83,6 +83,8 @@ class Accounts extends MY_Controller {
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $accounts) {
+			$cash_balance = store_number_format(get_account_balance_by_type($accounts->id,'cash'));
+			$bank_balance = store_number_format(get_account_balance_by_type($accounts->id,'bank'));
 			$no++;
 			$row = array();
 			$row[] = ($accounts->delete_bit) ? '<span data-toggle="tooltip" title="Resticted" class="text-danger fa fa-fw fa-ban"></span>' : '<input type="checkbox" name="checkbox[]" value='.$accounts->id.' class="checkbox column_checkbox" >';
@@ -90,7 +92,7 @@ class Accounts extends MY_Controller {
 			$row[] = $accounts->account_code;
 			$row[] = $accounts->account_name;
 			$row[] = get_account_name($accounts->parent_id);
-			$row[] = store_number_format($accounts->balance);
+			$row[] = '<span  data-toggle="tooltip" data-placement="top" title="Cash :'. $cash_balance .', Bank:'.$bank_balance.'">' .store_number_format($accounts->balance) . "</span>";
 			
 			$row[] = ($accounts->created_by);			
 				     $str2 = '<div class="btn-group" title="View Account">

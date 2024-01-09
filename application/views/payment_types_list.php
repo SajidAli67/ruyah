@@ -38,12 +38,12 @@
           <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title"><?= $this->lang->line('payment_types'); ?></h3>
-              <?php if($CI->permissions('payment_types_add')) { ?>
+              <!-- <?php if($CI->permissions('payment_types_add')) { ?>
               <div class="box-tools">
                 <a class="btn btn-block btn-info" href="<?php echo $base_url; ?>payment_types/add">
                 <i class="fa fa-plus"></i> <?= $this->lang->line('create_new'); ?></a>
               </div>
-              <?php } ?>
+              <?php } ?> -->
             </div>
             <!-- /.box-header -->
             <div class="box-body">

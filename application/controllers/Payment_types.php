@@ -9,42 +9,47 @@ class Payment_types extends MY_Controller {
 	}
 
 	public function add(){
-		$this->permission_check('payment_types_add');
-		$data=$this->data;
-		$data['page_title']=$this->lang->line('payment_types');
-		$this->load->view('payment_types', $data);
+	
+		return $this->load->view('errors/error_404');
+		// $this->permission_check('payment_types_add');
+		// $data=$this->data;
+		// $data['page_title']=$this->lang->line('payment_types');
+		// $this->load->view('payment_types', $data);
 	}
 	public function new_payment_type(){
 
-		$this->form_validation->set_rules('payment_type_name', 'Payment Type Name', 'trim|required');
+		return $this->load->view('errors/error_404');
+		// $this->form_validation->set_rules('payment_type_name', 'Payment Type Name', 'trim|required');
 		
-		if ($this->form_validation->run() == TRUE) {
+		// if ($this->form_validation->run() == TRUE) {
 			
-			$result=$this->payment_types->verify_and_save();
-			echo $result;
-		} else {
-			echo "Please Enter Payment Type Name.";
-		}
+		// 	$result=$this->payment_types->verify_and_save();
+		// 	echo $result;
+		// } else {
+		// 	echo "Please Enter Payment Type Name.";
+		// }
 	}
 	public function update($id){
-		$this->belong_to('db_paymenttypes',$id);
-		$this->permission_check('payment_types_edit');
-		$data=$this->data;
-		$result=$this->payment_types->get_details($id,$data);
-		$data=array_merge($data,$result);
-		$data['page_title']=$this->lang->line('payment_types');
-		$this->load->view('payment_types', $data);
+		return $this->load->view('errors/error_404');
+		// $this->belong_to('db_paymenttypes',$id);
+		// $this->permission_check('payment_types_edit');
+		// $data=$this->data;
+		// $result=$this->payment_types->get_details($id,$data);
+		// $data=array_merge($data,$result);
+		// $data['page_title']=$this->lang->line('payment_types');
+		// $this->load->view('payment_types', $data);
 	}
 	public function update_payment_type(){
-		$this->form_validation->set_rules('payment_type_name', 'Payment Type Name', 'trim|required');
-		$this->form_validation->set_rules('q_id', '', 'trim|required');
+		return $this->load->view('errors/error_404');
+		// $this->form_validation->set_rules('payment_type_name', 'Payment Type Name', 'trim|required');
+		// $this->form_validation->set_rules('q_id', '', 'trim|required');
 
-		if ($this->form_validation->run() == TRUE) {
-			$result=$this->payment_types->update_payment_type();
-			echo $result;
-		} else {
-			echo "Please Enter Payment Type Name.";
-		}
+		// if ($this->form_validation->run() == TRUE) {
+		// 	$result=$this->payment_types->update_payment_type();
+		// 	echo $result;
+		// } else {
+		// 	echo "Please Enter Payment Type Name.";
+		// }
 	}
 	public function index(){
 		$this->permission_check('payment_types_view');
@@ -92,7 +97,7 @@ class Payment_types extends MY_Controller {
 											
 										</ul>
 									</div>';			
-			$row[] = ((strtoupper($payment_type->payment_type)==strtoupper(cheque_name())) || (strtoupper($payment_type->payment_type)==strtoupper(cash_name()))) ? '-NA-' : $str2;
+			$row[] ='-NA-'; //((strtoupper($payment_type->payment_type)==strtoupper(cheque_name())) || (strtoupper($payment_type->payment_type)==strtoupper(cash_name()))) ? '-NA-' : $str2;
 
 			$data[] = $row;
 		}
@@ -108,17 +113,19 @@ class Payment_types extends MY_Controller {
 	}
 
 	public function update_status(){
-		$this->permission_check_with_msg('payment_types_edit');
-		$id=$this->input->post('id');
-		$status=$this->input->post('status');
-		$result=$this->payment_types->update_status($id,$status);
-		return $result;
+		return $this->load->view('errors/error_404');
+		// $this->permission_check_with_msg('payment_types_edit');
+		// $id=$this->input->post('id');
+		// $status=$this->input->post('status');
+		// $result=$this->payment_types->update_status($id,$status);
+		// return $result;
 	}
 	public function delete_payment_type(){
-		$this->permission_check_with_msg('payment_types_delete');
-		$id=$this->input->post('q_id');
-		$result=$this->payment_types->delete_payment_type($id);
-		return $result;
+		return $this->load->view('errors/error_404');
+		// $this->permission_check_with_msg('payment_types_delete');
+		// $id=$this->input->post('q_id');
+		// $result=$this->payment_types->delete_payment_type($id);
+		// return $result;
 	}
 }
 

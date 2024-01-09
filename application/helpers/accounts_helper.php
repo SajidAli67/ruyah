@@ -232,7 +232,7 @@ function get_account_balance($account_id){
 	// $credit = $CI->db->select("coalesce(sum(credit_amt),0) as credit")->where('credit_account_id',$account_id)->get("ac_transactions")->row()->credit;
 	// $balance = $credit-$debit;
 	
-	$balance =$CI->db->select('balance')->where('id',$account_id)->get('ac_accounts')->row()->balance;
+	$balance =$CI->db->select('balance')->where('id',$account_id)->where('store_id',get_current_store_id())->get('ac_accounts')->row()->balance;
 
 	return $balance;
 }
@@ -247,7 +247,9 @@ function update_account_balance($account_id, $amount= 0, $debit= false){
 	}
 	
 	
-	$q1=$CI->db->set('balance',$balance)->where("id",$account_id)->update("ac_accounts");
+	$q1=$CI->db->set('balance',$balance)->where("id",$account_id)
+		->where('store_id',get_current_store_id())
+		->update("ac_accounts");
 	if(!$q1){
 		return false;
 	}
@@ -283,4 +285,23 @@ function get_debit_note($sale_id){
 function get_credit_note($purchase_id){
 	$CI =& get_instance();
 	return  $CI->db->select('*')->where('purchase_id',$purchase_id)->get('db_purchasedebitnote as e')->row();
+}
+
+function get_account_balance_by_type($account_id, $type)
+{
+	$CI = &get_instance();
+
+	$credit_balance = $CI->db->select("coalesce(sum(credit_amt),0) as credit_amt")
+	->where("payment_type", $type)
+	->where('store_id',get_current_store_id())
+		->where("credit_account_id", $account_id)
+		// ->where("transaction_type", '!=' ,'TRANSFER')
+		->get("ac_transactions a")->row()->credit_amt;
+	$debit_balance = $CI->db->select("coalesce(sum(debit_amt),0) as debit_amt")
+		->where("payment_type", $type)
+		->where('store_id',get_current_store_id())
+		->where("debit_account_id ", $account_id)
+		->get("ac_transactions a")->row()->debit_amt;
+
+	return $credit_balance - $debit_balance;
 }
