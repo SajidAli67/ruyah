@@ -1,1 +1,0 @@
-INSERT IGNORE INTO db_variants VALUES ('259','2',NULL,'hikvision','all product of hikvision','1');

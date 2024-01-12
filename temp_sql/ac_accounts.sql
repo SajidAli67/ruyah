@@ -1,1 +1,0 @@
-INSERT IGNORE INTO ac_accounts VALUES ('1','1','2','0','1','MAIN ACCOUNT1','005','3500.0000',NULL,'admin','2023-10-16','07:40:55 am','5.195.212.22','5.195.212.22','1','0',NULL,NULL,NULL,NULL,NULL),('2','2','2','0','2','statemint account','006','3150.0000',NULL,'admin','2023-10-16','07:41:23 am','5.195.212.22','5.195.212.22','1','0',NULL,NULL,NULL,NULL,NULL);

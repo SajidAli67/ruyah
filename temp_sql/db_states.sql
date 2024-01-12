@@ -1,1 +1,0 @@
-INSERT INTO db_states VALUES ('65','1','','mekkah','','','Saudi Arabia','','','1'),('66','1','','Alrayed','','','Saudi Arabia','','','1'),('67','1','','Dammam','','','Saudi Arabia','','','1'),('68','1','','Tabook','','','Saudi Arabia','','','1');

@@ -1,1 +1,0 @@
-INSERT IGNORE INTO db_salespayments VALUES ('4','1','00001','2','1','2023-10-18','cash paymint','1000.0000',NULL,NULL,'5.195.212.22','5.195.212.22','07:51:05 pm','2023-10-18','admin','1','1','16',NULL,NULL,NULL,NULL,NULL,'2023-10-18 18:51:08');

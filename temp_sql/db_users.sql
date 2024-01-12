@@ -1,1 +1,0 @@
-INSERT IGNORE INTO db_users VALUES ('2','2','admin','Maniwebify','Admin','fbe82b93c071bedda31afded400cca52',NULL,NULL,NULL,'+923340009738','user@maniwebify.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2','uploads/users/maniwebify-logo-img-admin.jpg','2021-02-12','05:53:37 pm',NULL,'127.0.0.1','LAPTOP-I5OUIM4R','1',NULL,NULL,NULL,'0');

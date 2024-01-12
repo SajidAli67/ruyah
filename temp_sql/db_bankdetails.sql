@@ -1,1 +1,0 @@
-INSERT INTO db_bankdetails VALUES ('1','1','139','','','','','Saving','','','','1');

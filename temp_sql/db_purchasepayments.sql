@@ -1,1 +1,0 @@
-INSERT IGNORE INTO db_purchasepayments VALUES ('108','1','0000001','2','2','2023-08-18','Cash','500.0000',NULL,'31.166.193.90','31.166.193.90','05:02:30','2023-08-18','user@maniwebify.com','1','1','1',NULL);

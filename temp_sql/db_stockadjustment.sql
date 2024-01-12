@@ -1,1 +1,0 @@
-INSERT IGNORE INTO db_stockadjustment VALUES ('1','2','2',NULL,'2023-09-14',NULL,'2023-09-14','01:11:05 pm','admin','115.186.190.33','115-186-190-33.nayatel.pk','1');

@@ -1,1 +1,0 @@
-INSERT IGNORE INTO db_category VALUES ('91','2','1','Store#0001','الجميع الاصناف',NULL,NULL,'1'),('92','2','2','Store#0002','hikvision','degital receiver 4 port hikvision',NULL,'1');

@@ -1,1 +1,0 @@
-INSERT INTO db_paypal VALUES ('1','1','0','','2023-08-07','saas@maniwebify.com','1');
