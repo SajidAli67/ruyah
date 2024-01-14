@@ -26,13 +26,13 @@ function uncheck_allow_tot_advance(){
 }
 
 $("#pay_all").on("click",function(){
-	save(print=true,pay_all=true);
+	save(print=true,pay_all=true,payment_type='bank');
 });
 
-function save(print=false,pay_all=false){
+function save(print=false,pay_all=false,payment_type='cash'){
 
 //$('.make_sale').on("click",function (e) {
-	
+	console.log('ok')
 	var base_url=$("#base_url").val();
     
     if($(".items_table tr").length==1){
@@ -83,7 +83,7 @@ function save(print=false,pay_all=false){
 		$(".box").append('<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
 		$.ajax({
 			type: 'POST',
-			url: base_url+'pos/pos_save_update?command='+command+'&tot_qty='+tot_qty+'&tot_amt='+tot_amt+'&tot_disc='+tot_disc+'&tot_grand='+tot_grand+"&paid_amt="+paid_amt+'&balance='+balance+"&pay_all="+pay_all,
+			url: base_url+'pos/pos_save_update?command='+command+'&tot_qty='+tot_qty+'&tot_amt='+tot_amt+'&tot_disc='+tot_disc+'&tot_grand='+tot_grand+"&paid_amt="+paid_amt+'&balance='+balance+"&pay_all="+pay_all+"&payment_type="+payment_type,
 			data: data,
 			cache: false,
 			contentType: false,
@@ -391,7 +391,7 @@ $('.show_payments_modal').on("click",function (e) {
     else{
     	adjust_payments();
     	$("#add_payment_row,#payment_type_1").parent().show();
-    	$("#amount_1").parent().parent().removeClass('col-md-12').addClass('col-md-6');
+    	//$("#amount_1").parent().parent().removeClass('col-md-12').addClass('col-md-6');
     	$('#multiple-payments-modal').modal('toggle');
     }
 }); //hold_invoice end
@@ -405,9 +405,12 @@ $('#show_cash_modal').on("click",function (e) {
     }
     else{
     	adjust_payments();
-    	$("#add_payment_row,#payment_type_1").parent().hide();
+    	//$("#add_payment_row,#payment_type_1").parent().hide();
+    	$("#add_payment_row").parent().hide();
+    	$("#payment_type_1").val('');
+
     	$("#amount_1").focus();
-    	$("#amount_1").parent().parent().removeClass('col-md-6').addClass('col-md-12');
+    	//$("#amount_1").parent().parent().removeClass('col-md-6');
     	$('#multiple-payments-modal').modal('toggle');
     }
 }); //hold_invoice end

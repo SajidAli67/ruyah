@@ -284,7 +284,7 @@ class Sales_model extends CI_Model {
 		    				'system_ip' 				=> $SYSTEM_IP,
 		    				'system_name' 				=> $SYSTEM_NAME,
 		    				'status' 					=> 1,
-		    				'payment_type' 					=> $payment_type,
+		    				'payment_type' 				=> $payment_type,
 		    			);
 		    if(isset($quotation_id)){
 				$sales_entry['quotation_id'] = $quotation_id;

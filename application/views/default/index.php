@@ -960,15 +960,11 @@
       <?php } ?>
    </script>
    <!-- Make sidebar menu hughlighter/selector -->
-   <?php if (isset($q_id) && !empty($q_id) && get_current_store_id() == $q_id) { ?>
+
       <script>
-         $(".store_profile-active-li").addClass("active");
+         $(".default-active-li").addClass("active");
       </script>
-   <?php } else { ?>
-      <script>
-         $(".<?php echo basename(__FILE__, '.php'); ?>-active-li").addClass("active");
-      </script>
-   <?php } ?>
+   
 
    <script>
       $(function() {

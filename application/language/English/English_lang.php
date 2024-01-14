@@ -1588,6 +1588,8 @@ $lang['annual'] = 'Annual';
 
 $lang['payment_gateways'] = 'Payment Gateways';
 
+$lang['default_setting'] = 'Default Setting';
+
 $lang['invoices'] = 'Invoices';
 
 $lang['gateways'] = 'Gateways';

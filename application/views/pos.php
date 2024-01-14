@@ -413,16 +413,16 @@
                           </button>
                     </div>
                     <div class="col-sm-3">
-                      <button type="button" id="<?php echo "show_cash_modal";?>" name="" class="btn btnhold btn-success btn-block btn-flat btn-lg Alt_c" title="By Cash & Save [Alt+C]" style="">
+                      <button type="button" onclick="save(false,true,'cash')"  name="" class="btn btnhold btn-success btn-block btn-flat btn-lg Alt_c" title="By Cash & Save [Alt+C]" style="">
                             <i class="fa fa-money" aria-hidden="true"></i>
                              <?php echo $btn_name;?>
                           </button>
                     </div>
 
                     <div class="col-sm-3">
-                      <button type="button" id="pay_all" name="" class="btn bg-purple btnhold btn-block btn-flat btn-lg Alt_a" title="By Cash & Save [Alt+A]" style="">
+                      <button type="button" id="pay_all" name=""  class="btn bg-purple btnhold btn-block btn-flat btn-lg Alt_a" title="By Cash & Save [Alt+A]" style="">
                             <i class="fa fa-money" aria-hidden="true"></i>
-                             Pay All
+                             Bank
                           </button>
                     </div>
                     
